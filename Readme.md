@@ -1,12 +1,21 @@
-
 # Comment Anywhere Front End
 
-## todo: description of transpilation process
+`src    ` Typescript source code.
 
-## todo: description of testing process
+`docs   ` Relevant documentation and notes.
 
-## todo: description of folders
+`public ` Static assets (CSS, images, `manifest.json`) to bundle with the extension.
 
-- src : Contains typescript source code.
-- docs : Contains miscellaneous documentation and notes.
-- assets: Contains non-javascript static assets that will be bundled with the extension. Includes images, CSS, and manifest.json.
+#### Instructions
+
+- Run `npm run dev` to serve the application to localhost.
+
+- Changes to source code is synchronized. (No need to refresh your browser!)
+
+#### TODO
+
+- Description of transpilation process.
+
+- Description of testing process
+
+- Description of folders
