@@ -12,3 +12,4 @@
 - Candidate for Refactor: Fetcher.getAndClearResponses to Fetcher.popResponses
 - Candidate for Refactor: CafeNavBar to something that encompasses the fact that it holds all the windows as well, not just the nav. Perhaps "CafeNavigator" or just "Navigator"
 
+

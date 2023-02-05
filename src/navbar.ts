@@ -21,7 +21,7 @@ export class CafeNavBar {
     el: HTMLDivElement
     message: CafeMessageDisplay
     registerWindow: CafeRegisterWindow
-    currentlyViewing: CafeWindow
+    currentlyViewing?: CafeWindow
     registerButton: HTMLButtonElement;
     loginButton: HTMLButtonElement;
     logoutButton: HTMLButtonElement;
@@ -45,6 +45,7 @@ export class CafeNavBar {
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
+        this.logoutButton.addEventListener("click", getNavClickCallback("none"))
 
         // create the windows
         this.registerWindow = new CafeRegisterWindow()
@@ -53,7 +54,7 @@ export class CafeNavBar {
         this.currentlyViewing = this.registerWindow
 
         // construct the dom tree
-        this.el.append(nav, this.message.el, windowContainer)
+        this.el.append(this.message.el, nav, windowContainer)
         nav.append(this.registerButton, this.loginButton, this.logoutButton)
         windowContainer.append(this.registerWindow.el, this.loginWindow.el)
 
@@ -64,7 +65,6 @@ export class CafeNavBar {
 
         // login, register, logout buttons depend on if user defined
         if(state.ownProfile == undefined) {
-            hide(this.logoutButton)
             showInlineBlock(this.loginButton)
             showInlineBlock(this.registerButton)
         }
@@ -82,16 +82,20 @@ export class CafeNavBar {
                 setActive(this.loginButton)
                 break; 
             default:
+                this.currentlyViewing = undefined
         }
-        this.currentlyViewing.show()
+        if(this.currentlyViewing != undefined) {
+            this.currentlyViewing.show()
+        }
 
 
     }
     hideAll() {
+        this.registerWindow.hide()
+        this.loginWindow.hide()
         hide(this.registerButton)
         hide(this.loginButton)
         hide(this.logoutButton)
-        this.currentlyViewing.hide()
     }
     
 }

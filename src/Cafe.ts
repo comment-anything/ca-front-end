@@ -52,6 +52,7 @@ export class Cafe {
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
         let responses = this.fetcher.getAndClearResponses()
+        console.log("All server responses:", responses)
         this.dispatcher.dispatch(responses, this)
     }
 }
