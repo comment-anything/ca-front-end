@@ -1,7 +1,11 @@
 
-import { Client, ClientMap } from './client'
-import { Server, ServerMap, ServerResponse } from './server'
+import { ClientMap } from './CLIENT'
+import { ServerMap, ServerResponse } from './SERVER'
 
+
+const server_url = import.meta.env.VITE_API_ADDRESS
+
+// Fetcher is responsible for dispatching requests to the server at the appropriate API endpoints and populating its responses object with the server responses.
 export class Fetcher {
     responses: ServerResponse<keyof ServerMap>[]
     
@@ -9,11 +13,13 @@ export class Fetcher {
         this.responses = []
     }
     
-    async fetch<T extends keyof ClientMap>(event: T, data: ClientMap[T], callback: () => void) {
-        alert('Fetcher called!')
+    // Fetch dispatches the HTTP Request to the endpoint, stores responses in the responses member of fetcher, and calls the callback function when complete
+    async fetch<T extends keyof ClientMap>(APIendpoint: T, httpmethod: ClientMap[T][1], data: ClientMap[T][0], callback: () => void) {
+
+        let targetURL = server_url + "/" + APIendpoint
         
-        await fetch('SERVER IP GOES HERE', {
-            method: 'POST',
+        await fetch(targetURL, {
+            method: httpmethod,
             mode: "cors",
             headers: {
                 "Content-Type": "application/json"
@@ -21,7 +27,11 @@ export class Fetcher {
             body: JSON.stringify(data)
             
         }).then((res) => {
-            this.responses = res
+            return res.json()
+        }).then((jsonArray)=> {
+            this.responses = jsonArray
+        }).catch((error)=> {
+            console.error(`Error fetching from server!`, error)
         })
         
         callback()

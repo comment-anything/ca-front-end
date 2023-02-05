@@ -2,3 +2,5 @@
 
 2/5/2023: Karl
  - Added vitest, jsdom, to package dependecies. Ensured a dom-based test would run (/src/dom.spec.ts). Added .gitignore.
+ - Added additional parameter to Fetcher.fetch and types, the parameter specifies which type of HTTP Method the Fetcher should use. 
+ - Added .env file and VITE_API_ADDRESS variable to point fetcher at the correct server.

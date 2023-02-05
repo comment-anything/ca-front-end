@@ -1,6 +1,7 @@
 
 export type ServerMap = {
-    "message": Server.Message
+    "Message": Server.Message,
+    "LoginResponse" : Server.LoginResponse
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -14,6 +15,21 @@ export namespace Server {
     type Message = {
         Success : boolean
         Message : string
+    }
+
+    type LoginResponse = {
+        LoggedInAs: UserProfile
+    }
+
+    type UserProfile = {
+        UserId : number,
+        Username : string,
+        CreatedOn : number,
+        DomainsModerating : string,
+        IsAdmin : boolean,
+        IsDomainModerator : boolean,
+        IsGlobalModerator : boolean,
+        ProfileBlurb : string
     }
     
 }
