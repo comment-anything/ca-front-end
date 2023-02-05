@@ -1,6 +1,6 @@
 
 import { ClientMap } from './CLIENT'
-import { ServerMap, ServerResponse } from './SERVER'
+import { Server, ServerMap, ServerResponse } from './SERVER'
 
 
 const server_url = import.meta.env.VITE_API_ADDRESS
@@ -32,6 +32,14 @@ export class Fetcher {
             this.responses = jsonArray
         }).catch((error)=> {
             console.error(`Error fetching from server!`, error)
+            let message : Server.Message = {
+                Success: false,
+                Text: "Error fetching from server!"
+            }
+            let event = new CustomEvent<Server.Message>("FrontEndError", {
+                detail: message
+            })
+            document.dispatchEvent(event)
         })
         
         callback()

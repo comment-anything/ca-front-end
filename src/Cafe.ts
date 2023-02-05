@@ -1,3 +1,4 @@
+import { Dispatcher } from "./dispatcher";
 import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
 import { State } from "./State";
@@ -12,15 +13,15 @@ export class Cafe {
     fetcher: Fetcher
     state: State
     navbar: CafeNavBar;
-    // dispatcher
+    dispatcher: Dispatcher
     constructor() {
         this.fetcher = new Fetcher()
         this.state = new State()
         this.navbar = new CafeNavBar()
-        document.body.append(this.navbar.el)
-
-
+        this.dispatcher = new Dispatcher()
         this.setClientEventListeners()
+        this.setStateEventListeners()
+        this.navbar.setFromState(this.state)
     }
 
     // Called as part of the constructor to set listeners for ClientEvents.
@@ -29,13 +30,28 @@ export class Cafe {
         document.addEventListener("register", (ev)=>{
             let data = ev.detail
             console.log("REGISTER EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("register", "POST", data, my.checkForResponses)
+            my.fetcher.fetch("register", "POST", data, my.checkForResponses.bind(my))
+        })
+        document.addEventListener("FrontEndError", (ev)=> {
+            console.error("Front End Error!")
+            my.navbar.message.updateMessage(ev.detail)
+        })
+    }
+    
+    // Called as part of the constructor to set listens for StateEvents.
+    setStateEventListeners() {
+        let my = this
+        document.addEventListener("StateChangeRequest", (ev)=>{
+            my.state.setViewingTo(ev.detail)
+        })
+        document.addEventListener("StateChanged", ()=> {
+            my.navbar.setFromState(my.state)
         })
     }
 
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
         let responses = this.fetcher.getAndClearResponses()
-        // call dispatcher
+        this.dispatcher.dispatch(responses, this)
     }
 }

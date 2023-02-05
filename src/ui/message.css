@@ -1,0 +1,27 @@
+
+.server-message {
+    font-size: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.server-message-success-false {
+    color: darkred;
+    animation: fadeOut 5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.server-message-success-true {
+    color: darkblue;
+    animation: fadeOut 5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    75% {opacity: 1;}
+    100% {opacity: 0;}
+}

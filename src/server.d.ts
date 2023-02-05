@@ -5,8 +5,8 @@ export type ServerMap = {
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
-    Response : T
-    Data     : ServerMap[T]
+    Name : T
+    Data : ServerMap[T]
 }
 
 export namespace Server {
@@ -14,7 +14,7 @@ export namespace Server {
     // Message is a general communication entity used to provide feedback to the client.
     type Message = {
         Success : boolean
-        Message : string
+        Text : string
     }
 
     type LoginResponse = {
