@@ -1,0 +1,4 @@
+- comments for uncommented Dom functions
+
+
+- comment ui/base.ts functions

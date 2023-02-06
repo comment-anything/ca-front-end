@@ -1,20 +1,22 @@
+import { Cafe } from './Cafe'
 import './style.css'
-import { CafeRegisterWindow } from './windows'
-import { Client, ClientMap } from './client'
-import { Fetcher } from './fetcher'
 
 
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-    <div class="nav-bar">
-        <input class="nav-tab" type="button" value="Register">
-        <input class="nav-tab" type="button" value="Comments">
-        <input class="nav-tab" type="button" value="Login">
-    </div>
-`
+// document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+//     <div class="nav-bar">
+//         <input class="nav-tab" type="button" value="Register">
+//         <input class="nav-tab" type="button" value="Comments">
+//         <input class="nav-tab" type="button" value="Login">
+//     </div>
+// `
 
 
 
-let fetcher = new Fetcher()
+// let fetcher = new Fetcher()
 
-new CafeRegisterWindow(fetcher)
+// new CafeRegisterWindow()
+
+const cafe = new Cafe()
+document.body.append(cafe.navbar.el)
+console.log("Comment Anywhere Front End running:", cafe);

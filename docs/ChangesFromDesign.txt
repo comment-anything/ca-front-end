@@ -1,0 +1,15 @@
+
+
+2/5/2023: Karl
+
+- Added another parameter to Fetcher.Fetch; "method". This determines what HTTP Method Fetcher will use at that endpoint. 
+- Removed cafe.clientEventReceived as it was unnecessary; using Cafe.setClientEventListeners instead. 
+
+- cafe.userChange moved to State.loadProfile
+- CafeNavBar.DisplayMessage removed, instead will be accessed via CafeNavBar.message.displayMessage
+- (changed on the backend) ServerResponse.t and .d to .Name and .Data
+
+- Candidate for Refactor: Fetcher.getAndClearResponses to Fetcher.popResponses
+- Candidate for Refactor: CafeNavBar to something that encompasses the fact that it holds all the windows as well, not just the nav. Perhaps "CafeNavigator" or just "Navigator"
+
+
