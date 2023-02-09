@@ -45,7 +45,7 @@ export class CafeNavBar {
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
-        this.logoutButton.addEventListener("click", getNavClickCallback("none"))
+        this.logoutButton.addEventListener("click", getNavClickCallback("logout"))
 
         // create the windows
         this.registerWindow = new CafeRegisterWindow()
@@ -80,7 +80,7 @@ export class CafeNavBar {
             case "login":
                 this.currentlyViewing = this.loginWindow
                 setActive(this.loginButton)
-                break; 
+                break;
             default:
                 this.currentlyViewing = undefined
         }
