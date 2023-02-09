@@ -32,6 +32,16 @@ export class Cafe {
             console.log("REGISTER EVENT RECEIVED WITH DATA: ", data)
             my.fetcher.fetch("register", "POST", data, my.checkForResponses.bind(my))
         })
+        document.addEventListener("login", (ev)=>{
+            let data = ev.detail
+            console.log("LOGIN EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("login", "POST", data, my.checkForResponses.bind(my))
+        })
+        document.addEventListener("login", (ev)=>{
+            let data = ev.detail
+            console.log("FORGOT PASSWORD EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("forgot password", "POST", data, my.checkForResponses.bind(my))
+        })
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
             my.navbar.message.updateMessage(ev.detail)
