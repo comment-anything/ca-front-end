@@ -14,9 +14,9 @@ export class Fetcher {
     }
     
     // Fetch dispatches the HTTP Request to the endpoint, stores responses in the responses member of fetcher, and calls the callback function when complete
-    async fetch<T extends keyof ClientMap>(APIendpoint: T, httpmethod: ClientMap[T][1], data: ClientMap[T][0], callback: () => void) {
+    async fetch<T extends keyof ClientMap>(apiEndpoint: T, httpmethod: ClientMap[T][1], data: ClientMap[T][0], callback: () => void) {
 
-        let targetURL = server_url + "/" + APIendpoint
+        let targetURL = server_url + "/" + apiEndpoint
         
         await fetch(targetURL, {
             method: httpmethod,

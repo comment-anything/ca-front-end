@@ -4,11 +4,11 @@
 
 `docs   ` Relevant documentation and notes.
 
-`public ` Static assets (CSS, images, `manifest.json`) to bundle with the extension.
+`assets ` Static assets (images, `manifest.json`) to bundle with the extension.
 
 #### Instructions
 
-- Create a .env file in the root folder with the address of the comment-anywhere server you are using.
+- Create a `.env` file in the root folder with the address of the comment-anywhere server you are using.
 
 Example:
 

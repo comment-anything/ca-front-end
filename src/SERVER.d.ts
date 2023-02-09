@@ -1,7 +1,8 @@
 
 export type ServerMap = {
-    "Message": Server.Message,
-    "LoginResponse" : Server.LoginResponse
+    "Message"       : Server.Message,
+    "LoginResponse" : Server.LoginResponse,
+    "UserProfile"    : Server.UserProfile
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
