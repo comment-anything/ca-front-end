@@ -6,12 +6,14 @@ import { CafeRegisterWindow } from "./windows/register";
 
 import "./navbar.css"
 import { CafeMessageDisplay } from "./ui/message";
+import { Client } from "./CLIENT";
 
 const CSS = {
     cafe: "cafe-container",
     nav: "nav-bar",
     navTabButton: "nav-tab",
-    activeNavTab : "active-nav-tab"
+    activeNavTab : "active-nav-tab",
+    logoutButton : "nav-tab-logout"
 }
 
 /** CafeNavBar displays navigation buttons for the user to move between states, holds the active window, and holds a general message display object. It ultimately contains all DOM Elements used by Comment Anywhere.
@@ -38,14 +40,16 @@ export class CafeNavBar {
 
         // create the nav buttons
         this.registerButton = Dom.button("Register", [CSS.navTabButton, CSS.activeNavTab])
-        this.loginButton = Dom.button("Login", [CSS.navTabButton, CSS.activeNavTab])
-        this.logoutButton = Dom.button("Logout", [CSS.navTabButton, "nav-logout"])
+        this.loginButton = Dom.button("Login", [CSS.navTabButton])
+        this.logoutButton = Dom.button("Logout", [CSS.navTabButton, CSS.logoutButton])
 
         
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
-        this.logoutButton.addEventListener("click", getNavClickCallback("logout"))
+
+        // logout button has different callback because it's more than a window change.
+        this.logoutButton.addEventListener("click", this.logoutButtonClicked.bind(this))
 
         // create the windows
         this.registerWindow = new CafeRegisterWindow()
@@ -72,6 +76,7 @@ export class CafeNavBar {
         }
         else {
             showInlineBlock(this.logoutButton)
+            this.logoutButton.innerHTML = "Logout " + state.ownProfile.Username;
         }
         
         switch(state.viewing) {
@@ -98,6 +103,12 @@ export class CafeNavBar {
         hide(this.registerButton)
         hide(this.loginButton)
         hide(this.logoutButton)
+    }
+
+    logoutButtonClicked() {
+        let logout: Client.Logout = {}
+        let event = new CustomEvent<Client.Logout>("logout", {detail:logout})
+        document.dispatchEvent(event)
     }
     
 }

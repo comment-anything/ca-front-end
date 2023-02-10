@@ -36,7 +36,9 @@ export class CafeLoginWindow extends CafeWindow {
         )
     }
     
-    // A Register entity will be dispatched to the document global, and Cafe will ultimately send the data in that event to the server to attempt a registration.
+    /**
+     * Will result in sending a Login entity to the server containing username and password login information.
+     */
     submitLoginClicked(): void {
         let login: Client.Login = {
             Username: this.username.value,
@@ -47,12 +49,6 @@ export class CafeLoginWindow extends CafeWindow {
         
     }
     forgotPasswordClicked(): void {
-        let Forgot_Password: Client.Forgot_Password = {
-            Username: this.username.value,
-            Password: this.password.value,
-        }
-        let event = new CustomEvent<Client.Forgot_Password>("forgot password", {detail:Forgot_Password})
-        document.dispatchEvent(event)
-        
+        console.error("Forgot password not implemented.")
     }
 }

@@ -2,7 +2,7 @@
 .cafe-window {
     font-size: 14px;
     border-radius: 10px;
-    filter:drop-shadow(2px 2px 3px darkslategray);
+    box-shadow: 2px 2px 6px black;
     padding: 10px;
     background-color: #d6dee0;
 }

@@ -12,10 +12,11 @@
     border-style: hidden;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    background-color: #d8d8e2;
+    background-color: #c1c1d0;
 }
 .nav-tab:hover {
-    background-color: white;
+    background-color: #d2e3da;
+    cursor: pointer;
 }
 
 .nav-bar {
@@ -24,5 +25,10 @@
 }
 
 .active-nav-tab {
-    background-color: #F0f0f0;
+    background-color: #d6dee0;
+}
+.active-nav-tab:hover {
+    background-color: #d6dee0;
+    cursor:default;
+
 }

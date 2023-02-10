@@ -1,3 +1,10 @@
+2/10/2023: Karl
+- Changed styling of window css and navbar css to achieve a more 'tabular' look on the buttons.
+- Modified fetcher to comply with our CORS needs and store a token outside of it being a cookie.
+- Fixed login to use the communication entities as specified in the design document.
+
+2/8/2023: Frank
+- Frank added the Login window and associated event handlers for the login button and forgot password button 
 
 2/5/2023: Luke, Karl
 

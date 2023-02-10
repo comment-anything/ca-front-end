@@ -37,10 +37,15 @@ export class Cafe {
             console.log("LOGIN EVENT RECEIVED WITH DATA: ", data)
             my.fetcher.fetch("login", "POST", data, my.checkForResponses.bind(my))
         })
-        document.addEventListener("login", (ev)=>{
+        document.addEventListener("logout", (ev)=>{
+            let data = ev.detail
+            console.log("LOGOUT EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("logout", "PUT", data, my.checkForResponses.bind(my))
+        })
+        document.addEventListener("pwResetReq", (ev)=>{
             let data = ev.detail
             console.log("FORGOT PASSWORD EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("forgot password", "POST", data, my.checkForResponses.bind(my))
+            my.fetcher.fetch("pwResetReq", "POST", data, my.checkForResponses.bind(my))
         })
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
