@@ -1,7 +1,7 @@
 import { Server } from "./SERVER";
 
 
-export type StateView = "register" | "login" | "forgotpassword" | "comments" | "settings" | "moderation" | "reports" | "none"
+export type StateView = "register" | "login" | "logout" | "forgotpassword" | "comments" | "settings" | "moderation" | "reports" | "none"
 
 // State holds the current state of the front end, including who is logged in and what window is being viewed. Cafe passes State to NavBar to realize a state change.
 export class State {

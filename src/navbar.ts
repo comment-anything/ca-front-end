@@ -38,14 +38,14 @@ export class CafeNavBar {
 
         // create the nav buttons
         this.registerButton = Dom.button("Register", [CSS.navTabButton, CSS.activeNavTab])
-        this.loginButton = Dom.button("Login", [CSS.navTabButton])
+        this.loginButton = Dom.button("Login", [CSS.navTabButton, CSS.activeNavTab])
         this.logoutButton = Dom.button("Logout", [CSS.navTabButton, "nav-logout"])
 
         
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
-        this.logoutButton.addEventListener("click", getNavClickCallback("none"))
+        this.logoutButton.addEventListener("click", getNavClickCallback("logout"))
 
         // create the windows
         this.registerWindow = new CafeRegisterWindow()
@@ -57,6 +57,8 @@ export class CafeNavBar {
         this.el.append(this.message.el, nav, windowContainer)
         nav.append(this.registerButton, this.loginButton, this.logoutButton)
         windowContainer.append(this.registerWindow.el, this.loginWindow.el)
+        nav.append(this.loginButton, this.loginButton, this.logoutButton)
+        windowContainer.append(this.loginWindow.el, this.loginWindow.el)
 
     }
 
@@ -80,7 +82,7 @@ export class CafeNavBar {
             case "login":
                 this.currentlyViewing = this.loginWindow
                 setActive(this.loginButton)
-                break; 
+                break;
             default:
                 this.currentlyViewing = undefined
         }

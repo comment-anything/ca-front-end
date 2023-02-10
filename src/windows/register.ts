@@ -2,7 +2,10 @@ import { Client } from "../CLIENT"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
 
+
+
 const CSS = {
+    windowName : "cafe-register-window",
     inputSection: "cafe-window-input-section",
     inputField: "cafe-window-input-field",
     inputLabel: "cafe-window-input-label",
@@ -19,7 +22,7 @@ export class CafeRegisterWindow extends CafeWindow {
     submitRegister : HTMLButtonElement
     
     constructor() {
-        super('cafe-register-window', 'Register')
+        super(CSS.windowName, 'Register')
         this.username = Dom.createInputElement("text", CSS.inputField)
         this.password = Dom.createInputElement('password', CSS.inputField)
         this.rePassword = Dom.createInputElement('password', CSS.inputField)
@@ -49,8 +52,6 @@ export class CafeRegisterWindow extends CafeWindow {
             AgreedToTerms: this.agreedToTerms.checked
         }
         let event = new CustomEvent<Client.Register>("register", {detail:register})
-
-        document.dispatchEvent(event)
-        
+        document.dispatchEvent(event) 
     }
 }
