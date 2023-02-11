@@ -1,4 +1,4 @@
-import { Server } from "../SERVER";
+import { Server } from "../SERVERK";
 import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 

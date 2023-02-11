@@ -2,7 +2,7 @@
 import { Cafe } from "./Cafe";
 import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
-import { ServerResponse, Server, ServerMap } from "./SERVER";
+import { ServerResponse, Server, ServerMap } from "./SERVERK";
 
 // Dispatcher is responsible for parsing an array of server responses and dispatching them to the appropriate objects around the front end for rendering to the user.
 export class Dispatcher {

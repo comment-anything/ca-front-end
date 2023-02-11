@@ -1,6 +1,6 @@
 
 import { ClientMap } from './CLIENT'
-import { Server, ServerMap, ServerResponse } from './SERVER'
+import { Server, ServerMap, ServerResponse } from './SERVERK'
 
 
 const server_url = import.meta.env.VITE_API_ADDRESS

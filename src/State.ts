@@ -1,4 +1,4 @@
-import { Server } from "./SERVER";
+import { Server } from "./SERVERK";
 
 
 export type StateView = "register" | "login" | "logout" | "forgotpassword" | "comments" | "settings" | "moderation" | "reports" | "none"
