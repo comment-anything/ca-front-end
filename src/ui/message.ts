@@ -24,7 +24,7 @@ export class CafeMessageDisplay extends UIInput<Server.Message> {
     }
 
     // updateMessage changes the message which is shown.
-    updateMessage(d:Server.Message) {
+    updateMessage(d: Server.Message) {
         console.log("update message called in ", this, "with", d)
         this.el.removeChild(this.displayedText)
         this.el.append(this.displayedText)

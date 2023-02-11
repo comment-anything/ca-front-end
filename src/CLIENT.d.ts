@@ -3,8 +3,8 @@
 /** Typing for standard HTTPMethods. */
 type HTTPMethod = {
     POST : "POST",
-    GET: "GET",
-    PUT: "PUT"
+    GET  : "GET",
+    PUT  : "PUT"
 }
 /** ClientMap maps API end points with the expected JSON data type for that endpoint. For example, "commentAnywhere.com/register" expects to receive an HTTP request with a body of type Client.Register. See page 148 of the Design doc for endpoint names. */
 export type ClientMap = {
