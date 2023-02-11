@@ -51,6 +51,7 @@ export class CafeRegisterWindow extends CafeWindow {
             Email: this.email.value,
             AgreedToTerms: this.agreedToTerms.checked
         }
+        
         let event = new CustomEvent<Client.Register>("register", {detail:register})
         document.dispatchEvent(event) 
     }

@@ -3,13 +3,13 @@ import { Dom } from "../util/dom"
 // Represents a server-client communication entity. Provides methods for gracefully deleting its instance, binding listeners, disabling, and re-enabling the UIInput.
 // Type T represents the underlying data that UIInput displays.
 export class UIInput<T>{
-    data      : T
+    data?      : T
     el        : HTMLElement
     blocker   : HTMLElement
     listeners : Array<[HTMLElement, (e:any)=>any, string]>
     
     // 
-    constructor(data: T) {
+    constructor(data?: T) {
         this.data = data
         this.el = Dom.div(undefined, undefined, {"position":"relative", "zIndex": "0"})
         this.blocker = Dom.div(undefined, undefined, {"position":"absolute", "top":"0px", "left":"0px", "width":"100%", "height":"100%", "zIndex":"-1"})

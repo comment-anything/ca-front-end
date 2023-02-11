@@ -1,3 +1,9 @@
+
+2/10/23 : Group members
+ - started user profile display
+ - started settings window
+ - started password reset and profile change pipelines
+
 2/10/2023: Karl
 - Changed styling of window css and navbar css to achieve a more 'tabular' look on the buttons.
 - Modified fetcher to comply with our CORS needs and store a token outside of it being a cookie.

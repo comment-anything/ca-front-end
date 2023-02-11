@@ -88,7 +88,7 @@ export namespace Dom {
     }
     
     /** Gets a new HTML Element with its textContent set to text. */
-    function textEl<T extends keyof HTMLElementTagNameMap>(tagName: T, text?: string, cssClass?:string | string[], styles?:{[key:string]:string}) {
+    export function textEl<T extends keyof HTMLElementTagNameMap>(tagName: T, text?: string, cssClass?:string | string[], styles?:{[key:string]:string}) {
         let x = Dom.el<T>(tagName, cssClass, styles)
         x.textContent = text ? text : ""
         return x

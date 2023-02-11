@@ -13,6 +13,7 @@ export class State {
 
     // Changes the viewing member of State to the parameter value.
     setViewingTo(newView:StateView) {
+        console.log("state change requested to ", newView)
         switch(newView) {
             case "register":
                 if(this.ownProfile == undefined) {
@@ -30,7 +31,22 @@ export class State {
                 this.ownProfile = undefined
                 this.viewing = newView
                 stateChangeEmit(newView)
+                break;
+            case "register":
+                this.viewing = newView
+                stateChangeEmit(newView)
+                break;
+            case "forgotpassword":
+                this.viewing = newView
+                stateChangeEmit(newView)
+                break;
+            case "settings":
+                this.viewing = newView
+                stateChangeEmit(newView)
+                break;
             default:
+                this.viewing = newView
+                stateChangeEmit(newView)
                 break;
         }
     }

@@ -53,13 +53,14 @@ export class Cafe {
         })
     }
     
-    // Called as part of the constructor to set listens for StateEvents.
+    /** Called as part of the constructor to set listens for StateEvents. */
     setStateEventListeners() {
         let my = this
         document.addEventListener("StateChangeRequest", (ev)=>{
             my.state.setViewingTo(ev.detail)
         })
         document.addEventListener("StateChanged", ()=> {
+            console.log("state change event received")
             my.navbar.setFromState(my.state)
         })
     }
