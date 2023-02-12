@@ -1,6 +1,21 @@
 
 .profile-info-row {
-    padding: 8px;
-    color: gray;
+    padding: 2px;
+    display: flex;
+    width: 95%;
+}
+
+.profile-info-row>label {
+    padding-right: 10px;
+    width: 40%;
+    text-align: right;
+}
+.profile-info-row label::after {
+    content:":";
+}
+
+.profile-info-row>div {
+    padding-left: 10px;
+    width: 50%;
 }
 

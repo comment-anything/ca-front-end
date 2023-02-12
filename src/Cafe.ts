@@ -28,25 +28,42 @@ export class Cafe {
     // Called as part of the constructor to set listeners for ClientEvents.
     setClientEventListeners() {
         let my = this // to scope Cafe into callbacks
+        let retrieveResponses = my.checkForResponses.bind(this)
         document.addEventListener("register", (ev)=>{
             let data = ev.detail
             console.log("REGISTER EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("register", "POST", data, my.checkForResponses.bind(my))
+            my.fetcher.fetch("register", "POST", data, retrieveResponses)
         })
         document.addEventListener("login", (ev)=>{
             let data = ev.detail
             console.log("LOGIN EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("login", "POST", data, my.checkForResponses.bind(my))
+            my.fetcher.fetch("login", "POST", data, retrieveResponses)
         })
         document.addEventListener("logout", (ev)=>{
             let data = ev.detail
             console.log("LOGOUT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("logout", "PUT", data, my.checkForResponses.bind(my))
+            my.fetcher.fetch("logout", "PUT", data, retrieveResponses)
         })
         document.addEventListener("pwResetReq", (ev)=>{
             let data = ev.detail
             console.log("FORGOT PASSWORD EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("pwResetReq", "POST", data, my.checkForResponses.bind(my))
+            my.fetcher.fetch("pwResetReq", "POST", data, retrieveResponses)
+        })
+        document.addEventListener("newPassword", (ev)=>{
+            let data = ev.detail
+            console.log("SET NEW PASSWORD EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("newPassword", "POST", data, retrieveResponses)
+        })
+        document.addEventListener("changeEmail", (ev)=> {
+            let data = ev.detail
+            console.log("CHANGE EMAIL EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("changeEmail", "POST", data, retrieveResponses)
+        })
+        document.addEventListener("changeProfile", (ev)=> {
+            let data = ev.detail
+            console.log("CHANGE PROFILE BLURB EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("changeProfile", "POST", data, retrieveResponses)
+
         })
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
@@ -61,7 +78,7 @@ export class Cafe {
             my.state.setViewingTo(ev.detail)
         })
         document.addEventListener("StateChanged", ()=> {
-            console.log("state change event received")
+            console.log("state change event received", my.state)
             my.navbar.setFromState(my.state)
         })
     }
@@ -69,7 +86,7 @@ export class Cafe {
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
         let responses = this.fetcher.getAndClearResponses()
-        console.log("All server responses:", responses)
+        console.log("🎅🤶🤶 All server responses:", responses)
         this.dispatcher.dispatch(responses, this)
     }
 }

@@ -79,29 +79,21 @@ export class CafeNavBar {
     }
 
     setFromState(state:State) {
-        console.log("!!!!!!!!! switching to state: ", state);
-        console.log("!!!!!!!!! switching to state: ", state);
-        console.log("👳‍♂️reg before hidall ", this.registerButton.style.display)
         this.hideAll()
-        console.log("👳‍♂️reg after hidall ", this.registerButton.style.display)
-        this.settingsWindow.ownProfile.updateProfile(state.ownProfile)
+        if(state.ownProfile != undefined) {
+            this.settingsWindow.ownProfile.updateProfile(state.ownProfile)
+        }
 
         // login, register, logout buttons depend on if user defined
         
-        console.log("🧑state own profile undefined? ", state.ownProfile == undefined)
         if(state.ownProfile == undefined) {
-            console.log("🧑show logout buttons")
             this.showLoggedOutButtons()
         }
         else {
-            console.log("🧑reg before show login buttons", this.registerButton.style.display)
-            console.log("🧑show login buttons")
             this.showLoggedInButtons()
-            console.log("🧑reg after show login buttons", this.registerButton.style.display)
-            this.logoutButton.innerHTML = "Logout " + state.ownProfile.Username;
+            this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
         }
 
-        console.log("  reg display before switch ", this.registerButton.style.display)
         
         switch(state.viewing) {
             case "register":
@@ -115,7 +107,6 @@ export class CafeNavBar {
                 break;
                 
             case "settings":
-                console.log("setting navbar view to settings")
                 this.currentlyViewing = this.settingsWindow
                 setActive(this.settingsButton)
                 break;
@@ -134,28 +125,22 @@ export class CafeNavBar {
                 this.currentlyViewing = undefined
         }
         if(this.currentlyViewing != undefined) {
-            console.log("showing current view")
             this.currentlyViewing.show()
         }
         
-        console.log("  reg display after switch ", this.registerButton.style.display)
     }
 
     showLoggedOutButtons() {
-        console.log("👵 showLoggedOutButtons called!")
         showInlineBlock(this.registerButton)
         showInlineBlock(this.loginButton)
     }
 
     showLoggedInButtons() {
-        console.log("👵 showLoggedInButtons called!")
         showInlineBlock(this.logoutButton)
         showInlineBlock(this.settingsButton)
     }
 
     hideAll() {
-        console.log("👵 hideall called!")
-        console.log(this.registerButton.style.display)
         this.newPassWindow.hide()
         this.forgotPWWindow.hide()
         this.settingsWindow.hide()
@@ -166,7 +151,6 @@ export class CafeNavBar {
         hide(this.loginButton)
         hide(this.logoutButton)
         hide(this.settingsButton)
-        console.log(this.registerButton.style.display)
     }
 
     logoutButtonClicked() {

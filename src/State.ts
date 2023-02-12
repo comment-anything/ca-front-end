@@ -6,7 +6,7 @@ export type StateView = "register" | "login" | "logout" | "forgotpassword" | "ne
 // State holds the current state of the front end, including who is logged in and what window is being viewed. Cafe passes State to NavBar to realize a state change.
 export class State {
     viewing: StateView
-    ownProfile?: Server.UserProfile
+    ownProfile?: {LoggedInAs: Server.UserProfile, Email: string}
     constructor() {
         this.viewing = "register"
     }
@@ -39,10 +39,7 @@ export class State {
                 stateChangeEmit(newView)
                 break;
                 
-            case "register":
-                this.viewing = newView
-                stateChangeEmit(newView)
-                break;
+
                 
             case "forgotpassword":
                 this.viewing = newView
@@ -62,9 +59,10 @@ export class State {
     }
 
     // Changes ownProfile member. If nothing is passed in, the loaded user profile is cleared.
-    loadProfile(userProfile?:Server.UserProfile) {
+    loadProfile(userProfile?:{LoggedInAs: Server.UserProfile, Email: string}, preventStateChange?:boolean) {
         this.ownProfile = userProfile
-        if(this.ownProfile) this.viewing = "none"
+        if(this.ownProfile && preventStateChange != true) this.viewing = "none"
+        else if(this.ownProfile == undefined && preventStateChange != true) this.viewing = "login"
         stateChangeEmit(this.viewing);
     }
 }

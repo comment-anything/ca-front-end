@@ -1,6 +1,10 @@
-import { Server } from "../SERVERK";
+import { OwnEmailSection } from "../section/ownEmail";
+import { OwnProfileBlurbSection } from "../section/ownProfileBlurb";
+import { Server } from "../SERVER";
 import { Dom } from "../util/dom";
 import { UIInput } from "./base";
+
+import "./ownProfile.css"
 
 const CSS = {
     profileRow : "profile-info-row"
@@ -9,16 +13,15 @@ const CSS = {
 CafeOwnProfileDisplay is used to display a User's own profile to them
 */
 export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
-    username                : HTMLDivElement
-    createdOn               : HTMLDivElement
-    domainsModerating       : HTMLDivElement
-    isAdmin                 : HTMLDivElement
-    isDomainModerator       : HTMLDivElement
-    isGlobalModerator       : HTMLDivElement
-    profileBlurb            : HTMLDivElement
-    editProfileBlurbButton  : HTMLButtonElement
-    editProfileTextarea     : HTMLTextAreaElement
-    editProfileSubmitButton : HTMLButtonElement
+    username            : HTMLDivElement
+    createdOn           : HTMLDivElement
+    domainsModerating   : HTMLDivElement
+    isAdmin             : HTMLDivElement
+    isDomainModerator   : HTMLDivElement
+    isGlobalModerator   : HTMLDivElement
+    
+    emailSection        : OwnEmailSection
+    profileBlurbSection : OwnProfileBlurbSection
     
     constructor(profile?:Server.UserProfile) {
         super(profile)
@@ -27,7 +30,16 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         let label_username = Dom.textEl("label","Username");
         this.username = Dom.div();
         container_username.append(label_username,this.username)
-        
+
+        let container_email = Dom.div(undefined, CSS.profileRow)
+        let label_email = Dom.textEl("label", "Email")
+        this.emailSection = new OwnEmailSection()
+        container_email.append(label_email, this.emailSection.el)
+
+        let container_profile = Dom.div(undefined, CSS.profileRow)
+        let label_profile = Dom.textEl("label", "About")
+        this.profileBlurbSection = new OwnProfileBlurbSection()
+        container_profile.append(label_profile, this.profileBlurbSection.el)
         
         let container_createdOn = Dom.div(undefined, CSS.profileRow)
         let label_createdOn = Dom.textEl("label","Created On");
@@ -59,49 +71,32 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         container_isGlobalModerator.append(label_isGlobalModerator,this.isGlobalModerator)
         
         
-        let container_profileBlurb = Dom.div(undefined, CSS.profileRow)
-        let label_profileBlurb = Dom.textEl("label","about me");
-        this.editProfileBlurbButton = Dom.button("✏");
-        this.profileBlurb = Dom.div();
-        this.editProfileTextarea = Dom.el("textarea", undefined, {display:"none"});
-        this.editProfileSubmitButton = Dom.button("Submit", undefined, {display:"none"})
-        container_profileBlurb.append(label_profileBlurb,this.profileBlurb, this.editProfileTextarea, this.editProfileSubmitButton, this.editProfileBlurbButton)
-
-        this.clickListen(this.editProfileBlurbButton, this.toggleProfileTextArea, true)
         
-        
-        this.el.append( container_username,
+        this.el.append(
+            container_username,
+            container_email,
+            container_profile,
             container_createdOn,
             container_domainsModerating,
             container_isAdmin,
             container_isDomainModerator,
             container_isGlobalModerator,
-            container_profileBlurb )
+        )
 
-        this.updateProfile(profile)
-    }
-
-    toggleProfileTextArea() {
-        if(this.profileBlurb.style.display == "none") {
-            this.profileBlurb.style.display = "inline-block"
-            this.profileBlurb.textContent = this.profileBlurb.textContent 
-        } else {
-            this.profileBlurb.style.display = "none"
-            this.editProfileTextarea.style.display = "inline"
-            this.editProfileSubmitButton.style.display = "inline"
-        }
+        this.updateProfile({LoggedInAs:profile, Email:""})
     }
     
-    updateProfile(newProfile? : Server.UserProfile) {
-        if(newProfile != undefined) {
-            this.data = newProfile;
+    updateProfile(newProfile : {LoggedInAs?:Server.UserProfile, Email?:string}) {
+        if(newProfile.LoggedInAs != undefined) {
+            this.data = newProfile.LoggedInAs;
             this.username.textContent = this.data.Username
-            this.createdOn.textContent = (new Date(this.data.CreatedOn)).toISOString()
+            this.createdOn.textContent = (new Date(this.data.CreatedOn)).toLocaleDateString()
             this.domainsModerating.textContent = this.data.DomainsModerating
             this.isAdmin.textContent = this.data.IsAdmin ? "yes" : "no"
             this.isDomainModerator.textContent = this.data.DomainsModerating ? this.data.DomainsModerating : ""
             this.isGlobalModerator.textContent = this.data.IsGlobalModerator ? "yes" : "no"
-            this.profileBlurb.textContent = this.data.ProfileBlurb
+            this.emailSection.update(newProfile.Email ? newProfile.Email : "")
+            this.profileBlurbSection.update(this.data.ProfileBlurb)
         } else {
             this.username.textContent = ""
             this.createdOn.textContent = ""
@@ -109,7 +104,8 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.isAdmin.textContent = ""
             this.isDomainModerator.textContent = ""
             this.isGlobalModerator.textContent = ""
-            this.profileBlurb.textContent = ""
+            this.emailSection.update("")
+            this.profileBlurbSection.update("")
         }
     }
 }

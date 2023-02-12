@@ -1,4 +1,7 @@
 
+2/12/2023: Luke and Karl
+- Refactor CafeWindowSection to CafeSection because UIInputs may also use Sections, not just CafeWindows.
+
 
 2/12/2023: Luke
 

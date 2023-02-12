@@ -14,7 +14,9 @@ export type ClientMap = {
     'logout': [Client.Logout, HTTPMethod.PUT],
     'pwResetReq': [Client.PasswordReset, HTTPMethod.POST],
     'pwResetCode': [Client.PasswordResetCode, HTTPMethod.POST],
-    'newPassword': [Client.SetNewPass, HTTPMethod.POST]
+    'newPassword': [Client.SetNewPass, HTTPMethod.POST],
+    "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
+    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST]
 
 }
 
@@ -55,6 +57,13 @@ export namespace Client {
     /** ChangeProfileBlurb is dispatched to the server when a client updates their profile blurb */
     type ChangeProfileBlurb = {
         NewBlurb: string
+    }
+
+    /** ChangeEmail is dispatched to the server when a client wants to change their email. They must supply the correct password as well. */
+    type ChangeEmail = {
+        NewEmail: string
+        Password: string
+
     }
 
 }

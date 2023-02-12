@@ -1,6 +1,7 @@
 import { Client } from "../CLIENT"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
+import { StateView } from "../State"
 
 import "./login.css"
 
@@ -38,6 +39,11 @@ export class CafePwResetRequestWindow extends CafeWindow {
         
         let event = new CustomEvent<Client.PasswordReset>('pwResetReq', {detail: pwReset})
         document.dispatchEvent(event);
+
+        let event2 = new CustomEvent<StateView>("StateChangeRequest", {
+            detail: "newPassword"
+        })
+        document.dispatchEvent(event2);
     }
 }
 

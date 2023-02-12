@@ -20,8 +20,12 @@ export class Dispatcher {
                     
                 case "LoginResponse":
                     let lr = datum.Data as Server.LoginResponse
-                    this.dispatchUserUpdate(lr.LoggedInAs, cafe)
+                    this.dispatchUserUpdate(lr, cafe)
                     break;
+                    
+                case "ProfileUpdateResponse":
+                    let pupd = datum.Data as Server.ProfileUpdateResponse
+                    this.dispatchProfileUpdateResponse(pupd, cafe)
                     
                 case "Token":
                     let tok = datum.Data as Server.Token
@@ -39,7 +43,7 @@ export class Dispatcher {
             }
         }
     }
-
+    
     /** dispatchToken calls setToken on the fetcher object */
     dispatchToken(token: Server.Token, fetcher: Fetcher) {
         fetcher.setToken(token.JWT)
@@ -51,8 +55,15 @@ export class Dispatcher {
     }
     
     /** dispatchUserUpdate calls userChange on the Cafe root object to change state reflecting any changes that may have happened to the User and to change what is visible on their profile */
-    dispatchUserUpdate(userProfile:Server.UserProfile | undefined, cafe:Cafe) {
-        cafe.state.loadProfile(userProfile)
+    dispatchUserUpdate(userProfile:Server.LoginResponse | undefined, cafe:Cafe) {
+        cafe.state.loadProfile(userProfile, false)
+    }
+    
+    /**
+     * dispatchProfileUpdateResponse calls update on own profile so changes to ones owwn profile are visible. 
+     */
+    dispatchProfileUpdateResponse(userProfileResponse: Server.ProfileUpdateResponse, cafe: Cafe) {
+        cafe.state.loadProfile(userProfileResponse, true)
     }
 
     /** dispatchNewPassResponse sends the response to the newPassWindow so it can request a state change on success and also dispatches it to the message display so errors and success messages can be displayed. */

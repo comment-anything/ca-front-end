@@ -45,6 +45,7 @@ export class CafeNewPasswordWindow extends CafeWindow {
     
     /** Dom.createContainerWithLabel('Email', CSS.inputLabel, "div", this.email, CSS.inputSection), A SetNewPass entity will be dispatched to the document global, and Cafe will ultimately send the data in that event to the server to attempt a passwordReset. */
     submitButtonClicked(): void {
+        console.log("👶 submit new pass clicked");
         let code = Number(this.code.value);
         if ( !isNaN(code) ) {
             let newpass: Client.SetNewPass = {

@@ -1,10 +1,11 @@
 
 export type ServerMap = {
-    "Message": Server.Message,
-    "LoginResponse" : Server.LoginResponse,
-    "LogoutResponse": Server.LogoutResponse,
-    "Token": Server.Token,
-    "NewPassResponse": Server.NewPassResponse
+    "Message"               : Server.Message,
+    "LoginResponse"         : Server.LoginResponse,
+    "LogoutResponse"        : Server.LogoutResponse,
+    "ProfileUpdateResponse" : Server.ProfileUpdateResponse,
+    "Token"                 : Server.Token,
+    "NewPassResponse"       : Server.NewPassResponse
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -23,8 +24,15 @@ export namespace Server {
     /** LoginResponse is sent to the client when they successfully log in. */
     type LoginResponse = {
         LoggedInAs: UserProfile
+        Email: string
     }
-
+    
+    /** ProfileUpdateResponse is dispatched to the client when a change to their profile has been realized on the server. */
+    type ProfileUpdateResponse = {
+        LoggedInAs : UserProfile
+        Email      : string
+    }
+    
     /** LogoutResponse is sent to the client when they succesfully log out. */
     type LogoutResponse = {}
 
