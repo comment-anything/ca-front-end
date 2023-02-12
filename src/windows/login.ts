@@ -1,6 +1,7 @@
 import { Client } from "../CLIENT"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
+import { StateView } from "../State"
 
 import "./login.css"
 
@@ -18,15 +19,16 @@ export class CafeLoginWindow extends CafeWindow {
     password                : HTMLInputElement
     submitLoginButton       : HTMLButtonElement
     forgotPasswordButton    : HTMLButtonElement
+    
     constructor() {
         super(CSS.windowName, 'Login')
         this.username = Dom.createInputElement("text", CSS.inputField)
         this.password = Dom.createInputElement('password', CSS.inputField)
         this.submitLoginButton = Dom.button('Login', CSS.button)
-        this.forgotPasswordButton = Dom.button('Forgot_Password', CSS.button)
+        this.forgotPasswordButton = Dom.button('Forgot Password', CSS.button)
 
         this.submitLoginButton.addEventListener("click", this.submitLoginClicked.bind(this))
-        this.forgotPasswordButton.addEventListener("click", this.submitLoginClicked.bind(this))
+        this.forgotPasswordButton.addEventListener("click", this.forgotPasswordClicked.bind(this))
 
         this.el.append(
             Dom.createContainerWithLabel('Username', CSS.inputLabel, "div", this.username, CSS.inputSection),
@@ -48,7 +50,9 @@ export class CafeLoginWindow extends CafeWindow {
         document.dispatchEvent(event)
         
     }
+    
     forgotPasswordClicked(): void {
-        console.error("Forgot password not implemented.")
+        let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
+        document.dispatchEvent(state_event)
     }
 }

@@ -6,6 +6,7 @@ type HTTPMethod = {
     GET  : "GET",
     PUT  : "PUT"
 }
+
 /** ClientMap maps API end points with the expected JSON data type for that endpoint. For example, "commentAnywhere.com/register" expects to receive an HTTP request with a body of type Client.Register. See page 148 of the Design doc for endpoint names. */
 export type ClientMap = {
     'register': [Client.Register, HTTPMethod.POST],
@@ -28,29 +29,29 @@ export namespace Client {
         Email          : string  // Associated email for account
         AgreedToTerms  : boolean // Indicate if the user agreed to the terms of service
     }
+    
     /** Login is dispatched to the server when the client clicks “Submit” on the login form */
     type Login = {
         Username       : string  // Account username
         Password       : string  // Account password
     }
+    
     /** Logout is dispatched to the server when the client clicks “Logout”. It does not carry any additional data. */
     type Logout = {}
+    
     /** PasswordReset is dispatched to the server when a password reset is requested. The client supplies the email associated with their account. */
     type PasswordReset = {
         Email: string
     }
 
-    /** PasswordResetCode is dispatched by a user when they enter a password reset code. After a user clicks “Forgot My Password”, users may enter the code emailed to them. When they subsequently click the “submit” button, this request is dispatched to the server. */
-    type PasswordResetCode = {
-        Code: number
-    }
-
     /** SetNewPass is dispatched to the Server when the user changes their password. After submitting a valid password reset code, users are prompted to set a new password. When they subsequently click “submit”, this request is dispatched to the server. */
     type SetNewPass = {
+        Email: string
+        Code: number
         Password: string
         RetypePassword: string 
     }
-
+    
     /** ChangeProfileBlurb is dispatched to the server when a client updates their profile blurb */
     type ChangeProfileBlurb = {
         NewBlurb: string

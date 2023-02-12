@@ -34,6 +34,7 @@ export class CafeSettingsWindow extends CafeWindow {
             this.verifyCodeInput,
             this.verifyEmailButton)
     }
+    
     /** verifyEmailClicked Calls show() to show the validation code input window. */
     verifyEmailClicked() {
         if(this.verifyCodeSubmit.style.display == "none") {
@@ -46,10 +47,12 @@ export class CafeSettingsWindow extends CafeWindow {
             this.verifyCodeInput.style.display = "none"
         }
     }
+    
     /** verifyCodeSubmitClicked Dispatch a Verify object to the server to verify the input code. */
     verifyCodeSubmitClicked() {
 
     }
+    
     /** When the user clicks the password reset button, a password reset request will be dispatched to the server, the user will be logged out, and the password change state transition process will begin */
     passwordResetClicked() {
         let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})

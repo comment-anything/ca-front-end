@@ -12,18 +12,27 @@ export class Dispatcher {
     dispatch(packets:ServerResponse<any>[], cafe: Cafe) {
         for(let datum of packets) {
             console.log("Dispatching " + datum ? datum.Name ? datum.Name : "?" : "?");
+            
             switch(datum.Name as keyof ServerMap) {
                 case "Message":
                     this.dispatchMessage(datum.Data as Server.Message, cafe.navbar)
                     break;
+                    
                 case "LoginResponse":
                     let lr = datum.Data as Server.LoginResponse
                     this.dispatchUserUpdate(lr.LoggedInAs, cafe)
                     break;
+                    
                 case "Token":
                     let tok = datum.Data as Server.Token
                     this.dispatchToken(tok, cafe.fetcher)
                     break;
+
+                case "NewPassResponse":
+                    let npr = datum.Data as Server.NewPassResponse
+                    this.dispatchNewPassResponse(npr, cafe)
+                    break;
+                    
                 case "LogoutResponse":
                     this.dispatchUserUpdate(undefined, cafe);
                     break;
@@ -44,6 +53,12 @@ export class Dispatcher {
     /** dispatchUserUpdate calls userChange on the Cafe root object to change state reflecting any changes that may have happened to the User and to change what is visible on their profile */
     dispatchUserUpdate(userProfile:Server.UserProfile | undefined, cafe:Cafe) {
         cafe.state.loadProfile(userProfile)
+    }
+
+    /** dispatchNewPassResponse sends the response to the newPassWindow so it can request a state change on success and also dispatches it to the message display so errors and success messages can be displayed. */
+    dispatchNewPassResponse(newpassresponse:Server.NewPassResponse, cafe:Cafe) {
+        cafe.navbar.newPassWindow.parseNewPassResponse(newpassresponse)
+        this.dispatchMessage(newpassresponse as Server.Message, cafe.navbar)
     }
 
 }

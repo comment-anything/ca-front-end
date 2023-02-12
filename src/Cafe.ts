@@ -14,6 +14,7 @@ export class Cafe {
     state: State
     navbar: CafeNavBar;
     dispatcher: Dispatcher
+    
     constructor() {
         this.fetcher = new Fetcher()
         this.state = new State()

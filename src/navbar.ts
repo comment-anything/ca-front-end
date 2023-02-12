@@ -4,6 +4,7 @@ import { CafeWindow } from "./windows/base";
 import { CafeLoginWindow } from "./windows/login";
 import { CafeRegisterWindow } from "./windows/register";
 import { CafePwResetRequestWindow } from "./windows/pwResetRequest"
+import { CafeNewPasswordWindow } from "./windows/setNewPass"
 
 import "./navbar.css"
 import { CafeMessageDisplay } from "./ui/message";
@@ -33,6 +34,7 @@ export class CafeNavBar {
     loginWindow: CafeLoginWindow;
     settingsWindow: CafeSettingsWindow;
     forgotPWWindow: CafePwResetRequestWindow;
+    newPassWindow : CafeNewPasswordWindow;
 
     constructor() {
         // create the base containers
@@ -61,9 +63,10 @@ export class CafeNavBar {
         // create the windows
         this.settingsWindow = new CafeSettingsWindow()
         this.forgotPWWindow = new CafePwResetRequestWindow()
-        
         this.registerWindow = new CafeRegisterWindow()
         this.loginWindow = new CafeLoginWindow()
+        this.newPassWindow = new CafeNewPasswordWindow();
+
         this.loginWindow.hide()
         this.currentlyViewing = this.registerWindow
 
@@ -71,7 +74,7 @@ export class CafeNavBar {
         this.el.append(this.message.el, nav, windowContainer)
         nav.append(this.registerButton, this.loginButton, this.logoutButton, this.settingsButton)
         // Order of appendation shouldn't matter
-        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el)
+        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el)
 
     }
 
@@ -105,19 +108,28 @@ export class CafeNavBar {
                 this.currentlyViewing = this.registerWindow
                 setActive(this.registerButton)
                 break;
+                
             case "login":
                 this.currentlyViewing = this.loginWindow
                 setActive(this.loginButton)
                 break;
+                
             case "settings":
                 console.log("setting navbar view to settings")
                 this.currentlyViewing = this.settingsWindow
                 setActive(this.settingsButton)
                 break;
+                
             case "forgotpassword":
                 this.currentlyViewing = this.forgotPWWindow
                 setActive(this.settingsButton)
                 break;
+
+            case "newPassword":
+                this.currentlyViewing = this.newPassWindow
+                break;
+
+                
             default:
                 this.currentlyViewing = undefined
         }
@@ -144,6 +156,7 @@ export class CafeNavBar {
     hideAll() {
         console.log("👵 hideall called!")
         console.log(this.registerButton.style.display)
+        this.newPassWindow.hide()
         this.forgotPWWindow.hide()
         this.settingsWindow.hide()
         this.registerWindow.hide()
