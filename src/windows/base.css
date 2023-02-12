@@ -24,7 +24,7 @@
     border-radius: 3px;
     border-style: hidden;
     padding: 10px;
-    filter: drop-shadow(2px 2px 2px darkslategray);
+    filter: drop-shadow(2px 2px 1px darkslategray);
 }
 
 .cafe-window-input-label {
@@ -35,7 +35,13 @@
 }
 
 .cafe-window-button {
+    font-family: 'Montserrat';
     display: block;
+    
+    border-color: gray;
+    border-width: 1px;
+    border-radius: 4px;
+    
     width: 200px;
     padding: 5px;
     margin-top: 8px;

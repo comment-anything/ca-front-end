@@ -14,7 +14,7 @@ export type ClientEvent = {
 
 export type NavEvent = {
     "StateChangeRequest" : CustomEvent<StateView>
-    "StateChanged" : CustomEvent<StateView>
+    "StateChanged"       : CustomEvent<StateView>
 }
 
 export type FrontEndErrorEvent = {

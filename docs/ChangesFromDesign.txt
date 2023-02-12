@@ -1,5 +1,10 @@
 
 
+2/12/2023: Luke
+
+- Merged the "password reset code" pipeline into the "set new password" pipeline.
+- SetNewPass window, ForgotPassword window
+
 2/10/2023: Karl 
 
 - While dealing with logout, realized that we would not be able to use simple cookies with our responses. The reason is because of CORS security policies in the browser. If we allow CORS requests from anywhere, then we can't let our fetch requests pass cookies because it would be trivial for a 3rd party app to use stored cookies to access our users accounts. From MDN:
@@ -19,5 +24,4 @@
 
 - Candidate for Refactor: Fetcher.getAndClearResponses to Fetcher.popResponses
 - Candidate for Refactor: CafeNavBar to something that encompasses the fact that it holds all the windows as well, not just the nav. Perhaps "CafeNavigator" or just "Navigator"
-
 

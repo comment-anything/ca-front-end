@@ -3,7 +3,8 @@ export type ServerMap = {
     "Message": Server.Message,
     "LoginResponse" : Server.LoginResponse,
     "LogoutResponse": Server.LogoutResponse,
-    "Token": Server.Token
+    "Token": Server.Token,
+    "NewPassResponse": Server.NewPassResponse
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -37,6 +38,13 @@ export namespace Server {
         IsDomainModerator : boolean,
         IsGlobalModerator : boolean,
         ProfileBlurb : string
+    }
+    
+    
+    /** Dispatched to the client when the user submits a password reset code and new password, to indicate if it was successful. */
+    type NewPassResponse = {
+        Success : boolean
+        Text    : string
     }
 
     /** Token provides the front end with an authentication key they can use to stay logged in. */
