@@ -59,4 +59,33 @@ export namespace Server {
     type Token = {
         JWT: string
     }
+
+        
+    /** CommentVoteRecord contains data for the number of votes on a comment. */
+    type CommentVoteDimension = {
+        AlreadyVoted : number
+        Downs        : number
+        Ups          : number
+    }
+
+    /** Comment provides the data the Front End needs to render a comment. */
+    type Comment = {
+        UserId    : number
+        Username  : string
+        CommentId : number
+        Content   : string
+        Factual   : CommentVoteDimension
+        Funny     : CommentVoteDimension
+        Agree     : CommentVoteDimension
+        Hidden    : boolean
+        Parent    : number
+        Removed   : boolean
+        TimePosted: number
+    }
+
+    /** FullPage is returned when a user first requests comments for a new page. It contains an array of all comment data for that page. */
+    type FullPage = {
+        Comments : Comment[]
+
+    }
 }

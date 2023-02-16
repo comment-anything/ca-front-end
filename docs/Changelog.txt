@@ -1,3 +1,8 @@
+2/16/2023 : Karl
+- comm ents: CommentReply, CommentVote, GetComments
+- comm ents: CommentVoteDimension, Comment, FullPage
+- stubbed CafeCommentsWindow and hooked into NavBar
+
 2/12/23 : Karl and Luke
 - Broke settings and own profile into sections
 - Refactored windowSection to Section because it will be used by UIInputs as well

@@ -10,6 +10,7 @@ import "./navbar.css"
 import { CafeMessageDisplay } from "./ui/message";
 import { Client } from "./CLIENT";
 import { CafeSettingsWindow } from "./windows/settings";
+import { CafeCommentsWindow } from "./windows/comments";
 
 const CSS = {
     cafe: "cafe-container",
@@ -31,10 +32,12 @@ export class CafeNavBar {
     loginButton: HTMLButtonElement;
     logoutButton: HTMLButtonElement;
     settingsButton: HTMLButtonElement;
+    commentsButton: HTMLButtonElement;
     loginWindow: CafeLoginWindow;
     settingsWindow: CafeSettingsWindow;
     forgotPWWindow: CafePwResetRequestWindow;
     newPassWindow : CafeNewPasswordWindow;
+    commentsWindow: CafeCommentsWindow
 
     constructor() {
         // create the base containers
@@ -46,10 +49,11 @@ export class CafeNavBar {
         let windowContainer = Dom.div()
 
         // create the nav buttons
-        this.registerButton = Dom.button("Register", [CSS.navTabButton, CSS.activeNavTab], {display:"none"})
+        this.registerButton = Dom.button("Register", [CSS.navTabButton, CSS.activeNavTab])
         this.loginButton = Dom.button("Login", [CSS.navTabButton])
         this.settingsButton = Dom.button("Settings", [CSS.navTabButton])
         this.logoutButton = Dom.button("Logout", [CSS.navTabButton, CSS.logoutButton])
+        this.commentsButton = Dom.button("Comments", CSS.navTabButton)
 
         
         // register callbacks
@@ -60,21 +64,24 @@ export class CafeNavBar {
         // logout button has different callback because it's more than a window change.
         this.logoutButton.addEventListener("click", this.logoutButtonClicked.bind(this))
 
+        this.commentsButton.addEventListener("click", getNavClickCallback("comments"))
+
         // create the windows
         this.settingsWindow = new CafeSettingsWindow()
         this.forgotPWWindow = new CafePwResetRequestWindow()
         this.registerWindow = new CafeRegisterWindow()
         this.loginWindow = new CafeLoginWindow()
         this.newPassWindow = new CafeNewPasswordWindow();
+        this.commentsWindow = new CafeCommentsWindow()
 
         this.loginWindow.hide()
         this.currentlyViewing = this.registerWindow
 
         // construct the dom tree
         this.el.append(this.message.el, nav, windowContainer)
-        nav.append(this.registerButton, this.loginButton, this.logoutButton, this.settingsButton)
+        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton)
         // Order of appendation shouldn't matter
-        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el)
+        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el)
 
     }
 
@@ -115,6 +122,11 @@ export class CafeNavBar {
                 this.currentlyViewing = this.forgotPWWindow
                 setActive(this.settingsButton)
                 break;
+            
+            case "comments":
+                this.currentlyViewing = this.commentsWindow
+                setActive(this.commentsButton)
+                break;
 
             case "newPassword":
                 this.currentlyViewing = this.newPassWindow
@@ -138,6 +150,7 @@ export class CafeNavBar {
     showLoggedInButtons() {
         showInlineBlock(this.logoutButton)
         showInlineBlock(this.settingsButton)
+        showInlineBlock(this.commentsButton)
     }
 
     hideAll() {
@@ -147,10 +160,12 @@ export class CafeNavBar {
         this.registerWindow.hide()
         this.loginWindow.hide()
         this.settingsWindow.hide()
+        this.commentsWindow.hide()
         hide(this.registerButton)
         hide(this.loginButton)
         hide(this.logoutButton)
         hide(this.settingsButton)
+        hide(this.commentsButton)
     }
 
     logoutButtonClicked() {

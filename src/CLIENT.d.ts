@@ -66,5 +66,24 @@ export namespace Client {
 
     }
 
+    /** CommentReply is dispatched to the server when a logged-in user submits a reply to an existing comment or posts a new root-level comment on a page. */
+    type CommentReply = {
+        ReplyingTo: number
+        Reply: number
+    }
+
+    /** CommentVote is dispatched to the server when a logged-in user votes on a comment. */
+    type CommentVote = {
+        VotingOn : number
+        VoteType : string
+        Value    : number
+    }
+
+    /** GetComments is dispatched to the server when a user opens the Browser Extension or when they navigate to a new page with the browser extension over. It is a request for all comments associated with the given url. */
+    type GetComments = {
+        Url           : string
+        SortedBy      : string
+        SortAscending : boolean
+    }
 }
 
