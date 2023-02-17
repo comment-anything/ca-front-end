@@ -34,8 +34,8 @@ export namespace Client {
     
     /** Login is dispatched to the server when the client clicks “Submit” on the login form */
     type Login = {
-        Username       : string  // Account username
-        Password       : string  // Account password
+        Username : string  // Account username
+        Password : string  // Account password
     }
     
     /** Logout is dispatched to the server when the client clicks “Logout”. It does not carry any additional data. */
@@ -48,28 +48,28 @@ export namespace Client {
 
     /** SetNewPass is dispatched to the Server when the user changes their password. After submitting a valid password reset code, users are prompted to set a new password. When they subsequently click “submit”, this request is dispatched to the server. */
     type SetNewPass = {
-        Email: string
-        Code: number
-        Password: string
-        RetypePassword: string 
+        Email          : string
+        Code           : number
+        Password       : string
+        RetypePassword : string 
     }
     
     /** ChangeProfileBlurb is dispatched to the server when a client updates their profile blurb */
     type ChangeProfileBlurb = {
-        NewBlurb: string
+        NewBlurb : string
     }
 
     /** ChangeEmail is dispatched to the server when a client wants to change their email. They must supply the correct password as well. */
     type ChangeEmail = {
-        NewEmail: string
-        Password: string
+        NewEmail : string
+        Password : string
 
     }
 
     /** CommentReply is dispatched to the server when a logged-in user submits a reply to an existing comment or posts a new root-level comment on a page. */
     type CommentReply = {
-        ReplyingTo: number
-        Reply: number
+        ReplyingTo : number
+        Reply      : number
     }
 
     /** CommentVote is dispatched to the server when a logged-in user votes on a comment. */

@@ -24,21 +24,23 @@ const CSS = {
  *@emits StateEvent on navbar click
 */
 export class CafeNavBar {
-    el: HTMLDivElement
-    message: CafeMessageDisplay
-    registerWindow: CafeRegisterWindow
-    currentlyViewing?: CafeWindow
-    registerButton: HTMLButtonElement;
-    loginButton: HTMLButtonElement;
-    logoutButton: HTMLButtonElement;
-    settingsButton: HTMLButtonElement;
-    commentsButton: HTMLButtonElement;
-    loginWindow: CafeLoginWindow;
-    settingsWindow: CafeSettingsWindow;
-    forgotPWWindow: CafePwResetRequestWindow;
-    newPassWindow : CafeNewPasswordWindow;
-    commentsWindow: CafeCommentsWindow
-
+    el      : HTMLDivElement
+    message : CafeMessageDisplay
+    
+    registerButton : HTMLButtonElement;
+    loginButton    : HTMLButtonElement;
+    logoutButton   : HTMLButtonElement;
+    settingsButton : HTMLButtonElement;
+    commentsButton : HTMLButtonElement;
+    
+    currentlyViewing? : CafeWindow
+    commentsWindow    : CafeCommentsWindow
+    registerWindow    : CafeRegisterWindow
+    loginWindow       : CafeLoginWindow;
+    settingsWindow    : CafeSettingsWindow;
+    forgotPWWindow    : CafePwResetRequestWindow;
+    newPassWindow     : CafeNewPasswordWindow;
+    
     constructor() {
         // create the base containers
         this.el = Dom.el("div", CSS.cafe)
@@ -53,18 +55,18 @@ export class CafeNavBar {
         this.loginButton = Dom.button("Login", [CSS.navTabButton])
         this.settingsButton = Dom.button("Settings", [CSS.navTabButton])
         this.logoutButton = Dom.button("Logout", [CSS.navTabButton, CSS.logoutButton])
-        this.commentsButton = Dom.button("Comments", CSS.navTabButton)
-
+        this.commentsButton = Dom.button("Comments", [CSS.navTabButton])
         
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
         this.settingsButton.addEventListener("click", getNavClickCallback("settings"))
-
+        this.commentsButton.addEventListener("click", getNavClickCallback("comments"))
+        
         // logout button has different callback because it's more than a window change.
         this.logoutButton.addEventListener("click", this.logoutButtonClicked.bind(this))
 
-        this.commentsButton.addEventListener("click", getNavClickCallback("comments"))
+        
 
         // create the windows
         this.settingsWindow = new CafeSettingsWindow()
@@ -80,11 +82,12 @@ export class CafeNavBar {
         // construct the dom tree
         this.el.append(this.message.el, nav, windowContainer)
         nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton)
+        
         // Order of appendation shouldn't matter
         windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el)
 
     }
-
+    
     setFromState(state:State) {
         this.hideAll()
         if(state.ownProfile != undefined) {
@@ -100,7 +103,6 @@ export class CafeNavBar {
             this.showLoggedInButtons()
             this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
         }
-
         
         switch(state.viewing) {
             case "register":
@@ -131,20 +133,22 @@ export class CafeNavBar {
             case "newPassword":
                 this.currentlyViewing = this.newPassWindow
                 break;
-
                 
             default:
                 this.currentlyViewing = undefined
+                break;
         }
+        
         if(this.currentlyViewing != undefined) {
             this.currentlyViewing.show()
         }
         
     }
-
+    
     showLoggedOutButtons() {
         showInlineBlock(this.registerButton)
         showInlineBlock(this.loginButton)
+        showInlineBlock(this.commentsButton)  // NOTICE. I Thought we'd be showing comments even when logged out. If not, just get rid of this. -Luke
     }
 
     showLoggedInButtons() {
@@ -176,7 +180,6 @@ export class CafeNavBar {
     }
     
 }
-
 
 // private
 function getNavClickCallback(stateTo:StateView) {

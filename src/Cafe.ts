@@ -3,6 +3,17 @@ import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
 import { State } from "./State";
 
+
+
+/** Holds comment sorting settings configured by the user */
+export type CafeSettings = {
+    viewHidden    : boolean,
+    sortAscending : boolean,
+    sortBy        : string
+}
+
+
+
 /** Cafe stands for "Comment Anywhere Front End". Cafe is the base class that is composed of other major classes used in the Front end. It is responsible for updating the State and listening for user input events on the DOM, and transmitting them to the fetcher when appropriate. 
  @listens StateEvent
  @listens CafeEvent
@@ -14,6 +25,7 @@ export class Cafe {
     state: State
     navbar: CafeNavBar;
     dispatcher: Dispatcher
+    sortSettings: CafeSettings
     
     constructor() {
         this.fetcher = new Fetcher()
@@ -23,8 +35,14 @@ export class Cafe {
         this.setClientEventListeners()
         this.setStateEventListeners()
         this.navbar.setFromState(this.state)
+        
+        this.sortSettings = {
+            viewHidden    : false,
+            sortAscending : true,
+            sortBy        : ""
+        }
     }
-
+    
     // Called as part of the constructor to set listeners for ClientEvents.
     setClientEventListeners() {
         let my = this // to scope Cafe into callbacks
