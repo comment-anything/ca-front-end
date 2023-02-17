@@ -36,7 +36,14 @@ export class Dispatcher {
                     let npr = datum.Data as Server.NewPassResponse
                     this.dispatchNewPassResponse(npr, cafe)
                     break;
-                    
+                case "FullPage":
+                    let fp = datum.Data as Server.FullPage
+                    this.dispatchFullPageResponse(fp, cafe)
+                    break;
+                case "Comment":
+                    let c = datum.Data as Server.Comment
+                    this.dispatchCommentUpdate(c, cafe)
+                    break;
                 case "LogoutResponse":
                     this.dispatchUserUpdate(undefined, cafe);
                     break;
@@ -52,6 +59,16 @@ export class Dispatcher {
     /** dispatchMessage calls displayMessage on the CafeNavbar.message object */
     dispatchMessage(message:Server.Message, navbar:CafeNavBar) {
         navbar.message.updateMessage(message)
+    }
+
+    /** dispatchFullPageResponse calls populateNewComments on commentsWindow */
+    dispatchFullPageResponse(message: Server.FullPage, cafe: Cafe) {
+        cafe.navbar.commentsWindow.populateNewComments(message)
+    }
+
+    /** dispatchCommentUpdate calls updateComment on commentsWindow */
+    dispatchCommentUpdate(message: Server.Comment, cafe:Cafe) {
+        cafe.navbar.commentsWindow.updateComment(message)
     }
     
     /** dispatchUserUpdate calls userChange on the Cafe root object to change state reflecting any changes that may have happened to the User and to change what is visible on their profile */

@@ -16,7 +16,8 @@ export type ClientMap = {
     'pwResetCode': [Client.PasswordResetCode, HTTPMethod.POST],
     'newPassword': [Client.SetNewPass, HTTPMethod.POST],
     "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
-    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST]
+    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST],
+    "getComments": [Client.GetComments, HTTPMethod.POST]
 
 }
 
@@ -79,10 +80,12 @@ export namespace Client {
         Value    : number
     }
 
+    type SortOption = "new" | "funny" | "factual" | "agree"
+
     /** GetComments is dispatched to the server when a user opens the Browser Extension or when they navigate to a new page with the browser extension over. It is a request for all comments associated with the given url. */
     type GetComments = {
         Url           : string
-        SortedBy      : string
+        SortedBy      : SortOption
         SortAscending : boolean
     }
 }

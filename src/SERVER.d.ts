@@ -6,6 +6,8 @@ export type ServerMap = {
     "ProfileUpdateResponse" : Server.ProfileUpdateResponse,
     "Token"                 : Server.Token,
     "NewPassResponse"       : Server.NewPassResponse
+    "FullPage"       : Server.FullPage
+    "Comment"       : Server.Comment
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {

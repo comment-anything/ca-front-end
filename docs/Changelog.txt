@@ -1,3 +1,26 @@
+2/17/2023: Karl
+- Moved pseudo url feature to CafeCommentsWindow; top level button on the object that will generate the request
+- Added event listeners for the getComments pipeline, as well as dispatcher for FullPage option. Also added things to ClientMap and ServerMap as necessary
+- Set a type in Client for sort options: 'new', 'funny', 'agree', 'factual'
+- added commentContainer
+- finished populateNewComments
+- started updateComment in CommentsWindow; waiting on CafeComment
+
+
+2/17/2023: Luke (Front End)
+
+- Shown the NavBar comments tab for guests.
+- Created the CafeSettings type in Cafe.ts
+- Created CafeCommentSortDisplay based on the design document
+- Created CafeCommentsWindow based on the design document
+- Added "pseudo URL" as a CafeCommentSortDisplay member. Should be discussed. This deviates from the design document.
+- Prototyped and commented all newly-implemented class methods.
+- Now displays CafeCommentSortDisplay on CafeCommentsWindow
+- Added various TODO and NOTICE comments for later.
+- Created ./windows/comments.ts
+- Created ./ui/commentSort.ts
+- Created ./ui/comment.ts (Nothing implemented here. Class definition required as a dependency.)
+
 2/16/2023 : Karl
 - comm ents: CommentReply, CommentVote, GetComments
 - comm ents: CommentVoteDimension, Comment, FullPage

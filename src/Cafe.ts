@@ -1,3 +1,4 @@
+import { Client } from "./CLIENT";
 import { Dispatcher } from "./dispatcher";
 import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
@@ -9,7 +10,7 @@ import { State } from "./State";
 export type CafeSettings = {
     viewHidden    : boolean,
     sortAscending : boolean,
-    sortBy        : string
+    sortBy        : Client.SortOption
 }
 
 
@@ -39,7 +40,7 @@ export class Cafe {
         this.sortSettings = {
             viewHidden    : false,
             sortAscending : true,
-            sortBy        : ""
+            sortBy        : "new"
         }
     }
     
@@ -83,6 +84,14 @@ export class Cafe {
             my.fetcher.fetch("changeProfile", "POST", data, retrieveResponses)
 
         })
+        document.addEventListener("getComments", (ev)=> {
+            let data = ev.detail
+            console.log("GET COMMENTS EVENT RECEIVED WITH DATA: ", data)
+            // Cant do this with GET! Get requests can't have a body! Everything will be post!
+            my.fetcher.fetch("getComments", "POST", data, retrieveResponses)
+        })
+
+        // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
             my.navbar.message.updateMessage(ev.detail)

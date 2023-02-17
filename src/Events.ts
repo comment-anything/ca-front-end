@@ -1,6 +1,6 @@
 
 import {ClientMap} from "./CLIENT"
-import { Server } from "./SERVERK"
+import { Server } from "./SERVER"
 import { StateView } from "./State"
 
 
