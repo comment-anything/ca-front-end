@@ -27,8 +27,8 @@ export class CafeComment extends UIInput<Server.Comment> {
     submitReportButton    : HTMLButtonElement
 
     
-    constructor() {
-        super(CSS.windowName, 'cafeComment')
+    constructor(comment?:Server.Comment) {
+        super(comment)
 
         this.username = Dom.el("div", CSS.cafe)
         this.content = Dom.el("div", CSS.cafe)
