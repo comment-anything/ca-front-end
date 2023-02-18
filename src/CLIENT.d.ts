@@ -17,7 +17,8 @@ export type ClientMap = {
     'newPassword': [Client.SetNewPass, HTTPMethod.POST],
     "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
     "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST],
-    "getComments": [Client.GetComments, HTTPMethod.POST]
+    "getComments": [Client.GetComments, HTTPMethod.POST],
+    "newComment": [Client.CommentReply, HTTPMethod.POST]
 
 }
 
@@ -70,7 +71,7 @@ export namespace Client {
     /** CommentReply is dispatched to the server when a logged-in user submits a reply to an existing comment or posts a new root-level comment on a page. */
     type CommentReply = {
         ReplyingTo : number
-        Reply      : number
+        Reply      : string
     }
 
     /** CommentVote is dispatched to the server when a logged-in user votes on a comment. */

@@ -1,3 +1,9 @@
+2/18/2023: Karl
+- cafe listener for "newComment" pipeline
+- newComment and getComments in ClientMap
+- CommentReplySection; can be used in CafeComments or in CafeCommentsWindow
+- added commentReplySection to CafeCommentsWindow, so we can make top-level comment responses
+
 2/17/2023: Karl
 - Moved pseudo url feature to CafeCommentsWindow; top level button on the object that will generate the request
 - Added event listeners for the getComments pipeline, as well as dispatcher for FullPage option. Also added things to ClientMap and ServerMap as necessary

@@ -5,6 +5,7 @@ import { Server } from "../SERVER"
 import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
 import { Client } from "../CLIENT"
+import { CommentReplySection } from "../section/commentReply"
 
 const CSS = {
     commentContainer : "comment-container"
@@ -26,6 +27,7 @@ export class CafeCommentsWindow extends CafeWindow {
     lastSettings?       : CafeSettings
     displayedComments   : Map<number, CafeComment>
     commentSortSettings : CafeCommentSortDisplay
+    newCommentSection : CommentReplySection
     // NOTICE. Added pseudoURL as a sort display option. Deviates from the design document
     pseudoURL     : HTMLInputElement
     commentContainer: HTMLDivElement
@@ -37,6 +39,7 @@ export class CafeCommentsWindow extends CafeWindow {
         this.displayedComments = new Map<number, CafeComment>()
 
         this.commentSortSettings = new CafeCommentSortDisplay()
+        this.newCommentSection = new CommentReplySection(true)
 
         let container_purl = Dom.div()
         let label_pseudoURL = Dom.textEl("label", "Pseudo URL")
@@ -49,7 +52,7 @@ export class CafeCommentsWindow extends CafeWindow {
 
         this.commentContainer = Dom.div(undefined, CSS.commentContainer)
         
-        this.el.append(this.commentSortSettings.el,container_purl, this.commentContainer)
+        this.el.append(this.commentSortSettings.el,container_purl, this.commentContainer, this.newCommentSection.el)
     }
     
     /** All instances of CafeComment is cleared, and new instances are created for every Comment in the parameter array */
