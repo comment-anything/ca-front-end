@@ -1,8 +1,21 @@
+
+2/18/2023: Group
+- Created "funny", "factual", and "agree" VoteType
+- Updated the CommentReplySection. A comment's inlined reply section is shown and hidden as needed.
+- Created the CommentVoteSection
+- Static assets can now be properly imported in Vite
+- CSS for various comment-related elements
+- Created the CafeComment. Holds the newly added CommentVoteSection and CommentReplySection. Child comments may also be appended
+- Created CafeCommentVote based on UIInput.
+- updateComment successfully adds comments to the displayedComments member
+
+
 2/18/2023: Karl
 - cafe listener for "newComment" pipeline
 - newComment and getComments in ClientMap
 - CommentReplySection; can be used in CafeComments or in CafeCommentsWindow
 - added commentReplySection to CafeCommentsWindow, so we can make top-level comment responses
+
 
 2/17/2023: Karl
 - Moved pseudo url feature to CafeCommentsWindow; top level button on the object that will generate the request

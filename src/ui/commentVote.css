@@ -1,0 +1,25 @@
+.comment-vote-button {
+    background-color: none;
+    display: block;
+    border: none; 
+    width: 13px;
+    height: 13px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.comment-vote-number-display {
+    width: 100%;
+    font-size: 8px;
+    text-align: center;
+}
+.comment-vote-category-display {
+    width: 100%;
+    font-size: 8px;
+    text-align: center;
+}
+.comment-vote-container {
+    margin-top: 3px;
+    width: 30px;
+    display:inline-block; 
+
+}

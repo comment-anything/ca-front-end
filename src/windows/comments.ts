@@ -7,8 +7,10 @@ import { Dom } from "../util/dom"
 import { Client } from "../CLIENT"
 import { CommentReplySection } from "../section/commentReply"
 
+import "./comments.css"
+
 const CSS = {
-    commentContainer : "comment-container"
+    commentContainer : "comments-container"
 }
 
 /**
@@ -27,7 +29,8 @@ export class CafeCommentsWindow extends CafeWindow {
     lastSettings?       : CafeSettings
     displayedComments   : Map<number, CafeComment>
     commentSortSettings : CafeCommentSortDisplay
-    newCommentSection : CommentReplySection
+    newCommentSection   : CommentReplySection
+    
     // NOTICE. Added pseudoURL as a sort display option. Deviates from the design document
     pseudoURL     : HTMLInputElement
     commentContainer: HTMLDivElement
@@ -39,20 +42,24 @@ export class CafeCommentsWindow extends CafeWindow {
         this.displayedComments = new Map<number, CafeComment>()
 
         this.commentSortSettings = new CafeCommentSortDisplay()
-        this.newCommentSection = new CommentReplySection(true)
-
+        this.newCommentSection = new CommentReplySection(0, true)
+        
+        this.commentContainer = Dom.div(undefined, CSS.commentContainer)
         let container_purl = Dom.div()
         let label_pseudoURL = Dom.textEl("label", "Pseudo URL")
         this.pseudoURL = Dom.createInputElement("url")
         this.purlSubmit = Dom.button("🌎", undefined, {display:"inline"})
         container_purl = Dom.div()
         container_purl.append(label_pseudoURL, this.pseudoURL, this.purlSubmit)
-
-        this.purlSubmit.addEventListener("click", this.requestCommentsForPseudoURLPage.bind(this))
-
-        this.commentContainer = Dom.div(undefined, CSS.commentContainer)
         
-        this.el.append(this.commentSortSettings.el,container_purl, this.commentContainer, this.newCommentSection.el)
+        this.purlSubmit.addEventListener("click", this.requestCommentsForPseudoURLPage.bind(this))
+        
+        this.el.append(
+            this.commentSortSettings.el,
+            container_purl,
+            this.commentContainer,
+            this.newCommentSection.el
+        )
     }
     
     /** All instances of CafeComment is cleared, and new instances are created for every Comment in the parameter array */
@@ -62,6 +69,7 @@ export class CafeCommentsWindow extends CafeWindow {
         
         // Clear the map.
         this.displayedComments.clear()
+        
         // delete all children from the DOM.
         while(this.commentContainer.firstChild) {
             this.commentContainer.removeChild(this.commentContainer.firstChild);
@@ -76,18 +84,26 @@ export class CafeCommentsWindow extends CafeWindow {
     /** Updates data for the target CafeComment. A new CafeComment is created if the target doesn't exist */
     updateComment(comment: Server.Comment) {
         let maybeComment = this.displayedComments.get(comment.CommentId);
+        
         if(maybeComment == undefined) {
+            
             let newToAdd = new CafeComment(comment)
             this.displayedComments.set(comment.CommentId, newToAdd)
+            
             if(comment.Parent != 0) { // root reply (top-level comment)... or is it -1?
                 /*let parent = */this.displayedComments.get(comment.Parent)
                 /* parent.childrenContainer = parent.getContainer()?; 
-                 or maybe...  parent.addChild(comment) ? */                 
+                 or maybe...  parent.addChild(comment) ? */
+                 console.log("Comment does have parent")
+                 this.displayedComments.get(comment.Parent)?.addChild(newToAdd)
             } else {
+                console.log("Comment does not have parent")
                 /* this.childrenContainer.append(newToAdd.el) ?*/
+                this.commentContainer.appendChild(newToAdd.el)
             }
         } else {
             /* maybeComment.updateData(comment) */
+            
         }
     }
 
