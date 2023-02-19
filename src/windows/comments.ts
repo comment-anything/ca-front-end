@@ -102,7 +102,7 @@ export class CafeCommentsWindow extends CafeWindow {
                 this.commentContainer.appendChild(newToAdd.el)
             }
         } else {
-            /* maybeComment.updateData(comment) */
+            maybeComment.update(comment);
             
         }
     }
