@@ -72,6 +72,7 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
             viewHidden    : this.viewHidden.checked,
             sortAscending : this.sortAscending.checked,
         }
+        
         sett.sortBy = this.sortBy.value in ["new", "funny", "factual", "agree"] ? this.sortBy.value as Client.SortOption: "new"
         sett = sett as CafeSettings
         // TODO. Emit the settings change to Cafe -Luke

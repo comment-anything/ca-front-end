@@ -74,14 +74,16 @@ export namespace Client {
         Reply      : string
     }
 
+    type VoteType = "funny" | "factual" | "agree"
+
     /** CommentVote is dispatched to the server when a logged-in user votes on a comment. */
     type CommentVote = {
         VotingOn : number
-        VoteType : string
+        VoteType : VoteType
         Value    : number
     }
 
-    type SortOption = "new" | "funny" | "factual" | "agree"
+    type SortOption = "new" | VoteType
 
     /** GetComments is dispatched to the server when a user opens the Browser Extension or when they navigate to a new page with the browser extension over. It is a request for all comments associated with the given url. */
     type GetComments = {
