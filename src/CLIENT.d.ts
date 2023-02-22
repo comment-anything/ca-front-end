@@ -1,3 +1,4 @@
+import { Server } from "./SERVER"
 
 
 /** Typing for standard HTTPMethods. */
@@ -20,6 +21,8 @@ export type ClientMap = {
     "getComments": [Client.GetComments, HTTPMethod.POST],
     "newComment": [Client.CommentReply, HTTPMethod.POST],
     "voteComment": [Client.CommentVote, HTTPMethod.POST]
+    "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod.POST],
+    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod.POST]
 
 }
 
@@ -91,6 +94,20 @@ export namespace Client {
         Url           : string
         SortedBy      : SortOption
         SortAscending : boolean
+    }
+
+    /** ViewUsersReport is dispatched to the server when an admin requests a report on the overall users of comment anywhere. */
+    type ViewUsersReport = {
+
+    }
+
+
+
+    /** ViewFeedback is dispatched to the Server when an admin wishes to view feedback submitted by users of Comment Anywhere */
+    type ViewFeedback = {
+        From : number
+        To : number
+        FeedbackType : Server.FeedbackType | "all"
     }
 }
 

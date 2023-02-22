@@ -47,6 +47,14 @@ export class Dispatcher {
                 case "LogoutResponse":
                     this.dispatchUserUpdate(undefined, cafe);
                     break;
+                case "FeedbackReport":
+                    let fr = datum.Data as Server.FeedbackReport
+                    this.dispatchFeedbackReport(fr, cafe);
+                    break;
+                case "AdminUsersReport":
+                    let aup = datum.Data as Server.AdminUsersReport
+                    this.dispatchUsersReport(aup, cafe);
+                    break;
             }
         }
     }
@@ -87,6 +95,13 @@ export class Dispatcher {
     dispatchNewPassResponse(newpassresponse:Server.NewPassResponse, cafe:Cafe) {
         cafe.navbar.newPassWindow.parseNewPassResponse(newpassresponse)
         this.dispatchMessage(newpassresponse as Server.Message, cafe.navbar)
+    }
+
+    dispatchFeedbackReport(feedbackReport: Server.FeedbackReport, cafe:Cafe) {
+        cafe.navbar.adminWindow.feedbackReport.update(feedbackReport.Records)
+    }
+    dispatchUsersReport(usersReport: Server.AdminUsersReport, cafe:Cafe) {
+        cafe.navbar.adminWindow.usersReport.update(usersReport)
     }
 
 }

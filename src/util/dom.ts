@@ -109,5 +109,55 @@ export namespace Dom {
     export function span(text?: string, cssClass?:string | string[], styles?:{[key:string]:string}) {
         return textEl("span", text, cssClass, styles)
     }
+
+    /** Gets a table row for displaying tabular data. The label string will be populated in a TD element to the left and the right element will be the parameter element if TD, otherwise a new TD will be created and will hold the right element. */
+    export function tableRow(text: string, dataElement: HTMLElement, rowClass?: string | string[] |undefined, labelTDClass?: string | string[], dataTDClass?: string | string[]) {
+        let ltd = textEl("td", text, labelTDClass)
+        let rtd : HTMLTableCellElement
+        if(dataElement.tagName != "TD") {
+            rtd = el("td", dataTDClass);
+            rtd.append(dataElement)
+        } else {
+            rtd = dataElement as HTMLTableCellElement
+            if(dataTDClass != undefined) {
+                if(Array.isArray(dataTDClass)) {
+                    rtd.classList.add(...dataTDClass)
+                } else {
+                    rtd.classList.add(dataTDClass)
+                }
+            }
+        }
+        let tr = el("tr", rowClass)
+        tr.append(ltd, rtd)
+        return tr
+    }
+
+    /** Gets an option element. */
+    export function option(text: string, differentValue?: string, css?: string | string[]) {
+        let opt = Dom.el("option", css)
+        opt.textContent = text;
+        opt.value = differentValue != undefined ? differentValue : text;
+        return opt
+    }
+
+    export function select(texts: string[], differentValues?: string[], selectCSS?: string | string[], optionCSS? : string | string[]) {
+        let vals : string[] = []
+        if(differentValues == undefined) {
+            vals = texts 
+        } else if(texts.length != differentValues.length) {
+            console.error("Unmatched array lengths when creating select button!", differentValues)
+            differentValues = texts 
+        } else {
+            vals = differentValues
+        }
+        let select = Dom.el("select", selectCSS)
+        for(let i = 0; i < texts.length; i++) {
+            let opt = Dom.option(texts[i], vals[i], optionCSS)
+            select.append(opt)
+        }
+        return select
+
+    }
+
 }
 
