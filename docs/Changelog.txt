@@ -1,3 +1,9 @@
+2/22/2023: Karl
+- Created AdminWindow. Temporarily, it is visible while logged out for UI testing.
+- Created fetch pipelines for requesting admin and feedback report
+- Created dispatch pipelines for receiving said reports
+- some general CSS in sectionGeneralCSS that could be used by multiple classes
+- created new Dom functions: tableRow, option, and select
 
 2/18/2023: Group
 - Created "funny", "factual", and "agree" VoteType

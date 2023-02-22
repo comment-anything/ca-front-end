@@ -93,8 +93,17 @@ export class Cafe {
         document.addEventListener("newComment", (ev)=> {
             let data = ev.detail
             console.log("NEW COMMENT EVENT RECEIVED WITH DATA: ", data)
-            // Cant do this with GET! Get requests can't have a body! Everything will be post!
             my.fetcher.fetch("newComment", "POST", data, retrieveResponses)
+        })
+        document.addEventListener("viewUsersReport", (ev)=> {
+            let data = ev.detail
+            console.log("NEW VIEW USERSREPORT EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("viewUsersReport", "POST", data, retrieveResponses)
+        })
+        document.addEventListener("viewFeedback", (ev)=> {
+            let data = ev.detail
+            console.log("NEW VIEW FEEDBACK EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("viewFeedback", "POST", data, retrieveResponses)
         })
 
         // Front End error catch
