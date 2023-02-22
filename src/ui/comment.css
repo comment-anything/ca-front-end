@@ -1,0 +1,22 @@
+
+.username-header {
+    border-left: 1px dashed black;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 2px;
+}
+
+.comment-child-container {
+    padding-left: 20px;
+}
+
+.cafe-comment {
+    border-top: 1px dotted black;
+    border-bottom: 1px dotted black;
+    margin-top: 3px;
+    padding-top: 2px;
+}
+
+.cafe-comment-content {
+    padding-left: 2px;
+}

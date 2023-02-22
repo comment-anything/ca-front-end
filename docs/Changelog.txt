@@ -1,3 +1,55 @@
+
+2/22/2023: Karl
+- Created AdminWindow. Temporarily, it is visible while logged out for UI testing.
+- Created fetch pipelines for requesting admin and feedback report
+- Created dispatch pipelines for receiving said reports
+- some general CSS in sectionGeneralCSS that could be used by multiple classes
+- created new Dom functions: tableRow, option, and select
+
+2/19/2023: Karl
+- voteComment server communication implemented
+
+2/18/2023: Group
+- Created "funny", "factual", and "agree" VoteType
+- Updated the CommentReplySection. A comment's inlined reply section is shown and hidden as needed.
+- Created the CommentVoteSection
+- Static assets can now be properly imported in Vite
+- CSS for various comment-related elements
+- Created the CafeComment. Holds the newly added CommentVoteSection and CommentReplySection. Child comments may also be appended
+- Created CafeCommentVote based on UIInput.
+- updateComment successfully adds comments to the displayedComments member
+
+
+2/18/2023: Karl
+- cafe listener for "newComment" pipeline
+- newComment and getComments in ClientMap
+- CommentReplySection; can be used in CafeComments or in CafeCommentsWindow
+- added commentReplySection to CafeCommentsWindow, so we can make top-level comment responses
+
+
+2/17/2023: Karl
+- Moved pseudo url feature to CafeCommentsWindow; top level button on the object that will generate the request
+- Added event listeners for the getComments pipeline, as well as dispatcher for FullPage option. Also added things to ClientMap and ServerMap as necessary
+- Set a type in Client for sort options: 'new', 'funny', 'agree', 'factual'
+- added commentContainer
+- finished populateNewComments
+- started updateComment in CommentsWindow; waiting on CafeComment
+
+
+2/17/2023: Luke (Front End)
+
+- Shown the NavBar comments tab for guests.
+- Created the CafeSettings type in Cafe.ts
+- Created CafeCommentSortDisplay based on the design document
+- Created CafeCommentsWindow based on the design document
+- Added "pseudo URL" as a CafeCommentSortDisplay member. Should be discussed. This deviates from the design document.
+- Prototyped and commented all newly-implemented class methods.
+- Now displays CafeCommentSortDisplay on CafeCommentsWindow
+- Added various TODO and NOTICE comments for later.
+- Created ./windows/comments.ts
+- Created ./ui/commentSort.ts
+- Created ./ui/comment.ts (Nothing implemented here. Class definition required as a dependency.)
+
 2/16/2023 : Karl
 - comm ents: CommentReply, CommentVote, GetComments
 - comm ents: CommentVoteDimension, Comment, FullPage

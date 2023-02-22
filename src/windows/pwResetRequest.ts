@@ -39,7 +39,8 @@ export class CafePwResetRequestWindow extends CafeWindow {
         
         let event = new CustomEvent<Client.PasswordReset>('pwResetReq', {detail: pwReset})
         document.dispatchEvent(event);
-
+        
+        // TODO. Make sure there was a successful server response before traversing to the next page
         let event2 = new CustomEvent<StateView>("StateChangeRequest", {
             detail: "newPassword"
         })

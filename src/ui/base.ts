@@ -9,9 +9,11 @@ export class UIInput<T>{
     listeners : Array<[HTMLElement, (e:any)=>any, string]>
     
     // 
-    constructor(data?: T) {
+    constructor(data?: T, elType:keyof HTMLElementTagNameMap="div") {
         this.data = data
-        this.el = Dom.div(undefined, undefined, {"position":"relative", "zIndex": "0"})
+        this.el = Dom.el(elType, undefined, {
+            "position":"relative", "zIndex": "0"
+        })
         this.blocker = Dom.div(undefined, undefined, {"position":"absolute", "top":"0px", "left":"0px", "width":"100%", "height":"100%", "zIndex":"-1"})
         this.el.append(this.blocker)
         this.listeners = []

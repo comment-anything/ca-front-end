@@ -1,3 +1,4 @@
+import { Server } from "./SERVER"
 
 
 /** Typing for standard HTTPMethods. */
@@ -16,7 +17,12 @@ export type ClientMap = {
     'pwResetCode': [Client.PasswordResetCode, HTTPMethod.POST],
     'newPassword': [Client.SetNewPass, HTTPMethod.POST],
     "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
-    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST]
+    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST],
+    "getComments": [Client.GetComments, HTTPMethod.POST],
+    "newComment": [Client.CommentReply, HTTPMethod.POST],
+    "voteComment": [Client.CommentVote, HTTPMethod.POST]
+    "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod.POST],
+    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod.POST]
 
 }
 
@@ -34,8 +40,8 @@ export namespace Client {
     
     /** Login is dispatched to the server when the client clicks “Submit” on the login form */
     type Login = {
-        Username       : string  // Account username
-        Password       : string  // Account password
+        Username : string  // Account username
+        Password : string  // Account password
     }
     
     /** Logout is dispatched to the server when the client clicks “Logout”. It does not carry any additional data. */
@@ -48,42 +54,60 @@ export namespace Client {
 
     /** SetNewPass is dispatched to the Server when the user changes their password. After submitting a valid password reset code, users are prompted to set a new password. When they subsequently click “submit”, this request is dispatched to the server. */
     type SetNewPass = {
-        Email: string
-        Code: number
-        Password: string
-        RetypePassword: string 
+        Email          : string
+        Code           : number
+        Password       : string
+        RetypePassword : string 
     }
     
     /** ChangeProfileBlurb is dispatched to the server when a client updates their profile blurb */
     type ChangeProfileBlurb = {
-        NewBlurb: string
+        NewBlurb : string
     }
 
     /** ChangeEmail is dispatched to the server when a client wants to change their email. They must supply the correct password as well. */
     type ChangeEmail = {
-        NewEmail: string
-        Password: string
+        NewEmail : string
+        Password : string
 
     }
 
     /** CommentReply is dispatched to the server when a logged-in user submits a reply to an existing comment or posts a new root-level comment on a page. */
     type CommentReply = {
-        ReplyingTo: number
-        Reply: number
+        ReplyingTo : number
+        Reply      : string
     }
+
+    type VoteType = "funny" | "factual" | "agree"
 
     /** CommentVote is dispatched to the server when a logged-in user votes on a comment. */
     type CommentVote = {
         VotingOn : number
-        VoteType : string
+        VoteType : VoteType
         Value    : number
     }
+
+    type SortOption = "new" | VoteType
 
     /** GetComments is dispatched to the server when a user opens the Browser Extension or when they navigate to a new page with the browser extension over. It is a request for all comments associated with the given url. */
     type GetComments = {
         Url           : string
-        SortedBy      : string
+        SortedBy      : SortOption
         SortAscending : boolean
+    }
+
+    /** ViewUsersReport is dispatched to the server when an admin requests a report on the overall users of comment anywhere. */
+    type ViewUsersReport = {
+
+    }
+
+
+
+    /** ViewFeedback is dispatched to the Server when an admin wishes to view feedback submitted by users of Comment Anywhere */
+    type ViewFeedback = {
+        From : number
+        To : number
+        FeedbackType : Server.FeedbackType | "all"
     }
 }
 
