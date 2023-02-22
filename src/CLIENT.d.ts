@@ -18,7 +18,8 @@ export type ClientMap = {
     "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
     "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST],
     "getComments": [Client.GetComments, HTTPMethod.POST],
-    "newComment": [Client.CommentReply, HTTPMethod.POST]
+    "newComment": [Client.CommentReply, HTTPMethod.POST],
+    "voteComment": [Client.CommentVote, HTTPMethod.POST]
 
 }
 

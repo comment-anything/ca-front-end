@@ -41,7 +41,7 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
             backgroundSize: "contain",
         })
 
-        this.total = Dom.div( String(voteDim.Ups - voteDim.Downs), CSS.numberDisplay);
+        this.total = Dom.div( String(voteDim.Ups + voteDim.Downs), CSS.numberDisplay);
 
         this.el.append(
             this.up,
@@ -49,11 +49,13 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
             this.total,
             this.down
         )
+        this.clickListen(this.up, this.upVoteClicked, true)
+        this.clickListen(this.down, this.downVoteClicked, true)
 
     }
 
     update(data: Server.CommentVoteDimension) {
-        this.total.textContent = String(data.Ups - data.Downs)
+        this.total.textContent = String(data.Ups + data.Downs)
     }
     
     upVoteClicked() {
@@ -63,7 +65,7 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
             Value: 1
         }
         
-        let event = new CustomEvent<Client.CommentVote>("", {detail:upvote})
+        let event = new CustomEvent<Client.CommentVote>("voteComment", {detail:upvote})
         document.dispatchEvent(event)  
     }
     
@@ -74,7 +76,7 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
             Value: -1
         }
         
-        let event = new CustomEvent<Client.CommentVote>("", {detail:upvote})
+        let event = new CustomEvent<Client.CommentVote>("voteComment", {detail:upvote})
         document.dispatchEvent(event)  
     }
 }
