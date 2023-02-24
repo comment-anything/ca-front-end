@@ -1,0 +1,9 @@
+
+.feedback-data-small-centered {
+    text-align: center;
+    font-size: 10px;
+}
+
+.feedback-content-bordered {
+    border: 1px dotted gray;
+}

@@ -109,6 +109,9 @@ export class CafeNavBar {
         else {
             this.showLoggedInButtons()
             this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
+            if(state.ownProfile.LoggedInAs.IsAdmin) {
+                showInlineBlock(this.adminButton)
+            }
         }
         
         switch(state.viewing) {
@@ -159,7 +162,6 @@ export class CafeNavBar {
         showInlineBlock(this.registerButton)
         showInlineBlock(this.loginButton)
         showInlineBlock(this.commentsButton)
-        showInlineBlock(this.adminButton)
     }
 
     showLoggedInButtons() {
