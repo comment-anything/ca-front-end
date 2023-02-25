@@ -112,6 +112,12 @@ export class Cafe {
             console.log("NEW VIEW FEEDBACK EVENT RECEIVED WITH DATA: ", data)
             my.fetcher.fetch("viewFeedback", "POST", data, retrieveResponses)
         })
+        
+        document.addEventListener("toggleFeedbackHidden", (ev)=> {
+            let data = ev.detail
+            console.log("NEW TOGGLE FEEDBACK HIDDEN EVENT RECEIVED WITH DATA: ", data)
+            my.fetcher.fetch("toggleFeedbackHidden", "POST", data, retrieveResponses)
+        })
 
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {

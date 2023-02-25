@@ -22,7 +22,8 @@ export type ClientMap = {
     "newComment": [Client.CommentReply, HTTPMethod.POST],
     "voteComment": [Client.CommentVote, HTTPMethod.POST]
     "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod.POST],
-    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod.POST]
+    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod.POST],
+    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod.POST ]
 
 }
 
@@ -108,6 +109,12 @@ export namespace Client {
         From : number
         To : number
         FeedbackType : Server.FeedbackType | "all"
+    }
+
+    /** ToggleFeedbackHidden is dispatched to the server when an admin wishes to toggle whether a particular feedback entry is hidden and should be shown on future feedback reports. */
+    type ToggleFeedbackHidden = {
+        ID : number
+        SetHiddenTo: boolean 
     }
 }
 
