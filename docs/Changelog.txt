@@ -1,3 +1,13 @@
+
+2/26/2023: Group Members
+- added browser types
+- npm build extension command for windows
+- added permissions for storage to manifest.json
+- serialize and deserialize state
+- state change event now passes around entire state 
+- Settings in State store sort options, pseudoURL setting 
+- Sorting comments 
+
 2/26/2023: Luke
 - Added setClientLocalListeners() to Cafe for comment sort setting listeners
 - Added Domain and Path fields to SERVER.FullPage

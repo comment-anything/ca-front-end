@@ -1,5 +1,5 @@
 
-import { describe, it, expect } from 'vitest'
+import { describe, it } from 'vitest'
 import { multiSort } from './sort'
 
 describe('Multi-sort function', () => {

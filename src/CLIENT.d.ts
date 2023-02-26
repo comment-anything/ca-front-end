@@ -10,20 +10,20 @@ type HTTPMethod = {
 
 /** ClientMap maps API end points with the expected JSON data type for that endpoint. For example, "commentAnywhere.com/register" expects to receive an HTTP request with a body of type Client.Register. See page 148 of the Design doc for endpoint names. */
 export type ClientMap = {
-    'register': [Client.Register, HTTPMethod.POST],
-    'login': [Client.Login, HTTPMethod.POST],
-    'logout': [Client.Logout, HTTPMethod.PUT],
-    'pwResetReq': [Client.PasswordReset, HTTPMethod.POST],
-    'pwResetCode': [Client.PasswordResetCode, HTTPMethod.POST],
-    'newPassword': [Client.SetNewPass, HTTPMethod.POST],
-    "changeEmail": [Client.ChangeEmail, HTTPMethod.POST],
-    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod.POST],
-    "getComments": [Client.GetComments, HTTPMethod.POST],
-    "newComment": [Client.CommentReply, HTTPMethod.POST],
-    "voteComment": [Client.CommentVote, HTTPMethod.POST]
-    "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod.POST],
-    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod.POST],
-    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod.POST ]
+    'register': [Client.Register, HTTPMethod["POST"]],
+    'login': [Client.Login, HTTPMethod["POST"]],
+    'logout': [Client.Logout, HTTPMethod["PUT"]],
+    'pwResetReq': [Client.PasswordReset, HTTPMethod["POST"]],
+    //'pwResetCode': [Client.PasswordResetCode, HTTPMethod["POST"]],
+    'newPassword': [Client.SetNewPass, HTTPMethod["POST"]],
+    "changeEmail": [Client.ChangeEmail, HTTPMethod["POST"]],
+    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod["POST"]],
+    "getComments": [Client.GetComments, HTTPMethod["POST"]],
+    "newComment": [Client.CommentReply, HTTPMethod["POST"]],
+    "voteComment": [Client.CommentVote, HTTPMethod["POST"]]
+    "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod["POST"]],
+    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod["POST"]],
+    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ]
 
 }
 

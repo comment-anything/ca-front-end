@@ -42,7 +42,7 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         })
 
         this.total = Dom.div( String(voteDim.Ups + voteDim.Downs), CSS.numberDisplay);
-
+        
         this.el.append(
             this.up,
             label_voteLabel,
@@ -55,11 +55,12 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
     }
 
     update(data: Server.CommentVoteDimension) {
+        this.data = data
         this.total.textContent = String(data.Ups + data.Downs)
     }
     
     upVoteClicked() {
-        let upvote: Client.CommentVote  = {
+        let upvote: Client.CommentVote = {
             VotingOn: this.commentId,
             VoteType: this.voteType,
             Value: 1

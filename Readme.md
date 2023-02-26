@@ -15,8 +15,11 @@
 Example:
 
 ```env
+# Must match the url where the server is being hosted.
 VITE_API_ADDRESS=http://localhost:3000
+# Must match the cookie name set by the back end.
 VITE_JWT_COOKIE_NAME=ca-auth-tok
+VITE_SETTINGS_STORAGE_KEY=ca-saved-settings
 ```
 
 - Run `npm run dev` to serve the application to localhost.

@@ -1,15 +1,14 @@
 import { CafeWindow } from "./base"
-import { CafeSettings } from "../Cafe"
 import { CafeCommentSortDisplay } from "../ui/commentSort"
 import { Server } from "../SERVER"
 import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
-import { Client } from "../CLIENT"
 import { CommentReplySection } from "../section/commentReply"
 import { PseudoUrlSection } from "../section/pseudoURL"
-import { multiSort } from "../util/sort"
 
 import "./comments.css"
+import { Settings } from "../Settings"
+import { Client } from "../CLIENT"
 
 const CSS = {
     commentContainer : "comments-container"
@@ -27,8 +26,7 @@ const CSS = {
  * We may have to send a message to the server to request comments whenever "show()" is called (we can override show.)
  */
 export class CafeCommentsWindow extends CafeWindow {
-    data                : Server.Comment[]
-    lastSettings?       : CafeSettings
+    data                : Server.FullPage
     displayedComments   : Map<number, CafeComment>
     commentSortSettings : CafeCommentSortDisplay
     commentContainer    : HTMLDivElement
@@ -38,7 +36,11 @@ export class CafeCommentsWindow extends CafeWindow {
     
     constructor() {
         super() // TODO: add parameters for CSS and whatnot
-        this.data = []
+        this.data = {
+            Domain: "",
+            Path: "",
+            Comments: []
+        }
         this.displayedComments = new Map<number, CafeComment>()
 
         this.commentSortSettings = new CafeCommentSortDisplay()
@@ -46,7 +48,6 @@ export class CafeCommentsWindow extends CafeWindow {
         this.purlSection = new PseudoUrlSection()
         
         this.commentContainer = Dom.div(undefined, CSS.commentContainer)
-        this.purlSection.submitButton.addEventListener("click", this.requestCommentsForPseudoURLPage.bind(this))
         this.currentlyViewing = Dom.textEl('div')
         this.setCurrentlyViewing()
         
@@ -60,33 +61,40 @@ export class CafeCommentsWindow extends CafeWindow {
     }
     
     /** All instances of CafeComment is cleared, and new instances are created for every Comment in the parameter array */
-    populateNewComments(data: Server.FullPage) {
+    populateNewComments(data: Server.FullPage, sortnew: Client.SortOption = "new", sortascending = false) {
         // Update the base data. Clear the list of displayed comments
-        this.data = data.Comments
-        this.resortComments()
-        this.setCurrentlyViewing(data.Domain)
+        this.data = data
+        this.setCurrentlyViewing(data.Domain, data.Path)
         
         // Clear the map.
-        this.displayedComments.clear()
-        
-        // delete all children from the DOM.
-        while(this.commentContainer.firstChild) {
-            this.commentContainer.removeChild(this.commentContainer.firstChild);
+        for(let cafecom of this.displayedComments.values()) {
+            cafecom.destroy()
         }
+        this.displayedComments.clear()
+        this.resortComments(sortnew, sortascending)
+        
         
         // populate with the new comments. 
-        for (let d of this.data) {
+        for (let d of this.data.Comments) {
             this.updateComment(d)
         }
     }
     
-    setCurrentlyViewing(url?: string) {
+    setCurrentlyViewing(url?: string, Path?: string) {
         if (url == undefined || url.length == 0) {
             this.currentlyViewing.textContent = 'Visit a webpage to view comments.'
         }
         else {
-            this.currentlyViewing.textContent = 'You are viewing ' + url + '.'
+            this.currentlyViewing.textContent = 'You are viewing ' + url + '/' + Path + "."
         }
+    }
+
+    /** Called by Cafe when settings changes */
+    settingChangeReceived(data: Settings) {
+        console.log("settingChangRecieved called in CommentWindow with data", data)
+        this.commentSortSettings.settingsChange(data)
+        this.purlSection.settingsChange(data)
+        this.populateNewComments(this.data, data.sortedBy, data.sortAscending)
     }
     
     /** Updates data for the target CafeComment. A new CafeComment is created if the target doesn't exist */
@@ -98,14 +106,11 @@ export class CafeCommentsWindow extends CafeWindow {
             let newToAdd = new CafeComment(comment)
             this.displayedComments.set(comment.CommentId, newToAdd)
             
-            if(comment.Parent != 0) { // root reply (top-level comment)... or is it -1?
-                /*let parent = */this.displayedComments.get(comment.Parent)
-                /* parent.childrenContainer = parent.getContainer()?; 
-                 or maybe...  parent.addChild(comment) ? */
-                 console.log("Comment does have parent")
+            if(comment.Parent != 0) { 
+                 console.log("Comment", comment.CommentId, "has parent ", comment.Parent)
                  this.displayedComments.get(comment.Parent)?.addChild(newToAdd)
             } else {
-                console.log("Comment does not have parent")
+                console.log("Comment", comment.CommentId, "does not have parent", comment.Parent)
                 /* this.childrenContainer.append(newToAdd.el) ?*/
                 this.commentContainer.appendChild(newToAdd.el)
             }
@@ -114,40 +119,79 @@ export class CafeCommentsWindow extends CafeWindow {
         }
     }
     
-    /**
-     * Called when a user input another URL to retrieve comments for. Dispatches the request with form data to the dom, for fetching. 
-     */
-    requestCommentsForPseudoURLPage() {
-        let req : Client.GetComments = {
-            Url : this.purlSection.pseudoURL.value,
-            SortedBy : this.commentSortSettings.data != undefined ? this.commentSortSettings.data.sortBy : "new", 
-            SortAscending: this.commentSortSettings.data != undefined ? this.commentSortSettings.data.sortAscending : true
+    /** Resorts data.Commnets on the parameter */
+    resortComments(on:Client.SortOption, ascending:boolean) {
+        console.log("Getting sorter", on, "ascending", ascending)
+        let sorter = GetSorter(on, ascending)
+        this.data.Comments.sort(sorter)
+        console.log("Sorted to: ", this.data.Comments)
+    }
+}
+
+function GetSorter(on:Client.SortOption, ascending: boolean) {
+    let subsorter : (a:Server.Comment, b:Server.Comment)=>number
+    if(on == "funny") {
+        subsorter = SortFunny
+    } else if(on == "agree") {
+        subsorter = SortAgree
+    } else if(on == "factual") {
+        subsorter = SortFactual
+    } else {
+        subsorter = SortNew
+    }
+    if(!ascending) {
+        subsorter = Negate(subsorter)
+    }
+    return (a:Server.Comment, b:Server.Comment) => {
+        let parentSort = SortParent(a,b)
+        if(parentSort != 0) {
+            return parentSort
+        } else {
+            return subsorter(a,b)
         }
-        let event = new CustomEvent<Client.GetComments>("getComments", {detail:req});
-        document.dispatchEvent(event);
     }
-    
-    /** Removes and resorts all CafeComments on the page according to the user's settings */
-    resortComments() {
-        let sortby = this.commentSortSettings.data?.sortBy
-        
-        let secondary_category = (): ((a: Server.Comment)=>number) => {
-            switch (sortby) {
-                case 'new'     : return (a) => a.TimePosted
-                case 'funny'   : return (a) => a.Funny.Ups
-                case 'factual' : return (a) => a.Factual.Ups
-                case 'agree'   : return (a) => a.Agree.Ups
-            }
-            return () => 0
-        }
-        
-        this.data = multiSort<Server.Comment>(this.data, (a)=>a.Parent, secondary_category())
+}
+
+
+function Negate(towrap: (a:Server.Comment, b:Server.Comment)=>number) {
+    return (a:Server.Comment, b:Server.Comment) => {
+        return towrap(a,b)*-1
     }
-    
-    /** Saves previous settings and calls resortComments */
-    updateFromSettings(settings: CafeSettings) {
-        this.lastSettings = this.commentSortSettings.data
-        this.commentSortSettings.data = settings
-        this.resortComments()
+}
+
+
+function SortParent(a: Server.Comment, b: Server.Comment): number {
+    return a.Parent - b.Parent 
+}
+
+
+function SortFunny(a:Server.Comment, b:Server.Comment):number {
+    let atot = a.Funny.Ups + a.Funny.Downs
+    let btot = b.Funny.Ups + b.Funny.Downs
+    if(atot == btot) {
+        return SortNew(a, b)
+    } else {
+        return atot - btot
     }
+}
+function SortAgree(a:Server.Comment, b:Server.Comment):number {
+    let atot = a.Funny.Ups + a.Funny.Downs
+    let btot = b.Funny.Ups + b.Funny.Downs
+    if(atot == btot) {
+        return SortNew(a, b)
+    } else {
+        return atot - btot
+    }
+}
+function SortFactual(a:Server.Comment, b:Server.Comment):number {
+    let atot = a.Factual.Ups + a.Factual.Downs
+    let btot = b.Factual.Ups + b.Factual.Downs
+    if(atot == btot) {
+        return SortNew(a,b)
+    }
+    return atot - btot
+
+}
+function SortNew(a:Server.Comment, b:Server.Comment):number {
+    return a.CommentId - b.CommentId
 }

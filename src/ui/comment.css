@@ -6,6 +6,13 @@
     padding-left: 2px;
 }
 
+.cafe-comment-posted-time {
+    border-left: 1px dashed black;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 2px;
+}
+
 .comment-child-container {
     padding-left: 20px;
 }
@@ -19,4 +26,15 @@
 
 .cafe-comment-content {
     padding-left: 2px;
+}
+
+.cafe-comment-collapse-button {
+    background-color: none;
+    display: block;
+    border: none; 
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
 }

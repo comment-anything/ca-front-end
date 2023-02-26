@@ -1,6 +1,5 @@
 
 import { Cafe } from "./Cafe";
-import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
 import { ServerResponse, Server, ServerMap } from "./SERVER";
 
@@ -29,7 +28,7 @@ export class Dispatcher {
                     
                 case "Token":
                     let tok = datum.Data as Server.Token
-                    this.dispatchToken(tok, cafe.fetcher)
+                    this.dispatchToken(tok, cafe)
                     break;
 
                 case "NewPassResponse":
@@ -60,8 +59,8 @@ export class Dispatcher {
     }
     
     /** dispatchToken calls setToken on the fetcher object */
-    dispatchToken(token: Server.Token, fetcher: Fetcher) {
-        fetcher.setToken(token.JWT)
+    dispatchToken(token: Server.Token, cafe: Cafe) {
+        cafe.fetcher.setToken(token.JWT)
     }
     
     /** dispatchMessage calls displayMessage on the CafeNavbar.message object */
@@ -82,6 +81,7 @@ export class Dispatcher {
     /** dispatchUserUpdate calls userChange on the Cafe root object to change state reflecting any changes that may have happened to the User and to change what is visible on their profile */
     dispatchUserUpdate(userProfile:Server.LoginResponse | undefined, cafe:Cafe) {
         cafe.state.loadProfile(userProfile, false)
+        
     }
     
     /**

@@ -155,6 +155,8 @@ export class CafeNavBar {
         if(this.currentlyViewing != undefined) {
             this.currentlyViewing.show()
         }
+
+        this.commentsWindow.settingChangeReceived(state.settings)
         
     }
     
@@ -200,7 +202,11 @@ export class CafeNavBar {
 // private
 function getNavClickCallback(stateTo:StateView) {
     return function() {
-        let event = new CustomEvent<StateView>("StateChangeRequest", {detail:stateTo})
+        let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            detail: {
+                viewing: stateTo
+            }
+        })
         document.dispatchEvent(event)
     }
 }

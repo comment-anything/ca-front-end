@@ -1,18 +1,16 @@
-import { Client } from "./CLIENT";
 import { Dispatcher } from "./dispatcher";
 import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
 import { State } from "./State";
+import { DBKeys, DBMessage } from "./util/browserdebug";
 
 
+const browser_storage_key = import.meta.env.VITE_BROWSER_STORAGE_KEY
 
-/** Holds comment sorting settings configured by the user */
-export type CafeSettings = {
-    viewHidden    : boolean,
-    sortAscending : boolean,
-    sortBy        : Client.SortOption
+type SerializedData = {
+    state: State,
+    token: string
 }
-
 
 
 /** Cafe stands for "Comment Anywhere Front End". Cafe is the base class that is composed of other major classes used in the Front end. It is responsible for updating the State and listening for user input events on the DOM, and transmitting them to the fetcher when appropriate. 
@@ -26,7 +24,6 @@ export class Cafe {
     state: State
     navbar: CafeNavBar;
     dispatcher: Dispatcher
-    sortSettings: CafeSettings
     
     constructor() {
         this.fetcher = new Fetcher()
@@ -35,15 +32,102 @@ export class Cafe {
         this.dispatcher = new Dispatcher()
         this.setClientEventListeners()
         this.setStateEventListeners()
-        this.setClientLocalListeners()
         this.navbar.setFromState(this.state)
-        
-        this.sortSettings = {
-            viewHidden    : false,
-            sortAscending : true,
-            sortBy        : "new"
+        this.deserializePick()
+        if(typeof browser == "undefined") {
+            console.warn("You are not using comment anywhere as an extension. This is dangerous, and your credentials could be stolen!")
         }
     }
+    /**
+     * Called with values retrieved from browser storage if running as an extension, otherwise, called with values from localStorage. 
+     */
+    deserialize(val:SerializedData) {
+        console.log("attempting to deserialize", val)
+        if(val) {
+            if(val.state != undefined) {
+                let ev = new CustomEvent<State>("StateChangeRequest", {
+                    detail: val.state
+                })
+                document.dispatchEvent(ev)
+            }
+            if(val.token != undefined) {
+                console.log("Setting token in fetcher to", val.token)
+                this.fetcher.setToken(val.token)
+            }
+        } else {
+            console.error("No information to deserialize!")
+        }
+    }
+    /**
+     * Determines whether CA is running in an extension and calls the appropriate deserialize method. 
+     */
+    deserializePick() {
+        let me = this
+        if(typeof browser != "undefined") {
+            browser.storage.local.get().then( (v)=>{
+                if(v) {
+                    let parse = JSON.parse(v[browser_storage_key])
+                    me.deserialize(parse as SerializedData)
+                }
+            })
+        } else {
+            let vals = localStorage.getItem(browser_storage_key)
+            if(vals) {
+                let parsed = JSON.parse(vals)
+                console.log("PARSED DATA:",parsed)
+                me.deserialize(parsed)
+            }
+        }
+    }
+
+    /**
+     * Determines whether CA is running in an extension and calls the appropriate serialize method. 
+     */
+    serialize() {
+        let saved_data : SerializedData = {
+            state: this.state,
+            token: this.fetcher.token
+        }
+        if(typeof browser != "undefined") {
+            browser.storage.local.set({
+                [browser_storage_key]: JSON.stringify(saved_data)
+            }).then( ()=> {
+                console.log("Browser saved this data:", saved_data)
+            })
+        } else {
+            localStorage.setItem(browser_storage_key, JSON.stringify(saved_data))
+            console.log("LocalStorage saved this data:", saved_data)
+        }
+    }
+
+    /** Called when user logs out; clears the token from storage to prevent bugs */
+    clearToken() {
+        if(typeof browser != "undefined") {
+            browser.storage.local.get(browser_storage_key).then( (v )=>{
+                let serialized = v as SerializedData
+                if(serialized) {
+                    serialized.token = ""
+                    serialized.state.ownProfile = undefined
+                    browser.storage.local.set({
+                        [browser_storage_key]: serialized
+                    })                    
+                }
+            })
+            // clear it from browser storage
+        } else {
+            let savedData = localStorage.getItem(browser_storage_key)
+            if(savedData != undefined) {
+                let parsed = JSON.parse(savedData) as SerializedData
+                parsed.token = ""
+                parsed.state.ownProfile = undefined
+                localStorage.setItem(browser_storage_key, JSON.stringify(parsed))
+
+            }
+        }
+    }
+
+
+    
     
     // Called as part of the constructor to set listeners for ClientEvents.
     setClientEventListeners() {
@@ -62,7 +146,9 @@ export class Cafe {
         document.addEventListener("logout", (ev)=>{
             let data = ev.detail
             console.log("LOGOUT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("logout", "PUT", data, retrieveResponses)
+            my.fetcher.fetch("logout", "PUT", data, retrieveResponses).then( ()=> {
+                my.clearToken()
+            })
         })
         document.addEventListener("pwResetReq", (ev)=>{
             let data = ev.detail
@@ -131,24 +217,20 @@ export class Cafe {
     setStateEventListeners() {
         let my = this
         document.addEventListener("StateChangeRequest", (ev)=>{
-            my.state.setViewingTo(ev.detail)
+            my.state.stateChangeRequest(ev.detail)
         })
         document.addEventListener("StateChanged", ()=> {
             console.log("state change event received", my.state)
             my.navbar.setFromState(my.state)
+            my.serialize()
         })
     }
     
-    setClientLocalListeners() {
-        document.addEventListener("SortSettingsUpdate", () => {
-            alert("SETTINGS GLOBAL UPDATED")
-        })
-    }
-
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
         let responses = this.fetcher.getAndClearResponses()
         console.log("🎅🤶🤶 All server responses:", responses)
         this.dispatcher.dispatch(responses, this)
+        this.serialize()
     }
 }

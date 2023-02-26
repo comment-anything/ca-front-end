@@ -1,5 +1,5 @@
 import { Server } from "./SERVER";
-
+import { Settings } from "./Settings";
 
 export type StateView = "register" | "login" | "logout" | "forgotpassword" | "newPassword" | "comments" | "settings" | "moderation" | "reports" | "none" | "admin"
 
@@ -7,55 +7,55 @@ export type StateView = "register" | "login" | "logout" | "forgotpassword" | "ne
 export class State {
     viewing: StateView
     ownProfile?: {LoggedInAs: Server.UserProfile, Email: string}
+    settings: Settings
     constructor() {
         this.viewing = "register"
+        this.settings = new Settings()
+        settingsChangeEmit(this.settings)
     }
 
-    // Changes the viewing member of State to the parameter value.
-    setViewingTo(newView:StateView) {
-        console.log("state change requested to ", newView)
-        
-        switch(newView) {
-            case "register":
-                if(this.ownProfile == undefined) {
-                    this.viewing = newView
-                    stateChangeEmit(newView)
-                }
-                break;
-                
-            case "login":
-                if(this.ownProfile == undefined) {
-                    this.viewing = newView
-                    stateChangeEmit(newView)
-                } else {
-                    this.viewing = "settings"
-                    stateChangeEmit(this.viewing)
-                }
-                break;
-                
-            case "none":
-                this.ownProfile = undefined
-                this.viewing = newView
-                stateChangeEmit(newView)
-                break;
-                
 
-                
-            case "forgotpassword":
-                this.viewing = newView
-                stateChangeEmit(newView)
-                break;
-                
-            case "settings":
-                this.viewing = newView
-                stateChangeEmit(newView)
-                break;
-                
-            default:
-                this.viewing = newView
-                stateChangeEmit(newView)
-                break;
+    stateChangeRequest(newstate: Partial<State>) {
+        console.log("Got state change request!", newstate)
+        if(newstate.ownProfile) {
+            if(this.ownProfile) {
+                Object.assign(this.ownProfile, newstate.ownProfile)
+            } else {
+                this.ownProfile = newstate.ownProfile
+            }
         }
+        if(newstate.viewing) {
+            this.viewing = newstate.viewing
+        }
+        if(newstate.settings) {
+            Object.assign(this.settings, newstate.settings)
+        }
+        let ev = new CustomEvent<State>("StateChanged", {
+            detail: this
+        })
+        document.dispatchEvent(ev)
+    }
+    
+    /** Called in response to an event emitted when some component wants to change the client-side settings. */
+    settingsUpdate(settingsChange: Partial<Settings>) {
+        console.log("settingsChangeRequest received", settingsChange)
+        if(settingsChange.viewHidden != undefined) {
+            this.settings.viewHidden = settingsChange.viewHidden
+        }
+        if(settingsChange.sortedBy != undefined) {
+            this.settings.sortedBy = settingsChange.sortedBy
+        }
+        if(settingsChange.sortAscending != undefined) {
+            this.settings.sortAscending = settingsChange.sortAscending
+        }
+        if(settingsChange.onPseudoUrlPage != undefined) {
+            this.settings.onPseudoUrlPage = settingsChange.onPseudoUrlPage
+        }
+        if(settingsChange.url != undefined) {
+            this.settings.url = settingsChange.url
+        }
+        settingsChangeEmit(this.settings)
+
     }
 
     // Changes ownProfile member. If nothing is passed in, the loaded user profile is cleared.
@@ -63,13 +63,20 @@ export class State {
         this.ownProfile = userProfile
         if(this.ownProfile && preventStateChange != true) this.viewing = "none"
         else if(this.ownProfile == undefined && preventStateChange != true) this.viewing = "login"
-        stateChangeEmit(this.viewing);
+        stateChangeEmit(this);
     }
 }
 
 // Realizes a view change and dispatches a StateChange event to the document. This should be private and inaccessible.
-function stateChangeEmit(newView:StateView) {
-    let event = new CustomEvent<StateView>("StateChanged", { detail: newView})
+function stateChangeEmit(newState:State) {
+    let event = new CustomEvent<Partial<State>>("StateChanged", { detail: newState})
+    document.dispatchEvent(event)
+}
+
+function settingsChangeEmit(settings:Settings) {
+    let event = new CustomEvent<Settings>("SettingsChange", {
+        detail: settings
+    })
     document.dispatchEvent(event)
 }
 

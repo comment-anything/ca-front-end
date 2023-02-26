@@ -1,7 +1,7 @@
 
 import {ClientMap} from "./CLIENT"
 import { Server } from "./SERVER"
-import { StateView } from "./State"
+import { State } from "./State"
 
 
 // The handle that listeners will be attached to and emitted on for ClientEvents on the document. E.g. `document.addEventListener(ClientEventHandle, ()=>{} ....)`
@@ -13,8 +13,8 @@ export type ClientEvent = {
 }
 
 export type NavEvent = {
-    "StateChangeRequest" : CustomEvent<StateView>
-    "StateChanged"       : CustomEvent<StateView>
+    "StateChangeRequest" : CustomEvent<Partial<State>>
+    "StateChanged"       : CustomEvent<State>
 }
 
 export type FrontEndErrorEvent = {
@@ -29,7 +29,7 @@ declare global {
     interface Document {
         addEventListener<K extends keyof AllCustomEvents>(type: K,
             listener: (this: Document, ev: AllCustomEvents[K]) => void): void;
-         dispatchEvent<K extends keyof AllCustomEvents>(ev: AllCustomEvents[K]): void;
+         dispatchEvent<K extends keyof AllCustomEvents>(ev: AllCustomEvents[K]): boolean;
     }
 }
 

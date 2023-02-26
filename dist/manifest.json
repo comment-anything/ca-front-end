@@ -10,5 +10,11 @@
   
   "icons": {
       "98": "icons/CA-Logo.png"
-  }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+]
 }
