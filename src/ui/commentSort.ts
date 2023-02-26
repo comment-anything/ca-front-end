@@ -57,7 +57,10 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
         container_viewHidden.append(label_viewHidden, this.viewHidden)
         container_sortAscending.append(label_sortAscending, this.sortAscending)
         
-        // TODO. Call this.settingChange when a value is updated -Luke
+        this.clickListen(this.sortBy_option1, this.settingChange, true)
+        this.clickListen(this.sortBy_option2, this.settingChange, true)
+        this.clickListen(this.sortBy_option3, this.settingChange, true)
+        this.clickListen(this.sortBy_option4, this.settingChange, true)
         
         this.el.append(
             container_sortBy,
@@ -68,14 +71,16 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
     
     /** Construct and emit a new CafeSettings object to update the global settings object and percolate changes to all other CafeCommentSortDisplays */
     settingChange() {
+        let sort: Client.SortOption = <Client.SortOption>(this.sortBy.value)
+        
         let sett : Partial<CafeSettings> = {
             viewHidden    : this.viewHidden.checked,
             sortAscending : this.sortAscending.checked,
+            sortBy        : sort
         }
         
-        sett.sortBy = this.sortBy.value in ["new", "funny", "factual", "agree"] ? this.sortBy.value as Client.SortOption: "new"
-        sett = sett as CafeSettings
-        // TODO. Emit the settings change to Cafe -Luke
+        //alert("SETTING CHANGE TO: " + sett.sortBy)
+        //let e = new CustomEvent("StateChanged")
     }
     
 }

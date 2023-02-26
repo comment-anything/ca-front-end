@@ -14,7 +14,7 @@ export class CommentReplySection extends CafeSection {
     replyArea  : HTMLDivElement
     content    : HTMLTextAreaElement
     submit     : HTMLButtonElement
-    repliesTo: number
+    repliesTo  : number
     alwaysOpen : boolean
     
     /** 
@@ -27,7 +27,6 @@ export class CommentReplySection extends CafeSection {
         this.openbutton = Dom.button("Reply")
         this.replyArea = Dom.div()
         this.content = Dom.el("textarea", CSS.textArea, {display: "none"})
-        
         
         if(alwaysOpen) {
             this.submit = Dom.button("Submit New Comment", CSS.submit)

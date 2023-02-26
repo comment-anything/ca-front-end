@@ -6,6 +6,8 @@ import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
 import { Client } from "../CLIENT"
 import { CommentReplySection } from "../section/commentReply"
+import { PseudoUrlSection } from "../section/pseudoURL"
+import { multiSort } from "../util/sort"
 
 import "./comments.css"
 
@@ -29,12 +31,10 @@ export class CafeCommentsWindow extends CafeWindow {
     lastSettings?       : CafeSettings
     displayedComments   : Map<number, CafeComment>
     commentSortSettings : CafeCommentSortDisplay
+    commentContainer    : HTMLDivElement
     newCommentSection   : CommentReplySection
-    
-    // NOTICE. Added pseudoURL as a sort display option. Deviates from the design document
-    pseudoURL     : HTMLInputElement
-    commentContainer: HTMLDivElement
-    purlSubmit: HTMLButtonElement
+    purlSection         : PseudoUrlSection
+    currentlyViewing    : HTMLDivElement
     
     constructor() {
         super() // TODO: add parameters for CSS and whatnot
@@ -43,20 +43,17 @@ export class CafeCommentsWindow extends CafeWindow {
 
         this.commentSortSettings = new CafeCommentSortDisplay()
         this.newCommentSection = new CommentReplySection(0, true)
+        this.purlSection = new PseudoUrlSection()
         
         this.commentContainer = Dom.div(undefined, CSS.commentContainer)
-        let container_purl = Dom.div()
-        let label_pseudoURL = Dom.textEl("label", "Pseudo URL")
-        this.pseudoURL = Dom.createInputElement("url")
-        this.purlSubmit = Dom.button("🌎", undefined, {display:"inline"})
-        container_purl = Dom.div()
-        container_purl.append(label_pseudoURL, this.pseudoURL, this.purlSubmit)
-        
-        this.purlSubmit.addEventListener("click", this.requestCommentsForPseudoURLPage.bind(this))
+        this.purlSection.submitButton.addEventListener("click", this.requestCommentsForPseudoURLPage.bind(this))
+        this.currentlyViewing = Dom.textEl('div')
+        this.setCurrentlyViewing()
         
         this.el.append(
+            this.currentlyViewing,
+            this.purlSection.el,
             this.commentSortSettings.el,
-            container_purl,
             this.commentContainer,
             this.newCommentSection.el
         )
@@ -66,6 +63,8 @@ export class CafeCommentsWindow extends CafeWindow {
     populateNewComments(data: Server.FullPage) {
         // Update the base data. Clear the list of displayed comments
         this.data = data.Comments
+        this.resortComments()
+        this.setCurrentlyViewing(data.Domain)
         
         // Clear the map.
         this.displayedComments.clear()
@@ -78,6 +77,15 @@ export class CafeCommentsWindow extends CafeWindow {
         // populate with the new comments. 
         for (let d of this.data) {
             this.updateComment(d)
+        }
+    }
+    
+    setCurrentlyViewing(url?: string) {
+        if (url == undefined || url.length == 0) {
+            this.currentlyViewing.textContent = 'Visit a webpage to view comments.'
+        }
+        else {
+            this.currentlyViewing.textContent = 'You are viewing ' + url + '.'
         }
     }
     
@@ -102,17 +110,16 @@ export class CafeCommentsWindow extends CafeWindow {
                 this.commentContainer.appendChild(newToAdd.el)
             }
         } else {
-            maybeComment.update(comment);
-            
+            maybeComment.update(comment)
         }
     }
-
+    
     /**
      * Called when a user input another URL to retrieve comments for. Dispatches the request with form data to the dom, for fetching. 
      */
     requestCommentsForPseudoURLPage() {
         let req : Client.GetComments = {
-            Url : this.pseudoURL.value,
+            Url : this.purlSection.pseudoURL.value,
             SortedBy : this.commentSortSettings.data != undefined ? this.commentSortSettings.data.sortBy : "new", 
             SortAscending: this.commentSortSettings.data != undefined ? this.commentSortSettings.data.sortAscending : true
         }
@@ -122,8 +129,19 @@ export class CafeCommentsWindow extends CafeWindow {
     
     /** Removes and resorts all CafeComments on the page according to the user's settings */
     resortComments() {
-        this.data = []
-        // TODO: Resort comments
+        let sortby = this.commentSortSettings.data?.sortBy
+        
+        let secondary_category = (): ((a: Server.Comment)=>number) => {
+            switch (sortby) {
+                case 'new'     : return (a) => a.TimePosted
+                case 'funny'   : return (a) => a.Funny.Ups
+                case 'factual' : return (a) => a.Factual.Ups
+                case 'agree'   : return (a) => a.Agree.Ups
+            }
+            return () => 0
+        }
+        
+        this.data = multiSort<Server.Comment>(this.data, (a)=>a.Parent, secondary_category())
     }
     
     /** Saves previous settings and calls resortComments */

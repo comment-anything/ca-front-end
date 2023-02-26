@@ -35,6 +35,7 @@ export class Cafe {
         this.dispatcher = new Dispatcher()
         this.setClientEventListeners()
         this.setStateEventListeners()
+        this.setClientLocalListeners()
         this.navbar.setFromState(this.state)
         
         this.sortSettings = {
@@ -135,6 +136,12 @@ export class Cafe {
         document.addEventListener("StateChanged", ()=> {
             console.log("state change event received", my.state)
             my.navbar.setFromState(my.state)
+        })
+    }
+    
+    setClientLocalListeners() {
+        document.addEventListener("SortSettingsUpdate", () => {
+            alert("SETTINGS GLOBAL UPDATED")
         })
     }
 
