@@ -23,7 +23,8 @@ export type ClientMap = {
     "voteComment": [Client.CommentVote, HTTPMethod["POST"]]
     "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod["POST"]],
     "viewFeedback": [ Client.ViewFeedback ,HTTPMethod["POST"]],
-    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ]
+    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ],
+    "newFeedback" : [Client.Feedback, HTTPMethod["POST"]]
 
 }
 
@@ -115,6 +116,12 @@ export namespace Client {
     type ToggleFeedbackHidden = {
         ID : number
         SetHiddenTo: boolean 
+    }
+
+    /** Feedback is dispatched to the Server when a user submits feedback, such as a feature request or bug report, on Comment Anywhere */
+    type Feedback = {
+        FeedbackType: string
+        Content : string
     }
 }
 

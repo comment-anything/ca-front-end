@@ -206,6 +206,12 @@ export class Cafe {
             my.fetcher.fetch("toggleFeedbackHidden", "POST", data, retrieveResponses)
         })
 
+        document.addEventListener("newFeedback", (ev)=> {
+            let data = ev.detail
+            console.log("NEW NEW FEEDBACK EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("newFeedback", "POST", data, retrieveResponses)
+        })
+
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")

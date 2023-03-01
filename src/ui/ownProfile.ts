@@ -7,7 +7,7 @@ import { UIInput } from "./base";
 import "./ownProfile.css"
 
 const CSS = {
-    profileRow : "profile-info-row"
+    profileRow : "profile-info-row",
 }
 /**
 CafeOwnProfileDisplay is used to display a User's own profile to them
