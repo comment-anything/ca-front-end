@@ -6,7 +6,8 @@ import { Server } from "../SERVER";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
-    inputLabel : "section-input-label-medium"
+    inputLabel : "section-input-label-medium",
+    container: "bottom-pad"
 }
 
 export class FeedbackReportSection extends CafeSection {
@@ -21,7 +22,7 @@ export class FeedbackReportSection extends CafeSection {
         super()
         let sectionLabel = Dom.div("Feedback Report", CSS.sectionLabel)
 
-        this.dropDownContainer = Dom.div()
+        this.dropDownContainer = Dom.div(undefined, CSS.container)
 
         this.feedbacksTable = Dom.el("table");
         this.feedbacksTable.append(CafeFeedback.headerRow())

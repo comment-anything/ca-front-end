@@ -9,6 +9,7 @@ const CSS = {
     labelContainer : "section-container-table",
     label : "section-container-table-td-label",
     tableData : "section-container-table-td-data",
+    container: "bottom-pad",
     table : "section-container-table",
     sectionLabel : ["section-label", "section-label-as-button"]
 }
@@ -26,7 +27,7 @@ export class UsersReportSection extends CafeSection {
     constructor() {
         super()
         let sectionLabel = Dom.div("Users Report", CSS.sectionLabel)
-        this.lastReportContainer = Dom.div()
+        this.lastReportContainer = Dom.div(undefined, CSS.container)
         let table = Dom.el("table", CSS.table)
 
         this.loggedInCount = Dom.el("td", CSS.tableData)

@@ -2,7 +2,6 @@ import { Dispatcher } from "./dispatcher";
 import { Fetcher } from "./fetcher";
 import { CafeNavBar } from "./navbar";
 import { State } from "./State";
-import { DBKeys, DBMessage } from "./util/browserdebug";
 
 
 const browser_storage_key = import.meta.env.VITE_BROWSER_STORAGE_KEY
@@ -126,9 +125,6 @@ export class Cafe {
         }
     }
 
-
-    
-    
     // Called as part of the constructor to set listeners for ClientEvents.
     setClientEventListeners() {
         let my = this // to scope Cafe into callbacks
@@ -212,11 +208,34 @@ export class Cafe {
             my.fetcher.fetch("newFeedback", "POST", data, retrieveResponses)
         })
 
+        document.addEventListener("assignAdmin", (ev)=> {
+            let data = ev.detail
+            console.log("NEW ASSIGN ADMIN EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("assignAdmin", "POST", data, retrieveResponses)
+        })
+
+        document.addEventListener("assignGlobalModerator", (ev)=> {
+            let data = ev.detail
+            console.log("NEW ASSIGN GLOBMOD EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("assignGlobalModerator", "POST", data, retrieveResponses)
+        })
+
+        document.addEventListener("removeGlobalModerator", (ev)=> {
+            let data = ev.detail
+            console.log("NEW REMOVE GLOBMOD EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("removeGlobalModerator", "POST", data, retrieveResponses)
+        })
+
+
+
+
+
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
             my.navbar.message.updateMessage(ev.detail)
         })
+
     }
     
     /** Called as part of the constructor to set listens for StateEvents. */

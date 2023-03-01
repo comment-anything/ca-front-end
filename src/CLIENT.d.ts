@@ -24,7 +24,10 @@ export type ClientMap = {
     "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod["POST"]],
     "viewFeedback": [ Client.ViewFeedback ,HTTPMethod["POST"]],
     "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ],
-    "newFeedback" : [Client.Feedback, HTTPMethod["POST"]]
+    "newFeedback" : [Client.Feedback, HTTPMethod["POST"]],
+    "assignAdmin" : [Client.AssignAdmin, HTTPMethod["POST"]],
+    "assignGlobalModerator" : [Client.AssignGlobalModerator, HTTPMethod["POST"]],
+    "removeGlobalModerator": [Client.RemoveGlobalModerator, HTTPMethod["POST"]]
 
 }
 
@@ -122,6 +125,20 @@ export namespace Client {
     type Feedback = {
         FeedbackType: string
         Content : string
+    }
+
+    /** Dispatched when an admin assigns a new global moderator. */
+    type AssignGlobalModerator = {
+        User: string 
+
+    }
+    /** Dispatched when an admin removes a global moderator */
+    type RemoveGlobalModerator = {
+        User: string
+    }
+    /** Dispatched when an admin assigns another admin. */
+    type AssignAdmin = {
+        User: string
     }
 }
 

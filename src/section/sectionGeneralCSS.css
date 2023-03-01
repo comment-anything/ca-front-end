@@ -1,4 +1,31 @@
 
+/* For more narrow text inputs. */
+.input-text-narrow {
+    width: 50px;
+}
+
+/* For displaying inline buttons. */
+.input-inline-button {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* For top padded containers */
+.container-top-padded {
+    padding-top: 10px;
+}
+
+.bottom-pad {
+    padding-bottom: 20px;
+}
+
+.centered {
+    text-align: center;
+}
+
+
+/** section label is centered and has hover characteristics, as its intended use is as both a header and a 'drop down' toggler for a given section */
 .section-label {
     display: block;
     margin-top: 8px;
@@ -19,6 +46,7 @@
     cursor: pointer;
 }
 
+/** For tabular data, eg, in the feedback report */
 .section-container-table {
     width: 100%;
 }
