@@ -24,13 +24,16 @@ export class FeedbackReportSection extends CafeSection {
         this.dropDownContainer = Dom.div()
 
         this.feedbacksTable = Dom.el("table");
+        this.feedbacksTable.append(CafeFeedback.headerRow())
 
         this.activeFeedbacks = []
 
         let requestContainer = Dom.div()
 
         this.from = Dom.createInputElement("datetime-local")
+        this.from.value = "2020-01-01T00:00"
         this.to = Dom.createInputElement("datetime-local")
+        this.to.value = "2025-01-01T00:00"
         this.feedbackType = Dom.select(["bug", "feature", "general", "all"])
 
         this.requestFeedbackButton = Dom.button("Request Feedback")
@@ -42,7 +45,7 @@ export class FeedbackReportSection extends CafeSection {
             this.requestFeedbackButton
         )
 
-        this.dropDownContainer.append(requestContainer)
+        this.dropDownContainer.append(this.feedbacksTable, requestContainer)
 
 
         this.el.append(sectionLabel, this.dropDownContainer)
@@ -77,7 +80,7 @@ export class FeedbackReportSection extends CafeSection {
         let edata : Partial<Client.ViewFeedback> = {}
         edata.From = this.from.valueAsDate?.valueOf()
         edata.To = this.to.valueAsDate?.valueOf()
-        edata.FeedbackType = this.feedbackType as any
+        edata.FeedbackType = this.feedbackType.value as Server.FeedbackType
         let ev = new CustomEvent<Client.ViewFeedback>("viewFeedback", {
             detail: edata as Client.ViewFeedback
         })

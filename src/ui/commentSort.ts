@@ -1,16 +1,17 @@
 import { UIInput } from "./base"
-import { CafeSettings } from "../Cafe"
 import { Dom } from "../util/dom"
 
 import "./ownProfile.css"
 import { Client } from "../CLIENT"
+import { Settings } from "../Settings"
+import { State } from "../State"
 
 const CSS = {
     sortRow : "profile-info-row"
 }
 
 /** Shows the users comment viewing settings and allows the user to change them */
-export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
+export class CafeCommentSortDisplay extends UIInput<Settings> {
     sortBy        : HTMLSelectElement
     viewHidden    : HTMLInputElement
     sortAscending : HTMLInputElement
@@ -23,7 +24,7 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
     sortBy_option3 : HTMLOptionElement
     sortBy_option4: any
     
-    constructor(settings?: CafeSettings) {
+    constructor(settings?: Settings) {
         super(settings);
         
         this.sortBy = Dom.el("select")
@@ -57,7 +58,12 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
         container_viewHidden.append(label_viewHidden, this.viewHidden)
         container_sortAscending.append(label_sortAscending, this.sortAscending)
         
-        // TODO. Call this.settingChange when a value is updated -Luke
+        this.clickListen(this.sortBy_option1, this.emitStateChangeRequest, true)
+        this.clickListen(this.sortBy_option2, this.emitStateChangeRequest, true)
+        this.clickListen(this.sortBy_option3, this.emitStateChangeRequest, true)
+        this.clickListen(this.sortBy_option4, this.emitStateChangeRequest, true)
+        this.clickListen(this.sortAscending, this.emitStateChangeRequest, true)
+        this.clickListen(this.viewHidden, this.emitStateChangeRequest, true)
         
         this.el.append(
             container_sortBy,
@@ -65,17 +71,31 @@ export class CafeCommentSortDisplay extends UIInput<CafeSettings> {
             container_sortAscending
         )
     }
+
+    /** Called by CommentWindow when settings changes */
+    settingsChange(data:Settings) {
+        this.data = data
+        console.log("settingChangRecieved called in CommentSort with data", data)
+        this.sortAscending.checked = data.sortAscending
+        this.sortBy.value = data.sortedBy        
+        this.viewHidden.checked = data.viewHidden
+    }
     
     /** Construct and emit a new CafeSettings object to update the global settings object and percolate changes to all other CafeCommentSortDisplays */
-    settingChange() {
-        let sett : Partial<CafeSettings> = {
-            viewHidden    : this.viewHidden.checked,
-            sortAscending : this.sortAscending.checked,
-        }
+    emitStateChangeRequest() {
+        let sort = this.sortBy.value as Client.SortOption
         
-        sett.sortBy = this.sortBy.value in ["new", "funny", "factual", "agree"] ? this.sortBy.value as Client.SortOption: "new"
-        sett = sett as CafeSettings
-        // TODO. Emit the settings change to Cafe -Luke
+        let sett : Partial<State> = {
+            settings: {
+                viewHidden    : this.viewHidden.checked,
+                sortAscending : this.sortAscending.checked,
+                sortedBy      : sort
+            } as Settings
+        }
+        let e = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            detail: sett
+        })
+        document.dispatchEvent(e)
     }
     
 }

@@ -1,4 +1,30 @@
 
+2/26/2023: Group Members
+- added browser types
+- npm build extension command for windows
+- added permissions for storage to manifest.json
+- serialize and deserialize state
+- state change event now passes around entire state 
+- Settings in State store sort options, pseudoURL setting 
+- Sorting comments 
+
+2/26/2023: Luke
+- Added setClientLocalListeners() to Cafe for comment sort setting listeners
+- Added Domain and Path fields to SERVER.FullPage
+- Created the PseudoURL section
+- Created a multiSort function for sorting by two categories
+- Implemented multiSort to sort comments
+
+2/24/2023: Karl 
+- toggleFeedback pipeline 
+- moved admin stuff for only admins to see 
+- feedback table header row, styling 
+- toggleFeedback button to set a feedback to hidden
+
+2/22/2023: Luke
+- Updated package.json with a build-extension command. This will build the app and copy over manifest.json to the dist folder.
+- Added instructions to Readme.md for testing the app as a browser extension.
+
 2/22/2023: Karl
 - Created AdminWindow. Temporarily, it is visible while logged out for UI testing.
 - Created fetch pipelines for requesting admin and feedback report

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect } from 'vitest'
+import { describe, it } from 'vitest'
 import { Server } from '../SERVER'
 import { Cafe } from '../Cafe'
 
@@ -32,7 +32,9 @@ describe('display comments', ()=>{
         }
         
         let page: Server.FullPage = {
-            Comments: [testComment]
+            Comments: [testComment],
+            Domain: "test.com",
+            Path: "/"
         }
         
         cafe.navbar.commentsWindow.populateNewComments(page)

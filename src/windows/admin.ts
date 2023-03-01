@@ -1,9 +1,7 @@
 import { FeedbackReportSection } from "../section/feedbackReport";
 import { UsersReportSection } from "../section/usersReport";
-import { Dom } from "../util/dom";
 import { CafeWindow } from "./base";
 
-const CSS = {}
 
 export class CafeAdminWindow extends CafeWindow {
     usersReport : UsersReportSection

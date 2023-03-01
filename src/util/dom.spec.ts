@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect } from 'vitest'
-import { Dom } from './dom'
+import { describe, it } from 'vitest'
 
 
 describe('dom utility', ()=> {

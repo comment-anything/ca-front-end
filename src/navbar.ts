@@ -109,6 +109,9 @@ export class CafeNavBar {
         else {
             this.showLoggedInButtons()
             this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
+            if(state.ownProfile.LoggedInAs.IsAdmin) {
+                showInlineBlock(this.adminButton)
+            }
         }
         
         switch(state.viewing) {
@@ -152,6 +155,8 @@ export class CafeNavBar {
         if(this.currentlyViewing != undefined) {
             this.currentlyViewing.show()
         }
+
+        this.commentsWindow.settingChangeReceived(state.settings)
         
     }
     
@@ -159,7 +164,6 @@ export class CafeNavBar {
         showInlineBlock(this.registerButton)
         showInlineBlock(this.loginButton)
         showInlineBlock(this.commentsButton)
-        showInlineBlock(this.adminButton)
     }
 
     showLoggedInButtons() {
@@ -198,7 +202,11 @@ export class CafeNavBar {
 // private
 function getNavClickCallback(stateTo:StateView) {
     return function() {
-        let event = new CustomEvent<StateView>("StateChangeRequest", {detail:stateTo})
+        let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            detail: {
+                viewing: stateTo
+            }
+        })
         document.dispatchEvent(event)
     }
 }

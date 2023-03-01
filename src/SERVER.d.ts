@@ -86,10 +86,12 @@ export namespace Server {
         Removed    : boolean
         TimePosted : number
     }
-
+    
     /** FullPage is returned when a user first requests comments for a new page. It contains an array of all comment data for that page. */
     type FullPage = {
         Comments : Comment[]
+        Domain   : string
+        Path     : string
     }
 
     /** AdminUsersReport is dispatched when an Admin requests the Users report */
