@@ -1,3 +1,8 @@
+3/1/2023: Frank
+- added fonts folder for new local fonts under src -> ui -> fonts
+- stylized the fonts inside of comments
+- slight adjustments to the comments section
+- changed the fonts inside of settings gui ( wip )
 
 2/26/2023: Group Members
 - added browser types
