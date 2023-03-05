@@ -7,7 +7,8 @@ import { UIInput } from "./base";
 import "./ownProfile.css"
 
 const CSS = {
-    profileRow : "profile-info-row"
+    profileRow : "profile-info-row",
+    profileChangeRow : "profile-blurb-row"
 }
 /**
 CafeOwnProfileDisplay is used to display a User's own profile to them
@@ -31,12 +32,12 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         this.username = Dom.div();
         container_username.append(label_username,this.username)
 
-        let container_email = Dom.div(undefined, CSS.profileRow)
+        let container_email = Dom.div(undefined, CSS.profileChangeRow)
         let label_email = Dom.textEl("label", "Email")
         this.emailSection = new OwnEmailSection()
         container_email.append(label_email, this.emailSection.el)
 
-        let container_profile = Dom.div(undefined, CSS.profileRow)
+        let container_profile = Dom.div(undefined, CSS.profileChangeRow)
         let label_profile = Dom.textEl("label", "About")
         this.profileBlurbSection = new OwnProfileBlurbSection()
         container_profile.append(label_profile, this.profileBlurbSection.el)

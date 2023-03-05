@@ -1,3 +1,10 @@
+3/4/2023: Frank
+- stylized the fonts inside of settings
+- added regular times new roman to fonts folder
+- created basic moderation panel (moderator.ts)
+- created moderators.ts the section displayed in the panel
+- created the outline for the other moderation panel features
+
 3/1/2023: Frank
 - added fonts folder for new local fonts under src -> ui -> fonts
 - stylized the fonts inside of comments

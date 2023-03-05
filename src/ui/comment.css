@@ -3,6 +3,8 @@
     src: url(fonts/BOOKOS.TTF);
     font-family: 'Bold Times New Roman';
     src: url(fonts/TIMESBD.TTF);
+    font-family: 'Times New Roman';
+    src: url(fonts/TIMES.TTF);
 }
 .username-header {
     font-family: 'Bold Times New Roman',Arial;
@@ -29,7 +31,7 @@
 }
 
 .cafe-comment {
-    font-family: Arial, 'Bold Times New Roman';
+    font-family: 'Times New Roman',Arial;
     border-top: 1px dotted black;
     border-bottom: 1px dotted black;
     margin-top: 3px;
