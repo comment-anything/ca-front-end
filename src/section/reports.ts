@@ -19,7 +19,7 @@ export class CommentReportsSection extends CafeSection {
     activeFeedbacks: CafeFeedback[];
     constructor() {
         super()
-        let sectionLabel = Dom.div("Feedback Report", CSS.sectionLabel)
+        let sectionLabel = Dom.div("Comment Reports", CSS.sectionLabel)
 
         this.dropDownContainer = Dom.div()
 

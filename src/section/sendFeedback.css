@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Bookman Old Style';
+    src: url(fonts/BOOKOS.TTF);
+    font-family: 'Bold Times New Roman';
+    src: url(fonts/TIMESBD.TTF);
+    font-family: 'Times New Roman';
+    src: url(fonts/TIMES.TTF);
+}
+.centered-times-new-roman {
+    font-family: 'Bold Times New Roman',Arial;
+    margin-left: 100px;
+}
+
+.tnr {
+    font-family: 'Times New Roman',Arial;
+}

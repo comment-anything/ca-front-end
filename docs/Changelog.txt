@@ -1,3 +1,9 @@
+3/8/2023: Frank
+- created moderators.ts, banRecords.ts, modActions.ts and reports.ts (all part of moderator.ts)
+- created allmost all the frameworks (implemented but non-functional) for the moderation panel. ex: buttons inputboxes dropdowns ect. ( everything except the maps)
+- created sendFeedback.ts a framework for submitting user feedback to the moderation panel
+- overhauled the design of the moderation panel
+
 3/4/2023: Frank
 - stylized the fonts inside of settings
 - added regular times new roman to fonts folder
