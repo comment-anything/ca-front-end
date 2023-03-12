@@ -1,20 +1,55 @@
+@font-face {
+    font-family: 'Bookman Old Style';
+    src: url(fonts/BOOKOS.TTF);
+    font-family: 'Bold Times New Roman';
+    src: url(fonts/TIMESBD.TTF);
+    font-family: 'Times New Roman';
+    src: url(fonts/TIMES.TTF);
+}
 
 .profile-info-row {
+    font-family: 'Bookman Old Style',Arial;
     padding: 2px;
     display: flex;
     width: 95%;
 }
 
 .profile-info-row>label {
+    font-family: 'Bookman Old Style',Arial;
     padding-right: 10px;
     width: 40%;
     text-align: right;
 }
 .profile-info-row label::after {
+    font-family: 'Bookman Old Style',Arial;
     content:":";
 }
 
 .profile-info-row>div {
+    font-family: 'Bookman Old Style',Arial;
+    padding-left: 10px;
+    width: 50%;
+}
+.profile-blurb-row{
+    font-family: 'Bookman Old Style',Arial; 
+    padding: 2px;
+    display: flex;
+    width: 95%;
+}
+
+.profile-blurb-row>label {
+    font-family: 'Bookman Old Style',Arial; 
+    padding-right: 10px;
+    width: 40%;
+    text-align: right;
+}
+.profile-blurb-row label::after {
+    font-family: 'Bold Times New Roman',Arial; 
+    content:":";
+}
+
+.profile-blurb-row>div {
+    font-family: 'Times New Roman',Arial; 
     padding-left: 10px;
     width: 50%;
 }

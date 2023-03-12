@@ -5,6 +5,7 @@ import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
 import { CommentReplySection } from "../section/commentReply"
 import { PseudoUrlSection } from "../section/pseudoURL"
+import { Feedback } from "../section/sendFeedback";
 
 import "./comments.css"
 import { Settings } from "../Settings"
@@ -33,6 +34,7 @@ export class CafeCommentsWindow extends CafeWindow {
     newCommentSection   : CommentReplySection
     purlSection         : PseudoUrlSection
     currentlyViewing    : HTMLDivElement
+    feedback            : Feedback
     
     constructor() {
         super() // TODO: add parameters for CSS and whatnot
@@ -41,6 +43,7 @@ export class CafeCommentsWindow extends CafeWindow {
             Path: "",
             Comments: []
         }
+        this.feedback = new Feedback();
         this.displayedComments = new Map<number, CafeComment>()
 
         this.commentSortSettings = new CafeCommentSortDisplay()
@@ -52,6 +55,7 @@ export class CafeCommentsWindow extends CafeWindow {
         this.setCurrentlyViewing()
         
         this.el.append(
+            this.feedback.el,
             this.currentlyViewing,
             this.purlSection.el,
             this.commentSortSettings.el,

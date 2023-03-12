@@ -12,6 +12,7 @@ import { Client } from "./CLIENT";
 import { CafeSettingsWindow } from "./windows/settings";
 import { CafeCommentsWindow } from "./windows/comments";
 import { CafeAdminWindow } from "./windows/admin";
+import { CafeModerationWindow } from "./windows/moderator";
 
 const CSS = {
     cafe: "cafe-container",
@@ -33,7 +34,8 @@ export class CafeNavBar {
     logoutButton   : HTMLButtonElement;
     settingsButton : HTMLButtonElement;
     commentsButton : HTMLButtonElement;
-    adminButton    : HTMLButtonElement
+    adminButton    : HTMLButtonElement;
+    moderatorButton: HTMLButtonElement;
     
     currentlyViewing? : CafeWindow
     commentsWindow    : CafeCommentsWindow
@@ -43,6 +45,7 @@ export class CafeNavBar {
     forgotPWWindow    : CafePwResetRequestWindow;
     newPassWindow     : CafeNewPasswordWindow;
     adminWindow       : CafeAdminWindow;
+    moderatorWindow   : CafeModerationWindow;
     
     constructor() {
         // create the base containers
@@ -60,7 +63,8 @@ export class CafeNavBar {
         this.logoutButton = Dom.button("Logout", [CSS.navTabButton, CSS.logoutButton])
         this.commentsButton = Dom.button("Comments", [CSS.navTabButton])
         this.adminButton = Dom.button("Admin", [CSS.navTabButton])
-        
+        this.moderatorButton = Dom.button("Moderator", [CSS.navTabButton])
+
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
         this.loginButton.addEventListener("click", getNavClickCallback("login"))
@@ -71,6 +75,7 @@ export class CafeNavBar {
         this.logoutButton.addEventListener("click", this.logoutButtonClicked.bind(this))
 
         this.adminButton.addEventListener("click", getNavClickCallback("admin"))
+        this.moderatorButton.addEventListener("click", getNavClickCallback("moderation"))
         
 
         // create the windows
@@ -81,16 +86,17 @@ export class CafeNavBar {
         this.newPassWindow = new CafeNewPasswordWindow();
         this.commentsWindow = new CafeCommentsWindow()
         this.adminWindow = new CafeAdminWindow();
+        this.moderatorWindow = new CafeModerationWindow();
 
         this.loginWindow.hide()
         this.currentlyViewing = this.registerWindow
 
         // construct the dom tree
         this.el.append(this.message.el, nav, windowContainer)
-        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.adminButton)
+        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.adminButton, this.moderatorButton)
         
         // Order of appendation shouldn't matter
-        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el, this.adminWindow.el)
+        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el, this.adminWindow.el, this.moderatorWindow.el)
 
     }
     
@@ -111,6 +117,22 @@ export class CafeNavBar {
             this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
             if(state.ownProfile.LoggedInAs.IsAdmin) {
                 showInlineBlock(this.adminButton)
+            }
+            if(state.ownProfile.LoggedInAs.IsDomainModerator) {
+                showInlineBlock(this.moderatorButton)
+                showInlineBlock(this.moderatorWindow.moderators.domainFrom)
+                showInlineBlock(this.moderatorWindow.moderators.domainTo)
+                showInlineBlock(this.moderatorWindow.moderators.domainFeedbackType)
+                showInlineBlock(this.moderatorWindow.moderators.requestDomainModeratorsButton)
+                showInlineBlock(this.moderatorWindow.moderators.domainModRecords)
+            }
+            if(state.ownProfile.LoggedInAs.IsGlobalModerator) {
+                showInlineBlock(this.moderatorButton)
+                showInlineBlock(this.moderatorWindow.moderators.globalFrom)
+                showInlineBlock(this.moderatorWindow.moderators.globalTo)
+                showInlineBlock(this.moderatorWindow.moderators.globalFeedbackType)
+                showInlineBlock(this.moderatorWindow.moderators.requestGlobalModeratorsButton)
+                showInlineBlock(this.moderatorWindow.moderators.globalModRecords)
             }
         }
         
@@ -143,8 +165,13 @@ export class CafeNavBar {
             case "newPassword":
                 this.currentlyViewing = this.newPassWindow
                 break;
+
             case "admin":
                 this.currentlyViewing = this.adminWindow
+                break;
+
+            case "moderation":
+                this.currentlyViewing = this.moderatorWindow
                 break;
                 
             default:
@@ -170,6 +197,7 @@ export class CafeNavBar {
         showInlineBlock(this.logoutButton)
         showInlineBlock(this.settingsButton)
         showInlineBlock(this.commentsButton)
+        showInlineBlock(this.moderatorButton)//temporary
     }
 
 
@@ -182,12 +210,14 @@ export class CafeNavBar {
         this.settingsWindow.hide()
         this.commentsWindow.hide()
         this.adminWindow.hide()
+        this.moderatorWindow.hide()
         hide(this.registerButton)
         hide(this.loginButton)
         hide(this.logoutButton)
         hide(this.settingsButton)
         hide(this.commentsButton)
         hide(this.adminButton)
+        hide(this.moderatorButton)
     }
 
     logoutButtonClicked() {
