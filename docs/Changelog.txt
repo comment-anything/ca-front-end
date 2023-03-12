@@ -1,3 +1,5 @@
+3/12/2023: Karl
+- assignAdmin, assignGlobalMod tweaks to work w/ back end. 
 
 3/8/2023: Frank
 - created moderators.ts, banRecords.ts, modActions.ts and reports.ts (all part of moderator.ts)

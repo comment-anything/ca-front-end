@@ -65,15 +65,17 @@ export class AssignGlobalModSection extends CafeSection {
     assignGlobalClicked() {
         document.dispatchEvent(new CustomEvent<Client.AssignGlobalModerator>("assignGlobalModerator", {
             detail: {
-                User: this.assignTo.value
+                User: this.assignTo.value,
+                IsDeactivation: false
             }
         }))
 
     }
     removeGlobalClicked() {
-        document.dispatchEvent(new CustomEvent<Client.RemoveGlobalModerator>("removeGlobalModerator", {
+        document.dispatchEvent(new CustomEvent<Client.AssignGlobalModerator>("assignGlobalModerator", {
             detail: {
-                User: this.assignTo.value
+                User: this.removeFrom.value,
+                IsDeactivation: true
             }
         }))
 
