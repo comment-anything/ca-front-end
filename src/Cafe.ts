@@ -220,16 +220,6 @@ export class Cafe {
             my.fetcher.fetch("assignGlobalModerator", "POST", data, retrieveResponses)
         })
 
-        document.addEventListener("removeGlobalModerator", (ev)=> {
-            let data = ev.detail
-            console.log("NEW REMOVE GLOBMOD EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("removeGlobalModerator", "POST", data, retrieveResponses)
-        })
-
-
-
-
-
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
