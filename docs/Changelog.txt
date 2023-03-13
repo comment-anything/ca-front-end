@@ -1,3 +1,6 @@
+3/13/2023: Karl
+- Hamburger button
+
 3/12/2023: Karl
 - assignAdmin, assignGlobalMod tweaks to work w/ back end. 
 

@@ -6,17 +6,22 @@ import { CafeRegisterWindow } from "./windows/register";
 import { CafePwResetRequestWindow } from "./windows/pwResetRequest"
 import { CafeNewPasswordWindow } from "./windows/setNewPass"
 
-import "./navbar.css"
 import { CafeMessageDisplay } from "./ui/message";
 import { Client } from "./CLIENT";
 import { CafeSettingsWindow } from "./windows/settings";
 import { CafeCommentsWindow } from "./windows/comments";
 import { CafeAdminWindow } from "./windows/admin";
 
+import "./navbar.css"
+import HamSVG from "./hamburger_menu.svg"
+
 const CSS = {
     cafe: "cafe-container",
     nav: "nav-bar",
-    navTabButton: "nav-tab",
+    hamburger: "hamburger-container",
+    navButtonsContainer: "hamburger-buttons-container",
+    navitemButton: "hamburger-nav-selection",
+    hamburgerImage: "hamburger-image",
     activeNavTab : "active-nav-tab",
     logoutButton : "nav-tab-logout"
 }
@@ -47,19 +52,23 @@ export class CafeNavBar {
     constructor() {
         // create the base containers
         this.el = Dom.el("div", CSS.cafe)
-        let nav = Dom.el("nav", CSS.nav)
 
         this.message = new CafeMessageDisplay()
+        
+        let [navbutton, nav] = getHamburger()
+        this.el.append(navbutton)
 
+        // create the window container
         let windowContainer = Dom.div()
 
+
         // create the nav buttons
-        this.registerButton = Dom.button("Register", [CSS.navTabButton, CSS.activeNavTab])
-        this.loginButton = Dom.button("Login", [CSS.navTabButton])
-        this.settingsButton = Dom.button("Settings", [CSS.navTabButton])
-        this.logoutButton = Dom.button("Logout", [CSS.navTabButton, CSS.logoutButton])
-        this.commentsButton = Dom.button("Comments", [CSS.navTabButton])
-        this.adminButton = Dom.button("Admin", [CSS.navTabButton])
+        this.registerButton = Dom.button("Register", [CSS.navitemButton, CSS.activeNavTab])
+        this.loginButton = Dom.button("Login", [CSS.navitemButton])
+        this.settingsButton = Dom.button("Settings", [CSS.navitemButton])
+        this.logoutButton = Dom.button("Logout", [CSS.navitemButton, CSS.logoutButton])
+        this.commentsButton = Dom.button("Comments", [CSS.navitemButton])
+        this.adminButton = Dom.button("Admin", [CSS.navitemButton])
         
         // register callbacks
         this.registerButton.addEventListener("click", getNavClickCallback("register"))
@@ -86,7 +95,7 @@ export class CafeNavBar {
         this.currentlyViewing = this.registerWindow
 
         // construct the dom tree
-        this.el.append(this.message.el, nav, windowContainer)
+        this.el.append(this.message.el, windowContainer)
         nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.adminButton)
         
         // Order of appendation shouldn't matter
@@ -231,4 +240,24 @@ function setActive(element:HTMLElement) {
 // Removes class CSS.activeNavTab
 function setInactive(element:HTMLElement) {
     element.classList.remove(CSS.activeNavTab)
+}
+
+function getHamburger() {
+    let nav = Dom.el("nav", CSS.hamburger)
+    let hbutton = Dom.el("img", CSS.hamburgerImage)
+    hbutton.src = HamSVG
+    hbutton.title = "Click this hamburger to toggle the navigation menu."
+    nav.append(hbutton) //line-height: 0, text-align: center
+    let container = Dom.div(undefined, CSS.navButtonsContainer)
+
+    function toggler() {
+        if(container.style.display == "block") {
+            container.style.display = "none"
+        } else {
+            container.style.display = "block"
+        }
+    }
+    hbutton.addEventListener("click", toggler)
+    nav.append(container)
+    return [nav, container]
 }
