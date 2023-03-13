@@ -5,8 +5,7 @@ import { ServerResponse, Server, ServerMap } from "./SERVER";
 
 // Dispatcher is responsible for parsing an array of server responses and dispatching them to the appropriate objects around the front end for rendering to the user.
 export class Dispatcher {
-
-
+    
     /** Dispatch uses the “Name” field of the ServerResponse to determine what kind of information is contained in the “Data” field. The “Name” field determines which Dispatcher method is next called, and the object which will render the data is retrieved using the parameter reference to Cafe. */
     dispatch(packets:ServerResponse<any>[], cafe: Cafe) {
         for(let datum of packets) {
@@ -35,25 +34,40 @@ export class Dispatcher {
                     let npr = datum.Data as Server.NewPassResponse
                     this.dispatchNewPassResponse(npr, cafe)
                     break;
+                    
                 case "FullPage":
                     let fp = datum.Data as Server.FullPage
                     this.dispatchFullPageResponse(fp, cafe)
                     break;
+                    
                 case "Comment":
                     let c = datum.Data as Server.Comment
                     this.dispatchCommentUpdate(c, cafe)
                     break;
+                    
                 case "LogoutResponse":
                     this.dispatchUserUpdate(undefined, cafe);
                     break;
+                    
                 case "FeedbackReport":
                     let fr = datum.Data as Server.FeedbackReport
                     this.dispatchFeedbackReport(fr, cafe);
                     break;
+                    
                 case "AdminUsersReport":
                     let aup = datum.Data as Server.AdminUsersReport
                     this.dispatchUsersReport(aup, cafe);
                     break;
+                
+                case "CommentReport":
+                    let cr = datum.Data as Server.CommentReport
+                    this.dispatchCommentReport(cr, cafe)
+                    break
+                
+                case "CommentReports":
+                    let crs = datum.Data as Server.CommentReports
+                    this.dispatchCommentReports(crs, cafe)
+                    break
             }
         }
     }
@@ -100,8 +114,17 @@ export class Dispatcher {
     dispatchFeedbackReport(feedbackReport: Server.FeedbackReport, cafe:Cafe) {
         cafe.navbar.adminWindow.feedbackReport.update(feedbackReport.Records)
     }
+    
     dispatchUsersReport(usersReport: Server.AdminUsersReport, cafe:Cafe) {
         cafe.navbar.adminWindow.usersReport.update(usersReport)
     }
-
+    
+    dispatchCommentReport(commentReport: Server.CommentReport, cafe: Cafe) {
+        cafe.navbar.moderatorWindow.reports.updateCommentReport(commentReport)
+    }
+    
+    dispatchCommentReports(commentReports: Server.CommentReports, cafe: Cafe) {
+        cafe.navbar.moderatorWindow.reports.populateCommentReports(commentReports.Reports)
+    }
 }
+

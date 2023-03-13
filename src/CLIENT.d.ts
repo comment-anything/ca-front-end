@@ -10,24 +10,24 @@ type HTTPMethod = {
 
 /** ClientMap maps API end points with the expected JSON data type for that endpoint. For example, "commentAnywhere.com/register" expects to receive an HTTP request with a body of type Client.Register. See page 148 of the Design doc for endpoint names. */
 export type ClientMap = {
-    'register': [Client.Register, HTTPMethod["POST"]],
-    'login': [Client.Login, HTTPMethod["POST"]],
-    'logout': [Client.Logout, HTTPMethod["PUT"]],
-    'pwResetReq': [Client.PasswordReset, HTTPMethod["POST"]],
-    //'pwResetCode': [Client.PasswordResetCode, HTTPMethod["POST"]],
-    'newPassword': [Client.SetNewPass, HTTPMethod["POST"]],
-    "changeEmail": [Client.ChangeEmail, HTTPMethod["POST"]],
-    "changeProfile": [Client.ChangeProfileBlurb, HTTPMethod["POST"]],
-    "getComments": [Client.GetComments, HTTPMethod["POST"]],
-    "newComment": [Client.CommentReply, HTTPMethod["POST"]],
-    "voteComment": [Client.CommentVote, HTTPMethod["POST"]]
-    "viewUsersReport": [ Client.ViewUsersReport ,HTTPMethod["POST"]],
-    "viewFeedback": [ Client.ViewFeedback ,HTTPMethod["POST"]],
-    "toggleFeedbackHidden" : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ],
-    "newFeedback" : [Client.Feedback, HTTPMethod["POST"]],
-    "assignAdmin" : [Client.AssignAdmin, HTTPMethod["POST"]],
-    "assignGlobalModerator" : [Client.AssignGlobalModerator, HTTPMethod["POST"]]
-
+    'register'              : [Client.Register, HTTPMethod["POST"]],
+    'login'                 : [Client.Login, HTTPMethod["POST"]],
+    'logout'                : [Client.Logout, HTTPMethod["PUT"]],
+    'pwResetReq'            : [Client.PasswordReset, HTTPMethod["POST"]],
+    //'pwResetCode'         : [Client.PasswordResetCode, HTTPMethod["POST"]],
+    'newPassword'           : [Client.SetNewPass, HTTPMethod["POST"]],
+    "changeEmail"           : [Client.ChangeEmail, HTTPMethod["POST"]],
+    "changeProfile"         : [Client.ChangeProfileBlurb, HTTPMethod["POST"]],
+    "getComments"           : [Client.GetComments, HTTPMethod["POST"]],
+    "newComment"            : [Client.CommentReply, HTTPMethod["POST"]],
+    "voteComment"           : [Client.CommentVote, HTTPMethod["POST"]]
+    "viewUsersReport"       : [ Client.ViewUsersReport ,HTTPMethod["POST"]],
+    "viewFeedback"          : [ Client.ViewFeedback ,HTTPMethod["POST"]],
+    "toggleFeedbackHidden"  : [ Client.ToggleFeedbackHidden, HTTPMethod["POST"] ],
+    "newFeedback"           : [Client.Feedback, HTTPMethod["POST"]],
+    "assignAdmin"           : [Client.AssignAdmin, HTTPMethod["POST"]],
+    "assignGlobalModerator" : [Client.AssignGlobalModerator, HTTPMethod["POST"]],
+    "viewCommentReports"    : [Client.ViewCommentReports, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -75,7 +75,7 @@ export namespace Client {
         Password : string
 
     }
-
+    
     /** CommentReply is dispatched to the server when a logged-in user submits a reply to an existing comment or posts a new root-level comment on a page. */
     type CommentReply = {
         ReplyingTo : number
@@ -102,11 +102,16 @@ export namespace Client {
 
     /** ViewUsersReport is dispatched to the server when an admin requests a report on the overall users of comment anywhere. */
     type ViewUsersReport = {
-
+        
     }
-
-
-
+    
+    /** ViewCommentReports is dispatched to the server when a moderator requests comment reports. It does not have any data.
+     *  DESCRIPTION NEEDS UPDATED
+     */
+    type ViewCommentReports = {
+        Domain: string
+    }
+    
     /** ViewFeedback is dispatched to the Server when an admin wishes to view feedback submitted by users of Comment Anywhere */
     type ViewFeedback = {
         From : number

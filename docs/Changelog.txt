@@ -4,6 +4,37 @@
 3/12/2023: Karl
 - assignAdmin, assignGlobalMod tweaks to work w/ back end. 
 
+3/12/2023: Luke
+- Created the CommentReport pipeline for the front end.
+- Created CafeCommentReportDisplay UIInput
+- Setup fetcher and dispatcher for CommentReport communications
+- Created ViewCommentReports client-server communication entity
+- Created CommentReport and CommentReports server responses.
+
+3/11/2023: Luke
+- Created CafeDom namespace
+- Created CSS for improved generic text-input element.
+- Created functions for initializing a generic text-input element. Used to create full or half width text-inputs.
+
+3/8/2023: Frank
+- created moderators.ts, banRecords.ts, modActions.ts and reports.ts (all part of moderator.ts)
+- created allmost all the frameworks (implemented but non-functional) for the moderation panel. ex: buttons inputboxes dropdowns ect. ( everything except the maps)
+- created sendFeedback.ts a framework for submitting user feedback to the moderation panel
+- overhauled the design of the moderation panel
+
+3/4/2023: Frank
+- stylized the fonts inside of settings
+- added regular times new roman to fonts folder
+- created basic moderation panel (moderator.ts)
+- created moderators.ts the section displayed in the panel
+- created the outline for the other moderation panel features
+
+3/1/2023: Frank
+- added fonts folder for new local fonts under src -> ui -> fonts
+- stylized the fonts inside of comments
+- slight adjustments to the comments section
+- changed the fonts inside of settings gui ( wip )
+
 3/1/2023: Karl
 - added newFeedback section
 - assignAdmin, assignGlobalMod sections

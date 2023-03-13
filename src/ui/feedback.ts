@@ -23,15 +23,16 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
 
     constructor(data: Server.FeedbackRecord) {
         super(data, "tr")
-
-        this.id = Dom.textEl("td", data.ID.toString(), CSS.smallData)
+        
         let date = new Date(data.SubmittedAt)
-        this.submittedAt = Dom.textEl("td", date.toLocaleDateString() + " " + date.toLocaleTimeString(), CSS.smallData)
+        let date_formatted = date.toLocaleDateString() + " " + date.toLocaleTimeString()
+        
+        this.id = Dom.textEl("td", data.ID.toString(), CSS.smallData)
+        this.submittedAt = Dom.textEl("td", date_formatted, CSS.smallData)
         this.feedbackType = Dom.textEl("td", data.FeedbackType, CSS.smallData)
         this.userId = Dom.textEl("td", data.UserID.toString(), CSS.smallData)
         this.username = Dom.textEl("td", data.Username, CSS.smallData)
         this.content = Dom.textEl("td", data.Content, CSS.dataContent)
-
         
         if (data.Hide == true) {
             this.setToHidden = true
@@ -39,14 +40,14 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         } else {
             this.setToHidden = false 
         }
-
+        
         this.controls = Dom.el("td")
         this.hideButton = Dom.button("hide")
         this.hideButton.title = "Toggle whether this feedback is hidden and should be shown on future feedback requests."
         this.controls.append(this.hideButton)
 
         this.clickListen(this.hideButton, this.hideButtonClicked, true)
-
+        
         this.el.append(this.id, this.submittedAt, this.feedbackType, this.userId, this.username, this.content, this.controls)
     }
 
@@ -58,6 +59,7 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         this.username.style.textDecoration = "line-through"
         this.content.style.textDecoration = "line-through"
     }
+    
     private unstrike() {
         this.id.style.textDecoration = "none"
         this.submittedAt.style.textDecoration = "none"
@@ -67,7 +69,7 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         this.content.style.textDecoration = "none"
 
     }
-
+    
     private hideButtonClicked() {
         if(this.setToHidden == true) {
             this.setToHidden = false 
@@ -86,7 +88,6 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         document.dispatchEvent(event)
     }
     
-
     static headerRow() {
         let tr = Dom.el("tr")
         let x = Dom.el("th")
