@@ -63,7 +63,7 @@ export class UsersReportSection extends CafeSection {
         this.newestUsername.textContent = data.NewestUsername
         this.userCount.textContent = data.UserCount.toString()
     }
-
+    
     toggleFold() {
         if(this.lastReportContainer.style.display == "none") {
             this.lastReportContainer.style.display = "block"

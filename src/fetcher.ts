@@ -56,7 +56,7 @@ export class Fetcher {
         this.responses = []
         return backup
     }
-
+    
     /** Sets the token that will be sent with the next request as supplied by a previous server response. */
     setToken(newToken: string) {
         this.token = newToken

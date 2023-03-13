@@ -129,6 +129,7 @@ export class Cafe {
     setClientEventListeners() {
         let my = this // to scope Cafe into callbacks
         let retrieveResponses = my.checkForResponses.bind(this)
+        
         document.addEventListener("register", (ev)=>{
             let data = ev.detail
             console.log("REGISTER EVENT RECEIVED WITH DATA: ", data)
@@ -219,7 +220,13 @@ export class Cafe {
             console.log("NEW ASSIGN GLOBMOD EV RECEIVED W DATA:", data)
             my.fetcher.fetch("assignGlobalModerator", "POST", data, retrieveResponses)
         })
-
+        
+        document.addEventListener("viewCommentReports", (ev)=> {
+            let data = ev.detail
+            console.log("NEW COMMENT REPORT EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("viewCommentReports", "POST", data, retrieveResponses)
+        })
+        
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")

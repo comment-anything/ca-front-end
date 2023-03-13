@@ -29,7 +29,7 @@ export class CafeRegisterWindow extends CafeWindow {
         this.password = Dom.createInputElement('password')
         this.rePassword = Dom.createInputElement('password')
         this.email = Dom.createInputElement('email')
-        this.agreedToTerms = Dom.createInputElement('checkbox', CSS.inputField)
+        this.agreedToTerms = Dom.createInputElement('checkbox')
         this.submitRegister = Dom.button('Register', CSS.button)
         
         this.submitRegister.addEventListener("click", this.submitRegisterClicked.bind(this))
@@ -40,7 +40,8 @@ export class CafeRegisterWindow extends CafeWindow {
             CafeDom.fullSizeGenericTextInput(this.email, {label: "Email"}),
             CafeDom.fullSizeGenericTextInput(this.username, {label: "Username"}),
             CafeDom.halfSizeGenericTextInput(this.password, {label: "Password"}),
-            CafeDom.halfSizeGenericTextInput(this.rePassword, {label: "Confirm"})
+            CafeDom.halfSizeGenericTextInput(this.rePassword, {label: "Confirm"}),
+            CafeDom.genericCheckBoxInput(this.agreedToTerms, {label: "Agree to Terms"})
         )
         
         this.el.append(
@@ -52,7 +53,8 @@ export class CafeRegisterWindow extends CafeWindow {
             Dom.createContainerWithLabel('Agree to Terms', CSS.inputLabel, "div", this.agreedToTerms, CSS.inputSection),
             this.submitRegister
             */
-            textInputContainer
+            textInputContainer,
+            CafeDom.formSubmitButton(this.submitRegister, {label: "Register"})
         )
     }
     

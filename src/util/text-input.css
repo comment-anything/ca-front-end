@@ -35,3 +35,36 @@
     border-color: rgb(109, 109, 240);
     box-shadow: 1px 1px 2px rgb(161, 159, 187)
 }
+
+.check-box-generic-label {
+    padding: 5px;
+    padding-left: 5px;
+    width: 83%;
+    color: rgb(102, 102, 102);
+    font-size: 90%;
+}
+
+.check-box-generic-input {
+    
+}
+
+.check-box-generic-container {
+    background-color: white;
+    display: flex;
+    
+    border-radius: 5px;
+    
+    padding: 1%;
+    margin: 1%;
+    cursor: text;
+    width: 90%;
+}
+
+.form-submit-button {
+    background-color: rgb(103, 255, 161);
+    border-color: rgb(146, 146, 175);
+    padding: 2%;
+    cursor:pointer;
+    font-size: 110%;
+    border-radius: 8px;
+}

@@ -11,6 +11,14 @@ const CSS = {
         genericContainer      : 'text-input-generic-container',
         halfContainerOverride : 'text-input-half-generic-container',
         focusedContainer      : 'text-input-focus-container'
+    },
+    checkBox: {
+        genericLabel     : 'check-box-generic-label',
+        genericInput     : 'check-box-generic-input',
+        genericContainer : 'check-box-generic-container'
+    },
+    button: {
+        submitForm: 'form-submit-button'
     }
 }
 
@@ -70,6 +78,26 @@ export namespace CafeDom {
         }))
         
         return listeners;
+    }
+    
+    export function genericCheckBoxInput(el: HTMLInputElement, content: UIContent): HTMLDivElement {
+        let container = Dom.div()
+        container.classList.add(CSS.checkBox.genericContainer)
+        el.classList.add(CSS.checkBox.genericInput)
+        
+        let label = Dom.textEl('div', content.label, CSS.checkBox.genericLabel)
+        
+        container.append(
+            label,
+            el
+        )
+        
+        return container
+    }
+    
+    export function formSubmitButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        el.classList.add(CSS.button.submitForm)
+        return el
     }
 }
 

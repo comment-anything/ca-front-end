@@ -6,10 +6,12 @@ export type ServerMap = {
     "ProfileUpdateResponse" : Server.ProfileUpdateResponse,
     "Token"                 : Server.Token,
     "NewPassResponse"       : Server.NewPassResponse
-    "FullPage"       : Server.FullPage
-    "Comment"       : Server.Comment
-    "AdminUsersReport" : Server.AdminUsersReport
-    "FeedbackReport" : Server.FeedbackReport
+    "FullPage"              : Server.FullPage
+    "Comment"               : Server.Comment
+    "AdminUsersReport"      : Server.AdminUsersReport
+    "FeedbackReport"        : Server.FeedbackReport
+    "CommentReport"         : Server.CommentReport
+    "CommentReports"        : Server.CommentReports
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -93,7 +95,7 @@ export namespace Server {
         Domain   : string
         Path     : string
     }
-
+    
     /** AdminUsersReport is dispatched when an Admin requests the Users report */
     type AdminUsersReport = {
         LoggedInUserCount :number
@@ -114,9 +116,29 @@ export namespace Server {
         UserID : number
         Username : string 
     }
-
+    
     /** FeedbackReport contains an array of feedbackRecords based on the admin's requesting parameters. */
     type FeedbackReport = {
         Records : FeedbackRecord[]
+    }
+    
+    /** GlobalModeratorRecord provides the  */
+    type GlobalModeratorRecord = {
+        GrantedAt         : number
+        GrantedByUsername : string
+        GrantedToUsername : string
+    }
+    
+    type CommentReport = {
+        ActionTaken       : boolean
+        Comment           : Server.Comment
+        ReasonReported    : string
+        ReportId          : number
+        ReportingUsername : string
+        TimeReported      : number
+    }
+    
+    type CommentReports = {
+        Reports : CommentReport[]
     }
 }
