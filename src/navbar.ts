@@ -268,7 +268,9 @@ function getHamburger() {
     hbutton.src = HamSVG
     hbutton.title = "Click this hamburger to toggle the navigation menu."
     nav.append(hbutton) //line-height: 0, text-align: center
-    let container = Dom.div(undefined, CSS.navButtonsContainer)
+    let container = Dom.div(undefined, CSS.navButtonsContainer, {
+        display:"block"
+    })
 
     function toggler() {
         if(container.style.display == "block") {

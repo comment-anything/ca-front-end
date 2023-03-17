@@ -7,6 +7,7 @@ import { CommentVoteSection } from "../section/commentVoteSection";
 
 import "./comment.css"
 import arrow from "./arrow.svg"
+import { ReportCommentSection } from "../section/reportAComment";
 
 const CSS = {
     usernameHeader: "username-header",
@@ -23,6 +24,7 @@ export class CafeComment extends UIInput<Server.Comment> {
     username       : HTMLDivElement
     content        : HTMLDivElement
     replySection   : CommentReplySection
+    reportSection  : ReportCommentSection
     childContainer : HTMLDivElement
     collapseButton : HTMLDivElement
     submittedAt    : HTMLTableCellElement;
@@ -36,6 +38,7 @@ export class CafeComment extends UIInput<Server.Comment> {
         this.username = Dom.el("div", CSS.usernameHeader)
         this.content  = Dom.el("div", CSS.content)
         this.replySection = new CommentReplySection(comment.CommentId)
+        this.reportSection = new ReportCommentSection(comment.CommentId)
         this.childContainer = Dom.div(undefined, CSS.childComments)
         
         this.collapseButton = Dom.div("", CSS.collapseButton, {
@@ -68,6 +71,7 @@ export class CafeComment extends UIInput<Server.Comment> {
             this.content,
             this.voteSection.el,
             this.replySection.el,
+            this.reportSection.el,
             this.collapseButton,
             this.childContainer
         )
@@ -104,6 +108,13 @@ export class CafeComment extends UIInput<Server.Comment> {
         this.childContainer.appendChild(child.el)
         // The moment this is called, we have at least one child comment. Show the "Expand/Collapse button"
         this.collapseButton.style.display = "block"
+    }
+
+    /** Overwrite the default so we also call destroy on the sections. That way, all listeners are removed. */
+    destroy(): void {
+        super.destroy()
+        this.replySection.destroy()
+        this.reportSection.destroy()
     }
 
     
