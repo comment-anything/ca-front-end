@@ -102,7 +102,7 @@ export class CafeNavBar {
 
         // construct the dom tree
         this.el.append(this.message.el, windowContainer)
-        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.adminButton)
+        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.moderatorButton, this.adminButton)
         
         // Order of appendation shouldn't matter
         windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el, this.adminWindow.el, this.moderatorWindow.el)
@@ -126,11 +126,12 @@ export class CafeNavBar {
             this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
             if(state.ownProfile.LoggedInAs.IsAdmin) {
                 showInlineBlock(this.adminButton)
-            }
-            if(state.ownProfile.LoggedInAs.IsDomainModerator) {
                 showInlineBlock(this.moderatorButton)
             }
-            if(state.ownProfile.LoggedInAs.IsGlobalModerator) {
+            else if(state.ownProfile.LoggedInAs.IsDomainModerator) {
+                showInlineBlock(this.moderatorButton)
+            }
+            else if(state.ownProfile.LoggedInAs.IsGlobalModerator) {
                 showInlineBlock(this.moderatorButton)
             }
         }

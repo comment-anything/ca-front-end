@@ -3,6 +3,7 @@
 - created a cafeSection initted by CafeComments for posting reports 
 - override CafeComment.destroy to remove listeners of subsections
 - removed 'Feedback' from CafeCommentsWindow (not sure why this was there)
+- ensured moderator panel button shows for admins and moderators
 
 3/13/2023: Karl
 - Hamburger button

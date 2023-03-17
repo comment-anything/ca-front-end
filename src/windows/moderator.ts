@@ -20,10 +20,5 @@ export class CafeModerationWindow extends CafeWindow {
         this.el.append(
             this.reports.el
         )
-        
-        //this.el.append(this.moderators.el)
-        //this.el.append(this.modActions.el)
-        //this.el.append(this.banRecords.el)
-        //this.el.append(this.reports.el)
     }
 }
