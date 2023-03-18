@@ -28,6 +28,7 @@ export type ClientMap = {
     "assignAdmin"           : [Client.AssignAdmin, HTTPMethod["POST"]],
     "assignGlobalModerator" : [Client.AssignGlobalModerator, HTTPMethod["POST"]],
     "viewCommentReports"    : [Client.ViewCommentReports, HTTPMethod["POST"]]
+    "newReport"     : [Client.PostCommentReport, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -140,6 +141,12 @@ export namespace Client {
     /** Dispatched when an admin assigns another admin. */
     type AssignAdmin = {
         User: string
+    }
+
+    /** Dispatched when a user reports a comment. */
+    type PostCommentReport = {
+        CommentID: number
+        Reason: string
     }
 }
 

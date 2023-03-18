@@ -1,3 +1,17 @@
+3/18/2023: Karl
+- Deleted redundant CafeComment 
+- Small comment cleanups
+
+3/17/2023: Karl 
+- newReport endpoint and PostCommentReport entity
+- created a cafeSection initted by CafeComments for posting reports 
+- override CafeComment.destroy to remove listeners of subsections
+- removed 'Feedback' from CafeCommentsWindow (not sure why this was there)
+- ensured moderator panel button shows for admins and moderators
+
+3/13/2023: Karl
+- Hamburger button
+
 3/12/2023: Karl
 - assignAdmin, assignGlobalMod tweaks to work w/ back end. 
 

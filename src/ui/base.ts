@@ -20,9 +20,10 @@ export class UIInput<T>{
     }
     
     /** 
-        el   (One or more HTML elements)
-        fun  (One or more functions to invoke upon click)
-        bind (Bind each function to each element?) */
+        @param el {HTMLElement | Array<HTMLElement>} Event targets
+        @param fun {(e:MouseEvent)=>any | Array<(e:MouseEvent)=>any} callbacks
+        @param bind Whether to bind to 'this' or not
+    */
     clickListen(el:HTMLElement | HTMLElement[], fun: ((e:MouseEvent)=>any) | Array<(e:MouseEvent)=>any>, bind=true) {
         if (bind) {
             if (Array.isArray(fun)) {
