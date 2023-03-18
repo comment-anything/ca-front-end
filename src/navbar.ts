@@ -268,7 +268,7 @@ function getHamburger() {
     let hbutton = Dom.el("img", CSS.hamburgerImage)
     hbutton.src = HamSVG
     hbutton.title = "Click this hamburger to toggle the navigation menu."
-    nav.append(hbutton) //line-height: 0, text-align: center
+    nav.append(hbutton) 
     let container = Dom.div(undefined, CSS.navButtonsContainer, {
         display:"block"
     })
@@ -284,3 +284,4 @@ function getHamburger() {
     nav.append(container)
     return [nav, container]
 }
+
