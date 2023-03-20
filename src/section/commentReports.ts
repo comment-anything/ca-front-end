@@ -37,6 +37,7 @@ export class CommentReportsSection extends CafeSection {
             sectionLabel,
             this.dropDownContainer
         )
+        
     }
     
     /** A list of CommentReports is received from the server.
@@ -72,11 +73,15 @@ export class CommentReportsSection extends CafeSection {
         
         // Try to retrieve an existing report to update
         let existingReport = this.displayedReports.get(report.ReportId)
+        console.log("💩", report)
         
         if (existingReport == undefined) {
             // Create a new report if it doesn't exist
             let newToAdd = new CafeCommentReportDisplay(report)
             this.displayedReports.set(report.ReportId, newToAdd)
+            
+            // Add the report to the Comment Reports dropdown container
+            this.dropDownContainer.append(newToAdd.el)
         }
         else {
             // Update the report if it already exists

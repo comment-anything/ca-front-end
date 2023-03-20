@@ -131,11 +131,13 @@ export namespace Server {
     
     type CommentReport = {
         ActionTaken       : boolean
-        Comment           : Server.Comment
+        CommentData       : Server.Comment
         ReasonReported    : string
         ReportId          : number
+        ReportingUserID   : number
         ReportingUsername : string
         TimeReported      : number
+        Domain            : string
     }
     
     type CommentReports = {

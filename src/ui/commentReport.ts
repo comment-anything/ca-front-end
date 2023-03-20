@@ -1,64 +1,211 @@
 import { Server } from "../SERVER"
 import { UIInput } from "./base"
 import { Dom } from "../util/dom"
+import { CafeDom } from "../util/cafeDom"
+
+import "./commentReport.css"
+
+const CSS = {
+    reportHeader: {
+        state: 'comment-report-header-state',
+        timeReported: 'comment-report-header-time-reported',
+        domain: 'comment-report-header-domain',
+        container: 'comment-report-header-container'
+    },
+    buttons: {
+        button: 'comment-report-button',
+        container: 'comment-report-buttons-container'
+    },
+    parentContainer: 'comment-report-parent-container',
+    content: {
+        username: 'comment-report-username',
+        infoBlock: 'comment-report-info-block'
+    },
+    moderate: {
+        reasonLabel: 'comment-report-action-reason-label',
+        reasonTextBox: 'comment-report-action-reason-textbox'
+    }
+}
 
 /** Displays data for a single CommentReport */
 export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
-    comment : Server.Comment
+    data              : Server.CommentReport
     
-    actionTaken       : HTMLDivElement
-    reasonReported    : HTMLDivElement
-    reportingUsername : HTMLDivElement
+    // DIV elements for the CommentReport's header
+    actionLabel       : HTMLDivElement
     timeReported      : HTMLDivElement
+    domainLabel       : HTMLDivElement
     
+    // Buttons to toggle between the 3 section containers
     contentButton  : HTMLButtonElement
-    detailsButton  : HTMLButtonElement
+    reasonButton   : HTMLButtonElement
     moderateButton : HTMLButtonElement
     
+    // The 3 main containers
+    contentContainer  : HTMLDivElement
+    reasonContainer   : HTMLDivElement
+    moderateContainer : HTMLDivElement
+    
+    // DIV elements for the "content" container
+    reportedUsername  : HTMLDivElement
+    reportedContent   : HTMLDivElement
+    
+    // DIV elements for the "details" container
+    reasonReported    : HTMLDivElement
+    reportingUsername : HTMLDivElement
+    
+    // Input elements for the "moderate" container
     setHiddenTo            : HTMLInputElement
     setRemovedTo           : HTMLInputElement
     reason                 : HTMLTextAreaElement
     submitModerationButton : HTMLButtonElement
     
+    
+    
     constructor(data: Server.CommentReport) {
         super(data, "div");
+        this.data = data
         
-        this.comment = data.Comment
-        this.actionTaken = Dom.textEl("td")
-        this.reasonReported = Dom.textEl("td")
-        this.reportingUsername = Dom.textEl("td")
-        this.timeReported = Dom.textEl("td")
+        // HEADER CONTAINER
+        this.actionLabel = Dom.textEl("div", "", CSS.reportHeader.state)
+        this.timeReported = Dom.textEl("div", "", CSS.reportHeader.timeReported)
+        this.domainLabel = Dom.textEl("div", "", CSS.reportHeader.domain)
         
-        this.update(data)
+        let headerContainer = Dom.div('', CSS.reportHeader.container)
         
-        this.contentButton = Dom.button("Content")
-        this.detailsButton = Dom.button("Details")
-        this.moderateButton = Dom.button("Moderate")
+        headerContainer.append(
+            this.actionLabel,
+            this.timeReported,
+            this.domainLabel
+        )
         
+        // BUTTON CONTAINER
+        this.contentButton = Dom.button("Content", CSS.buttons.button)
+        this.reasonButton = Dom.button("Reason", CSS.buttons.button)
+        this.moderateButton = Dom.button("Moderate", CSS.buttons.button)
+        
+        let buttonsContainer = Dom.div('', CSS.buttons.container)
+        
+        buttonsContainer.append (
+            this.contentButton,
+            this.reasonButton,
+            this.moderateButton
+        )
+        
+        // PARENT CONTAINER
+        
+        this.contentContainer = Dom.div("")
+        this.reasonContainer = Dom.div("")
+        this.moderateContainer = Dom.div("")
+        
+        let parentContainer = Dom.div("", CSS.parentContainer)
+
+        parentContainer.append(
+            this.contentContainer,
+            this.reasonContainer,
+            this.moderateContainer
+        )
+        
+        // CONTENT CONTAINER
+        this.reportedUsername = Dom.div("", CSS.content.username)
+        this.reportedContent = Dom.div("", CSS.content.infoBlock)
+        
+        this.contentContainer.append(
+            this.reportedUsername,
+            this.reportedContent
+        )
+        
+        // REASON CONTAINER
+        this.reportingUsername = Dom.div("", CSS.content.username)
+        this.reasonReported = Dom.div("", CSS.content.infoBlock)
+        
+        this.reasonContainer.append(
+            this.reportingUsername,
+            this.reasonReported
+        )
+        
+        // MODERATE CONTAINER
         this.setHiddenTo = Dom.createInputElement('checkbox')
         this.setRemovedTo = Dom.createInputElement('checkbox')
-        this.reason = Dom.el("textarea")
+        this.reason = Dom.el("textarea", CSS.moderate.reasonTextBox)
         this.submitModerationButton = Dom.button("Confirm")
         
-        this.el.append(
-            this.actionTaken,
-            this.reasonReported,
-            this.reportingUsername,
-            this.timeReported,
+        let hiddenCheckBox = CafeDom.genericCheckBoxInput(this.setHiddenTo, {label: "Flag Hidden?"})
+        let removeCheckBox = CafeDom.genericCheckBoxInput(this.setRemovedTo, {label: "Flag Removal?"})
+        let actionReasonLabel = Dom.textEl('label', 'Reason for your action', CSS.moderate.reasonLabel)
+        
+        this.moderateContainer.append(
+            hiddenCheckBox,
+            removeCheckBox,
+            actionReasonLabel,
+            this.reason,
+            this.submitModerationButton
         )
+        
+        // Add click event listeners for the section buttons to show the appropriate section when clicked
+        this.clickListen(this.contentButton, ()=>{ this.showContainer(this.contentContainer) })
+        this.clickListen(this.reasonButton, ()=>{ this.showContainer(this.reasonContainer) })
+        this.clickListen(this.moderateButton, ()=>{ this.showContainer(this.moderateContainer) })
+        
+        // Overall append function
+        this.el.append(
+            headerContainer,
+            buttonsContainer,
+            parentContainer
+        )
+        
+        // Update from CommentReport data
+        this.update(data)
+        
+        // Show the content container by default.
+        this.showContainer(this.contentContainer)
+        console.log("💩", this.el)
+    }
+    
+    /** Hides all containers, and then shows the specified one. */
+    showContainer(container: HTMLDivElement) {
+        this.contentContainer.style.display = "none"
+        this.reasonContainer.style.display = "none"
+        this.moderateContainer.style.display = "none"
+        
+        container.style.display = "block"
     }
     
     /** Updates the displayed data with a new CommentReport */
     update(data: Server.CommentReport) {
         
-        let actTakenStr = data.ActionTaken ? "Action Resolved" : "Pending Update"
-        let date = new Date(data.TimeReported)
+        this.data = data
+        
+        // HEADER SECTION
+        let actTakenStr: string
+        
+        if (data.ActionTaken) {
+            actTakenStr = "Action Resolved"
+            this.actionLabel.style.color = "green"
+        }
+        else {
+            actTakenStr = "Pending Action"
+            this.actionLabel.style.color = "red"
+        }
+        
+        let date = new Date(data.TimeReported * 1000)
         let date_formatted = date.toLocaleDateString() + " " + date.toLocaleTimeString()
         
-        this.actionTaken.textContent = actTakenStr
-        this.reasonReported.textContent = data.ReasonReported
-        this.reportingUsername.textContent = data.ReportingUsername
+        this.domainLabel.textContent = data.Domain
+        this.actionLabel.textContent = actTakenStr
         this.timeReported.textContent = date_formatted
+        
+        // CONTENT SECTION
+        this.reportedUsername.textContent = "Posted by \"" + data.CommentData.Username + "\""
+        this.reportedContent.textContent = data.CommentData.Content
+        
+        // REASON SECTION
+        this.reportingUsername.textContent = "Reported by \"" + data.ReportingUsername + "\""
+        this.reasonReported.textContent = data.ReasonReported
+        
+        // MODERATE SECTION
+        this.setHiddenTo.checked = data.CommentData.Hidden
+        this.setRemovedTo.checked = data.CommentData.Removed
     }
     
     /** The server will retrieve UserProfile data for the "reporting user"
