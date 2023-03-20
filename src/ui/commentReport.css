@@ -1,0 +1,65 @@
+
+/* --- Header Styles --- */
+.comment-report-header-state {
+    color: red;
+    display: inline-block;
+}
+
+.comment-report-header-time-reported {
+    display: inline-block;
+    text-align: right;
+    padding-left: 33%;
+    font-size: 12px;
+}
+
+.comment-report-header-container {
+    background-color: lightgray;
+    padding: 2px;
+    border-radius: 2px;
+    margin: 2px;
+}
+
+/* --- Button Styles --- */
+
+.comment-report-button {
+    display: inline-block;
+    border: none;
+    margin: 2px;
+    width: 30%;
+}
+
+.comment-report-buttons-container {
+    text-align: center;
+}
+
+
+/* --- Parent Container Styles --- */
+
+.comment-report-parent-container {
+    background-color: lightgray;
+    padding: 10px;
+    padding-bottom: 5%;
+    margin-bottom: 5%;
+}
+
+/* --- Content Container Styles --- */
+
+.comment-report-username {
+    font-weight: bold;
+}
+
+.comment-report-info-block {
+    font-size: 12px;
+}
+
+/* --- Moderate Container Styles --- */
+.comment-report-action-reason-label {
+    display:block;
+}
+
+.comment-report-action-reason-textbox {
+    display:inline;
+    resize:none;
+    padding-bottom:15%;
+    width: 90%;
+}

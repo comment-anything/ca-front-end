@@ -1,3 +1,10 @@
+3/19/2023: Luke
+- Updated the CommentReport server response entity to include "Domain" and "ReportingUserID"
+- the updateCommentReport of commentReports.ts appends the commentReport UIInputs to its container
+- Designed and implemented the look of a comment report
+- Added the "content", "reason", and "moderate" pages for each CafeCommentReportDisplay
+- The CafeCommentReportDisplay update() function will refresh the HTML content with updated data. Will update text and moderation options.
+
 3/18/2023: Karl
 - Deleted redundant CafeComment 
 - Small comment cleanups
