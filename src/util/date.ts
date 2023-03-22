@@ -30,8 +30,6 @@ export function DatetimeString(year: number, month:number, day:number, hours:num
         s += minutes
 
     }
-    console.log("📅📅📅", year, month, day, hours, minutes)
-    console.log("📆📅📅", s);
     return s
 
 }

@@ -65,16 +65,7 @@ export class CafeComment extends UIInput<Server.Comment> {
         let date = new Date(comment.TimePosted * 1000)
         this.submittedAt = Dom.textEl("td", date.toLocaleDateString() + " " + date.toLocaleTimeString(), CSS.postTime)
         
-        this.el.append(
-            this.username,
-            this.submittedAt,
-            this.content,
-            this.voteSection.el,
-            this.replySection.el,
-            this.reportSection.el,
-            this.collapseButton,
-            this.childContainer
-        )
+        this.appendsBasedOnRemoved();
     }
     
     /** Toggle collapsed children */
@@ -93,6 +84,25 @@ export class CafeComment extends UIInput<Server.Comment> {
         let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
         document.dispatchEvent(state_event)
     }
+
+    /** Used to control el appending so that votes and reply button are not visible when a comment is removed. */
+    appendsBasedOnRemoved() {
+        this.el.append(
+            this.username,
+            this.submittedAt,
+            this.content,
+            this.voteSection.el,
+            this.replySection.el,
+            this.reportSection.el,
+            this.collapseButton,
+            this.childContainer
+        )
+        if(this.data && this.data.Removed) {
+            this.voteSection.el.remove()
+            this.replySection.el.remove()
+            this.reportSection.el.remove()
+        }
+    }
     
     update(data: Server.Comment) {
         this.data = data
@@ -101,6 +111,7 @@ export class CafeComment extends UIInput<Server.Comment> {
         let date = new Date(data.TimePosted * 1000)
         this.submittedAt.textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString()
         this.voteSection.update(data)
+        this.appendsBasedOnRemoved()
     }
     
     /** Add a child CafeComment to the parent  */

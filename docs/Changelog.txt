@@ -1,3 +1,9 @@
+3/22/2023: Karl 
+- "/moderate" event pipeline and fetch for moderating comments
+- moderating uses UiInput.disable to disable to report after it has been sent. 
+- login buttons now show when you logout, even if server isn't running or was reset 
+- removed comments won't show their vote area or report button (which are rejected on the server now anyway )
+
 3/21/2023: Karl
 - viewLogs pipeline, including requesting access logs and displaying access logs
 - adminLogs implemented, including ui element

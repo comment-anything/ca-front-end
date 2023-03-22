@@ -30,6 +30,7 @@ export type ClientMap = {
     "viewCommentReports"    : [Client.ViewCommentReports, HTTPMethod["POST"]]
     "newReport"     : [Client.PostCommentReport, HTTPMethod["POST"]]
     "viewLogs"     : [Client.ViewAccessLogs, HTTPMethod["POST"]]
+    "moderate"     : [Client.Moderate, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -157,6 +158,15 @@ export namespace Client {
         ForEndpoint : string 
         StartingAt: number | null
         EndingAt: number | null
+    }
+
+    /** Moderate is dispatched to the server when a moderator or admin takes a moderation action on a comment. */
+    type Moderate = {
+        ReportID     : number
+        CommentID    : number
+        SetHiddenTo  : boolean
+        SetRemovedTo : boolean
+        Reason       : string
     }
 }
 
