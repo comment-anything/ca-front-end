@@ -234,6 +234,12 @@ export class Cafe {
             my.fetcher.fetch("newReport", "POST", data, retrieveResponses)
         })
         
+        document.addEventListener("viewLogs", (ev)=> {
+            let data = ev.detail
+            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("viewLogs", "POST", data, retrieveResponses)
+        })
+        
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")

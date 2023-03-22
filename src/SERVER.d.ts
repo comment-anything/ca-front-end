@@ -12,6 +12,7 @@ export type ServerMap = {
     "FeedbackReport"        : Server.FeedbackReport
     "CommentReport"         : Server.CommentReport
     "CommentReports"        : Server.CommentReports
+    "AdminAccessLogs"       : Server.AdminAccessLogs
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -142,5 +143,18 @@ export namespace Server {
     
     type CommentReports = {
         Reports : CommentReport[]
+    }
+    /** AdminAccessLogs are dispatched when an admin wants to see what IPs have been accessing the server, which users are associated with them, and what endpoints they are accessing. */
+    type AdminAccessLog = {
+        LogId    : number
+        Ip       : string
+        Url      : string
+        AtTime   : number
+        UserId   : number
+        Username : string
+    }
+    /** AdminAccessLogs are dispatched when an admin wants to see what IPs have been accessing the server, which users are associated with them, and what endpoints they are accessing. */
+    type AdminAccessLogs = {
+        Logs : AdminAccessLog[]
     }
 }

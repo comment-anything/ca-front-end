@@ -1,3 +1,7 @@
+3/21/2023: Karl 
+ViewLogs from ForUserID to ForUser
+ViewLogs from ForDomain to ForEndpoint
+
 3/1/2023: Karl 
  Admins can assign other admins. The comm entities send a username, not a userID.
 

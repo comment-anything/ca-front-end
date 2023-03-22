@@ -3,11 +3,12 @@ import { Server } from "../SERVER";
 import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 
-import "./feedback.css"
+import "./table.css"
 
 const CSS = {
-    smallData : ["feedback-data-small-centered", "feedback-content-bordered"],
-    dataContent: ["feedback-data-small-centered", "feedback-content-bordered"]
+    smallData : ["data-small-centered", "data-content-bordered"],
+    dataContent: ["data-small-centered", "data-content-bordered"],
+    smallerHeader: "header-small"
 }
 
 export class CafeFeedback extends UIInput<Server.FeedbackRecord> {

@@ -1,3 +1,10 @@
+3/21/2023: Karl
+- viewLogs pipeline, including requesting access logs and displaying access logs
+- adminLogs implemented, including ui element
+- moved table css out of feedback.css and into a generic table.css within /ui folder
+- added src/util/date.ts for easier generating of date strings for datetime objects. (We can abstract other useful date transformations here too)
+
+
 3/19/2023: Luke
 - Updated the CommentReport server response entity to include "Domain" and "ReportingUserID"
 - the updateCommentReport of commentReports.ts appends the commentReport UIInputs to its container

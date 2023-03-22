@@ -29,6 +29,7 @@ export type ClientMap = {
     "assignGlobalModerator" : [Client.AssignGlobalModerator, HTTPMethod["POST"]],
     "viewCommentReports"    : [Client.ViewCommentReports, HTTPMethod["POST"]]
     "newReport"     : [Client.PostCommentReport, HTTPMethod["POST"]]
+    "viewLogs"     : [Client.ViewAccessLogs, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -147,6 +148,15 @@ export namespace Client {
     type PostCommentReport = {
         CommentID: number
         Reason: string
+    }
+
+    /** ViewLogs is dispatched to the server when an admin requests access logs. */
+    type ViewAccessLogs = {
+        ForUser : string 
+        ForIp : string  
+        ForEndpoint : string 
+        StartingAt: number | null
+        EndingAt: number | null
     }
 }
 
