@@ -1,3 +1,7 @@
+3/24/2023: Karl 
+- "/viewModRecords" pipeline
+- Can now succesfully request mod records. Have not made the actual view for mod records yet, however.
+
 3/22/2023: Karl 
 - "/moderate" event pipeline and fetch for moderating comments
 - moderating uses UiInput.disable to disable to report after it has been sent. 

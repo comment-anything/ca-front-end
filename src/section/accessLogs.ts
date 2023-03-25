@@ -11,7 +11,7 @@ const CSS = {
 }
 
 /** 
- For displaying access log records to admins.
+ For displaying access log records to admins, in the admin panel. 
 */
 export class AccessLogSection extends CafeSection {
     dropDownContainer: any;

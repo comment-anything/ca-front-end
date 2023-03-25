@@ -30,7 +30,8 @@ export type ClientMap = {
     "viewCommentReports"    : [Client.ViewCommentReports, HTTPMethod["POST"]]
     "newReport"     : [Client.PostCommentReport, HTTPMethod["POST"]]
     "viewLogs"     : [Client.ViewAccessLogs, HTTPMethod["POST"]]
-    "moderate"     : [Client.Moderate, HTTPMethod["POST"]]
+    "moderate"     : [Client.Moderate, HTTPMethod["POST"]],
+    "viewModRecords" : [Client.ViewModRecords, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -167,6 +168,14 @@ export namespace Client {
         SetHiddenTo  : boolean
         SetRemovedTo : boolean
         Reason       : string
+    }
+
+    /** ViewModRecords is dispatched to the server when a moderator requests moderation records. */
+    type ViewModRecords = {
+        ForDomain: string
+        ByUser: string
+        From: number | null
+        To: number | null
     }
 }
 
