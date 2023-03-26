@@ -4,6 +4,7 @@ import { Dom } from "../util/dom"
 import { CafeDom } from "../util/cafeDom"
 
 import "./commentReport.css"
+import { Client } from "../CLIENT"
 
 const CSS = {
     reportHeader: {
@@ -159,7 +160,9 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         
         // Show the content container by default.
         this.showContainer(this.contentContainer)
-        console.log("💩", this.el)
+
+        // listen for event dispatch to submit moderation
+        this.clickListen(this.submitModerationButton, this.submitModerationButtonClicked, true)
     }
     
     /** Hides all containers, and then shows the specified one. */
@@ -225,7 +228,18 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
      *  A Moderate object is dispatched to the server.
      */
     submitModerationButtonClicked() {
-        
+        let moderate : Client.Moderate = {
+            ReportID : this.data.ReportId,
+            CommentID : this.data.CommentData.CommentId,
+            SetHiddenTo : this.setHiddenTo.checked,
+            SetRemovedTo : this.setRemovedTo.checked,
+            Reason : this.reason.value
+        }
+        let event = new CustomEvent<Client.Moderate>("moderate", {
+            detail: moderate
+        })
+        document.dispatchEvent(event)
+        this.disable();
     }
 }
 

@@ -68,6 +68,10 @@ export class Dispatcher {
                     let crs = datum.Data as Server.CommentReports
                     this.dispatchCommentReports(crs, cafe)
                     break
+                case "AdminAccessLogs":
+                    let aal = datum.Data as Server.AdminAccessLogs
+                    this.dispatchAdminAccessLogs(aal, cafe)
+                    break
             }
         }
     }
@@ -125,6 +129,10 @@ export class Dispatcher {
     
     dispatchCommentReports(commentReports: Server.CommentReports, cafe: Cafe) {
         cafe.navbar.moderatorWindow.reports.populateCommentReports(commentReports.Reports)
+    }
+
+    dispatchAdminAccessLogs(accessLogs: Server.AdminAccessLogs, cafe: Cafe) {
+        cafe.navbar.adminWindow.accessLogs.update(accessLogs.Logs)
     }
 }
 

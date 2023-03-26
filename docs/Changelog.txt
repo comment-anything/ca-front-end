@@ -1,3 +1,20 @@
+3/24/2023: Karl 
+- "/viewModRecords" pipeline
+- Can now succesfully request mod records. Have not made the actual view for mod records yet, however.
+
+3/22/2023: Karl 
+- "/moderate" event pipeline and fetch for moderating comments
+- moderating uses UiInput.disable to disable to report after it has been sent. 
+- login buttons now show when you logout, even if server isn't running or was reset 
+- removed comments won't show their vote area or report button (which are rejected on the server now anyway )
+
+3/21/2023: Karl
+- viewLogs pipeline, including requesting access logs and displaying access logs
+- adminLogs implemented, including ui element
+- moved table css out of feedback.css and into a generic table.css within /ui folder
+- added src/util/date.ts for easier generating of date strings for datetime objects. (We can abstract other useful date transformations here too)
+
+
 3/19/2023: Luke
 - Updated the CommentReport server response entity to include "Domain" and "ReportingUserID"
 - the updateCommentReport of commentReports.ts appends the commentReport UIInputs to its container

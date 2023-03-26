@@ -18,7 +18,8 @@ export class CafeModerationWindow extends CafeWindow {
         this.reports = new CommentReportsSection()
         
         this.el.append(
-            this.reports.el
+            this.reports.el,
+            this.modActions.el
         )
     }
 }

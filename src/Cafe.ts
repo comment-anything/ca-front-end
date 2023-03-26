@@ -226,12 +226,29 @@ export class Cafe {
             console.log("NEW COMMENT REPORT EV RECEIVED W DATA:", data)
             my.fetcher.fetch("viewCommentReports", "POST", data, retrieveResponses)
         })
-
         
         document.addEventListener("newReport", (ev)=> {
             let data = ev.detail
             console.log("POST COMMENT REPORT EV RECEIVED W DATA:", data)
             my.fetcher.fetch("newReport", "POST", data, retrieveResponses)
+        })
+        
+        document.addEventListener("viewLogs", (ev)=> {
+            let data = ev.detail
+            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("viewLogs", "POST", data, retrieveResponses)
+        })
+        
+        document.addEventListener("moderate", (ev)=> {
+            let data = ev.detail
+            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("moderate", "POST", data, retrieveResponses)
+        })
+
+        document.addEventListener("viewModRecords", (ev)=> {
+            let data = ev.detail
+            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
+            my.fetcher.fetch("viewModRecords", "POST", data, retrieveResponses)
         })
         
         // Front End error catch

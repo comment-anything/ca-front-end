@@ -1,8 +1,5 @@
-import { Client } from "../CLIENT";
-import { CafeFeedback } from "../ui/feedback";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { Server } from "../SERVER";
 import { CafeGlobalModDisplay } from "../ui/globalModDisplay";
 import "./sendFeedback.css"
 

@@ -1,0 +1,17 @@
+
+.data-small-centered {
+    text-align: center;
+    font-size: 10px;
+}
+
+.data-smaller-centered {
+    font-size: 8px;
+}
+
+.data-content-bordered {
+    border: 1px dotted gray;
+}
+
+.header-small {
+    font-size: 10px;
+}

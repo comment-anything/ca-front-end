@@ -222,6 +222,7 @@ export class CafeNavBar {
 
     logoutButtonClicked() {
         this.hideAll()
+        this.showLoggedOutButtons()
         let logout: Client.Logout = {}
         let event = new CustomEvent<Client.Logout>("logout", {detail:logout})
         document.dispatchEvent(event)
