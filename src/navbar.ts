@@ -109,14 +109,11 @@ export class CafeNavBar {
 
     }
     
-    // TEMPORARY: Admin button shows while logged out. Fix that and delete that comment when done with testing.
     setFromState(state:State) {
         this.hideAll()
         if(state.ownProfile != undefined) {
             this.settingsWindow.ownProfile.updateProfile(state.ownProfile)
         }
-
-        // login, register, logout buttons depend on if user defined
         
         if(state.ownProfile == undefined) {
             this.showLoggedOutButtons()
@@ -197,7 +194,6 @@ export class CafeNavBar {
         showInlineBlock(this.logoutButton)
         showInlineBlock(this.settingsButton)
         showInlineBlock(this.commentsButton)
-        showInlineBlock(this.moderatorButton)//temporary
     }
 
 
