@@ -61,7 +61,7 @@ export class ModActionsReportSection  extends CafeSection {
 
         this.recsTable = Dom.el("table")
 
-        this.dropDownContainer.append(requestContainer)
+        this.dropDownContainer.append(requestContainer, this.recsTable)
 
         this.el.append(sectionLabel, this.dropDownContainer)
         this.clickListen(sectionLabel, this.toggleFold, true)

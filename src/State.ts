@@ -61,7 +61,7 @@ export class State {
     // Changes ownProfile member. If nothing is passed in, the loaded user profile is cleared.
     loadProfile(userProfile?:{LoggedInAs: Server.UserProfile, Email: string}, preventStateChange?:boolean) {
         this.ownProfile = userProfile
-        if(this.ownProfile && preventStateChange != true) this.viewing = "none"
+        if(this.ownProfile && (this.viewing != "comments") && !preventStateChange) this.viewing = "none"
         else if(this.ownProfile == undefined && preventStateChange != true) this.viewing = "login"
         stateChangeEmit(this);
     }

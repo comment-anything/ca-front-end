@@ -56,6 +56,7 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
 
     update(data: Server.CommentVoteDimension) {
         this.data = data
+        console.log(`📉 cvote for ${this.commentId} ups: ${this.up}, down: ${this.down}, result: ${String(data.Ups + data.Downs)}`)
         this.total.textContent = String(data.Ups + data.Downs)
     }
     

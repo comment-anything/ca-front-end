@@ -1,3 +1,10 @@
+3/29/2023: Karl 
+- "/ban" pipeline 
+- improved logout, user updating. Think I fixed some of the bugs there. 
+- moderation only displays for moderators now.
+- ban user section 
+- added domains banned from to the own profile display  
+
 3/24/2023: Karl 
 - "/viewModRecords" pipeline
 - Can now succesfully request mod records. Have not made the actual view for mod records yet, however.

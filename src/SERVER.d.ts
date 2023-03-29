@@ -48,7 +48,8 @@ export namespace Server {
         UserId            : number,
         Username          : string,
         CreatedOn         : number,
-        DomainsModerating : string,
+        DomainsModerating : string[],
+        DomainsBannedFrom : string[]
         IsAdmin           : boolean,
         IsDomainModerator : boolean,
         IsGlobalModerator : boolean,

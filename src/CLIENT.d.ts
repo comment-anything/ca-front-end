@@ -31,7 +31,8 @@ export type ClientMap = {
     "newReport"     : [Client.PostCommentReport, HTTPMethod["POST"]]
     "viewLogs"     : [Client.ViewAccessLogs, HTTPMethod["POST"]]
     "moderate"     : [Client.Moderate, HTTPMethod["POST"]],
-    "viewModRecords" : [Client.ViewModRecords, HTTPMethod["POST"]]
+    "viewModRecords" : [Client.ViewModRecords, HTTPMethod["POST"]],
+    "ban" : [Client.Ban, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
@@ -176,6 +177,15 @@ export namespace Client {
         ByUser: string
         From: number | null
         To: number | null
+    }
+
+    /** Ban is dispatched when a moderator or administrator bans a user. */
+    type Ban = {
+        Username : string
+        Reason : string
+        Domain : string
+        /** if false, this is an unban instead. */
+        Ban: boolean
     }
 }
 

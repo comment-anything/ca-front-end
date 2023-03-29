@@ -143,9 +143,7 @@ export class Cafe {
         document.addEventListener("logout", (ev)=>{
             let data = ev.detail
             console.log("LOGOUT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("logout", "PUT", data, retrieveResponses).then( ()=> {
-                my.clearToken()
-            })
+            my.fetcher.fetch("logout", "PUT", data, retrieveResponses)
         })
         document.addEventListener("pwResetReq", (ev)=>{
             let data = ev.detail
@@ -250,6 +248,11 @@ export class Cafe {
             console.log("VIEW LOGS EV RECEIVED W DATA:", data)
             my.fetcher.fetch("viewModRecords", "POST", data, retrieveResponses)
         })
+
+        document.addEventListener("ban", (ev) => {
+            console.log("BAN EV RECEIVED W DATA", ev.detail)
+            my.fetcher.fetch("ban", "POST", ev.detail, retrieveResponses)
+        })
         
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
@@ -269,6 +272,15 @@ export class Cafe {
             console.log("state change event received", my.state)
             my.navbar.setFromState(my.state)
             my.serialize()
+        })
+        
+        document.addEventListener("logout", ()=>{
+            this.state.ownProfile = undefined
+            my.clearToken()
+            let ev = new CustomEvent<State>("StateChanged", {
+                detail: my.state 
+            })
+            document.dispatchEvent(ev)
         })
     }
     

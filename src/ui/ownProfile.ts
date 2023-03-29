@@ -23,6 +23,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
     
     emailSection        : OwnEmailSection
     profileBlurbSection : OwnProfileBlurbSection
+    bannedFrom: HTMLDivElement;
     
     constructor(profile?:Server.UserProfile) {
         super(profile)
@@ -46,7 +47,11 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         let label_createdOn = Dom.textEl("label","Created On");
         this.createdOn = Dom.div();
         container_createdOn.append(label_createdOn,this.createdOn)
-        
+
+        let container_bannedFrom = Dom.div(undefined, CSS.profileRow)
+        let label_bannedFrom = Dom.textEl("label", "Banned From")
+        this.bannedFrom = Dom.div()
+        container_bannedFrom.append(label_bannedFrom, this.bannedFrom)
         
         let container_domainsModerating = Dom.div(undefined, CSS.profileRow)
         let label_domainsModerating = Dom.textEl("label","Domains Moderating");
@@ -78,6 +83,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             container_email,
             container_profile,
             container_createdOn,
+            container_bannedFrom,
             container_domainsModerating,
             container_isAdmin,
             container_isDomainModerator,
@@ -92,9 +98,10 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.data = newProfile.LoggedInAs;
             this.username.textContent = this.data.Username
             this.createdOn.textContent = (new Date(this.data.CreatedOn)).toLocaleDateString()
-            this.domainsModerating.textContent = this.data.DomainsModerating
+            this.domainsModerating.textContent = this.data.DomainsModerating ? this.data.DomainsModerating.join(",") : ""
+            this.bannedFrom.textContent = this.data.DomainsBannedFrom ? this.data.DomainsBannedFrom.join(", ") : ""
             this.isAdmin.textContent = this.data.IsAdmin ? "yes" : "no"
-            this.isDomainModerator.textContent = this.data.DomainsModerating ? this.data.DomainsModerating : ""
+            this.isDomainModerator.textContent = this.data.DomainsModerating ? "yes" : "no"
             this.isGlobalModerator.textContent = this.data.IsGlobalModerator ? "yes" : "no"
             this.emailSection.update(newProfile.Email ? newProfile.Email : "")
             this.profileBlurbSection.update(this.data.ProfileBlurb)
