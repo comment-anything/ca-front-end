@@ -1,4 +1,4 @@
-import { Server } from "../SERVER"
+import { Server } from "../communication/SERVER"
 import { UIInput } from "./base"
 import { Dom } from "../util/dom"
 

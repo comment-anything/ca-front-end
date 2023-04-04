@@ -2,9 +2,10 @@ import { UIInput } from "./base"
 import { Dom } from "../util/dom"
 
 import "./ownProfile.css"
-import { Client } from "../CLIENT"
+import { Client } from "../communication/CLIENT"
 import { Settings } from "../Settings"
 import { State } from "../State"
+import { CafeDom } from "../util/cafeDom"
 
 const CSS = {
     sortRow : "profile-info-row"
@@ -12,6 +13,23 @@ const CSS = {
 
 /** Shows the users comment viewing settings and allows the user to change them */
 export class CafeCommentSortDisplay extends UIInput<Settings> {
+    
+    input: {
+        sortBy        : HTMLSelectElement
+        viewHidden    : HTMLButtonElement
+        sortAscending : HTMLButtonElement
+    }
+    
+    ui: {
+        sortBy        : HTMLSelectElement
+        viewHidden    : HTMLButtonElement
+        sortAscending : HTMLButtonElement
+    }
+    
+    viewHidden: boolean
+    sortAscending: boolean
+    
+    /* 
     sortBy        : HTMLSelectElement
     viewHidden    : HTMLInputElement
     sortAscending : HTMLInputElement
@@ -23,10 +41,62 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
     sortBy_option2 : HTMLOptionElement
     sortBy_option3 : HTMLOptionElement
     sortBy_option4: any
+    */
     
     constructor(settings?: Settings) {
         super(settings);
+        this.el.style.display = 'flex'
+        this.el.style.flexBasis = '0'
         
+        this.viewHidden = false
+        this.sortAscending = false;
+        
+        this.input = {
+            sortBy        : Dom.el("select"),
+            viewHidden    : Dom.button('Show Hidden'),
+            sortAscending : Dom.button("Sort Ascending")
+        }
+        
+        this.ui = {
+            sortBy        : CafeDom.genericDropdown(this.input.sortBy, {label: "Sort by"}),
+            viewHidden    : CafeDom.toggleButton(this.input.viewHidden, {}),
+            sortAscending : CafeDom.toggleButton(this.input.sortAscending, {})
+        }
+        
+        let op1 = Dom.el('option')
+        let op2 = Dom.el('option')
+        let op3 = Dom.el('option')
+        let op4 = Dom.el('option')
+        
+        op1.text = 'new'
+        op2.text = 'funny'
+        op3.text = 'factual'
+        op4.text = 'agree'
+        
+        this.input.sortBy.add(op1)
+        this.input.sortBy.add(op2)
+        this.input.sortBy.add(op3)
+        this.input.sortBy.add(op4)
+        
+        this.el.append(
+            this.ui.sortBy,
+            this.ui.sortAscending,
+            this.ui.viewHidden
+        )
+        
+        this.clickListen(this.input.sortAscending, ()=>{
+            this.sortAscending = !this.sortAscending
+            this.setActiveToggle(this.input.sortAscending, this.sortAscending)
+            this.emitStateChangeRequest()
+        }, true)
+        
+        this.clickListen(this.input.viewHidden, ()=>{
+            this.viewHidden = !this.viewHidden
+            this.setActiveToggle(this.input.viewHidden, this.viewHidden)
+            this.emitStateChangeRequest()
+        }, true)
+        
+        /* 
         this.sortBy = Dom.el("select")
         this.viewHidden = Dom.createInputElement("checkbox")
         this.sortAscending = Dom.createInputElement("checkbox")
@@ -70,25 +140,29 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
             container_viewHidden,
             container_sortAscending
         )
+        */
     }
-
+    
     /** Called by CommentWindow when settings changes */
     settingsChange(data:Settings) {
         this.data = data
         console.log("settingChangRecieved called in CommentSort with data", data)
-        this.sortAscending.checked = data.sortAscending
-        this.sortBy.value = data.sortedBy        
-        this.viewHidden.checked = data.viewHidden
+        this.sortAscending = data.sortAscending
+        this.input.sortBy.value = data.sortedBy        
+        this.viewHidden = data.viewHidden
+        
+        this.setActiveToggle(this.input.sortAscending, this.sortAscending)
+        this.setActiveToggle(this.input.viewHidden, this.viewHidden)
     }
     
     /** Construct and emit a new CafeSettings object to update the global settings object and percolate changes to all other CafeCommentSortDisplays */
     emitStateChangeRequest() {
-        let sort = this.sortBy.value as Client.SortOption
+        let sort = this.input.sortBy.value as Client.SortOption
         
         let sett : Partial<State> = {
             settings: {
-                viewHidden    : this.viewHidden.checked,
-                sortAscending : this.sortAscending.checked,
+                viewHidden    : this.viewHidden,
+                sortAscending : this.sortAscending,
                 sortedBy      : sort
             } as Settings
         }
@@ -98,5 +172,11 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
         document.dispatchEvent(e)
     }
     
+    setActiveToggle(el: HTMLElement, setActive: boolean) {
+        if (setActive)
+            el.style.backgroundColor = 'darkgray'
+        else
+            el.style.backgroundColor = '#FCFCFC'
+    }
 }
 

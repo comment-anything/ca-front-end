@@ -1,4 +1,5 @@
 
+import { m } from "vitest/dist/types-aac763a5"
 import { Dom } from "./dom"
 
 import "./text-input.css"
@@ -15,10 +16,16 @@ const CSS = {
     checkBox: {
         genericLabel     : 'check-box-generic-label',
         genericInput     : 'check-box-generic-input',
-        genericContainer : 'check-box-generic-container'
+        genericContainer : 'check-box-generic-container',
+        button           : 'button-check-box'
     },
     button: {
-        submitForm: 'form-submit-button'
+        submitForm    : 'form-submit-button',
+        texture       : 'icon-button-texture',
+        iconContainer : 'icon-button-container'
+    },
+    dropdown: {
+        generic: 'generic-dropdown'
     }
 }
 
@@ -27,6 +34,7 @@ export namespace CafeDom {
     /** Identify specific content for an element */
     export type UIContent = {
         label?: string
+        asset?: string
     }
     
     /** Wrap an HTMLInputElement within a styled HTMLDivElement */
@@ -65,6 +73,7 @@ export namespace CafeDom {
             el
         )
         
+        /*
         // Focus the text input on click
         // TODO: THE LISTENERS ARRAY NEEDS WORK
         listeners.push(container.addEventListener("click", ()=>{
@@ -76,7 +85,7 @@ export namespace CafeDom {
         listeners.push(el.addEventListener("focusout", ()=>{
             container.classList.remove(CSS.textInput.focusedContainer)
         }))
-        
+        */
         return listeners;
     }
     
@@ -97,6 +106,28 @@ export namespace CafeDom {
     
     export function formSubmitButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
         el.classList.add(CSS.button.submitForm)
+        return el
+    }
+    
+    export function genericIconButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        let icon = Dom.div('', CSS.button.texture)
+        icon.style.backgroundImage = 'url("src/assets/' + content.asset + '")'
+        el.classList.add(CSS.button.iconContainer)
+        el.append(icon)
+        return el
+    }
+    
+    export function genericDropdown(el: HTMLSelectElement, content: UIContent): HTMLSelectElement {
+        el.classList.add(CSS.dropdown.generic)
+        return el
+    }
+    
+    export function toggleButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        
+        if (content.label)
+            el.textContent = content.label
+        
+        el.classList.add(CSS.checkBox.button)
         return el
     }
 }

@@ -1,4 +1,5 @@
-import { Client } from "../CLIENT"
+import { Client } from "../communication/CLIENT"
+import { CafeDom } from "../util/cafeDom"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
 import { StateView } from "../State"
@@ -22,20 +23,30 @@ export class CafeLoginWindow extends CafeWindow {
     
     constructor() {
         super(CSS.windowName, 'Login')
-        this.username = Dom.createInputElement("text", CSS.inputField)
-        this.password = Dom.createInputElement('password', CSS.inputField)
-        this.submitLoginButton = Dom.button('Login', CSS.button)
+        
+        this.username = Dom.createInputElement("text")
+        this.password = Dom.createInputElement('password')
+        this.submitLoginButton = Dom.button('Login')
         this.forgotPasswordButton = Dom.button('Forgot Password', CSS.button)
 
         this.submitLoginButton.addEventListener("click", this.submitLoginClicked.bind(this))
         this.forgotPasswordButton.addEventListener("click", this.forgotPasswordClicked.bind(this))
-
+        
         this.el.append(
+            CafeDom.fullSizeGenericTextInput(this.username, {label: "Username"}),
+            CafeDom.fullSizeGenericTextInput(this.password, {label: "Password"}),
+            CafeDom.formSubmitButton(this.submitLoginButton, {label: "Login"})
+        )
+        
+        /*
+        this.el.append(
+            
             Dom.createContainerWithLabel('Username', CSS.inputLabel, "div", this.username, CSS.inputSection),
             Dom.createContainerWithLabel('Password', CSS.inputLabel, "div", this.password, CSS.inputSection),
             this.submitLoginButton,
             this.forgotPasswordButton
         )
+        */
     }
     
     /**
@@ -52,7 +63,7 @@ export class CafeLoginWindow extends CafeWindow {
     }
     
     forgotPasswordClicked(): void {
-        let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
+        let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail: "forgotpassword"})
         document.dispatchEvent(state_event)
     }
 }

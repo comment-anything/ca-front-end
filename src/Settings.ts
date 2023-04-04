@@ -1,4 +1,4 @@
-import { Client } from "./CLIENT"
+import { Client } from "./communication/CLIENT"
 
 /**
  * Settings holds the client-side settings, such as sort preferences. 

@@ -1,6 +1,6 @@
 
-import {ClientMap} from "./CLIENT"
-import { Server } from "./SERVER"
+import {ClientMap} from "./communication/CLIENT"
+import { Server } from "./communication/SERVER"
 import { State } from "./State"
 
 

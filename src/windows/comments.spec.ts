@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { describe, it } from 'vitest'
-import { Server } from '../SERVER'
+import { Server } from '../communication/SERVER'
 import { Cafe } from '../Cafe'
 
 

@@ -1,284 +1,290 @@
-import { State, StateView } from "./State";
-import { Dom } from "./util/dom";
-import { CafeWindow } from "./windows/base";
-import { CafeLoginWindow } from "./windows/login";
-import { CafeRegisterWindow } from "./windows/register";
-import { CafePwResetRequestWindow } from "./windows/pwResetRequest"
-import { CafeNewPasswordWindow } from "./windows/setNewPass"
 
-import { CafeMessageDisplay } from "./ui/message";
-import { Client } from "./CLIENT";
-import { CafeSettingsWindow } from "./windows/settings";
-import { CafeCommentsWindow } from "./windows/comments";
-import { CafeAdminWindow } from "./windows/admin";
-import { CafeModerationWindow } from "./windows/moderator";
+import { State, StateView } from "./State"
+import { Client } from "./communication/CLIENT"
+import { Dom } from "./util/dom"
+import { CafeMessageDisplay } from "./ui/message"
+
+import { CafeAdminWindow }          from "./windows/admin"
+import { CafeWindow }               from "./windows/base"
+import { CafeCommentsWindow }       from "./windows/comments"
+import { CafeLoginWindow }          from "./windows/login"
+import { CafeModerationWindow }     from "./windows/moderator"
+import { CafePwResetRequestWindow } from "./windows/pwResetRequest"
+import { CafeRegisterWindow }       from "./windows/register"
+import { CafeNewPasswordWindow }    from "./windows/setNewPass"
+import { CafeSettingsWindow }       from "./windows/settings"
 
 import "./navbar.css"
-import HamSVG from "./hamburger_menu.svg"
 
 const CSS = {
-    cafe: "cafe-container",
-    nav: "nav-bar",
-    hamburger: "hamburger-container",
-    navButtonsContainer: "hamburger-buttons-container",
-    navitemButton: "hamburger-nav-selection",
-    hamburgerImage: "hamburger-image",
-    activeNavTab : "active-nav-tab",
-    logoutButton : "nav-tab-logout"
+    cafe   : 'cafe-global',
+    navbar : {
+        container : 'cafe-navbar-container',
+        hamburger : 'cafe-navbar-hamburger',
+        pane      : 'cafe-navbar-pane',
+        button    : 'cafe-navbar-pane-button',
+        windowContainer : 'cafe-window-container'
+    }
 }
 
-/** CafeNavBar displays navigation buttons for the user to move between states, holds the active window, and holds a general message display object. It ultimately contains all DOM Elements used by Comment Anywhere.
- *@emits StateEvent on navbar click
-*/
 export class CafeNavBar {
     el      : HTMLDivElement
     message : CafeMessageDisplay
     
-    registerButton : HTMLButtonElement;
-    loginButton    : HTMLButtonElement;
-    logoutButton   : HTMLButtonElement;
-    settingsButton : HTMLButtonElement;
-    commentsButton : HTMLButtonElement;
-    adminButton    : HTMLButtonElement;
-    moderatorButton: HTMLButtonElement;
-    
-    currentlyViewing? : CafeWindow
-    commentsWindow    : CafeCommentsWindow
-    registerWindow    : CafeRegisterWindow
-    loginWindow       : CafeLoginWindow;
-    settingsWindow    : CafeSettingsWindow;
-    forgotPWWindow    : CafePwResetRequestWindow;
-    newPassWindow     : CafeNewPasswordWindow;
-    adminWindow       : CafeAdminWindow;
-    moderatorWindow   : CafeModerationWindow;
-    
-    constructor() {
-        // create the base containers
-        this.el = Dom.el("div", CSS.cafe)
-
-        this.message = new CafeMessageDisplay()
-        
-        let [navbutton, nav] = getHamburger()
-        this.el.append(navbutton)
-
-        // create the window container
-        let windowContainer = Dom.div()
-
-
-        // create the nav buttons
-        this.registerButton = Dom.button("Register", [CSS.navitemButton, CSS.activeNavTab])
-        this.loginButton = Dom.button("Login", [CSS.navitemButton])
-        this.settingsButton = Dom.button("Settings", [CSS.navitemButton])
-        this.logoutButton = Dom.button("Logout", [CSS.navitemButton, CSS.logoutButton])
-        this.commentsButton = Dom.button("Comments", [CSS.navitemButton])
-        this.adminButton = Dom.button("Admin", [CSS.navitemButton])
-        this.moderatorButton = Dom.button("Moderator", [CSS.navitemButton])
-        
-        // register callbacks
-        this.registerButton.addEventListener("click", getNavClickCallback("register"))
-        this.loginButton.addEventListener("click", getNavClickCallback("login"))
-        this.settingsButton.addEventListener("click", getNavClickCallback("settings"))
-        this.commentsButton.addEventListener("click", getNavClickCallback("comments"))
-        
-        // logout button has different callback because it's more than a window change.
-        this.logoutButton.addEventListener("click", this.logoutButtonClicked.bind(this))
-
-        this.adminButton.addEventListener("click", getNavClickCallback("admin"))
-        this.moderatorButton.addEventListener("click", getNavClickCallback("moderation"))
-        
-
-        // create the windows
-        this.settingsWindow = new CafeSettingsWindow()
-        this.forgotPWWindow = new CafePwResetRequestWindow()
-        this.registerWindow = new CafeRegisterWindow()
-        this.loginWindow = new CafeLoginWindow()
-        this.newPassWindow = new CafeNewPasswordWindow();
-        this.commentsWindow = new CafeCommentsWindow()
-        this.adminWindow = new CafeAdminWindow();
-        this.moderatorWindow = new CafeModerationWindow();
-
-        this.loginWindow.hide()
-        this.currentlyViewing = this.registerWindow
-
-        // construct the dom tree
-        this.el.append(this.message.el, windowContainer)
-        nav.append(this.commentsButton, this.registerButton, this.loginButton, this.logoutButton, this.settingsButton, this.moderatorButton, this.adminButton)
-        
-        // Order of appendation shouldn't matter
-        windowContainer.append(this.registerWindow.el, this.loginWindow.el, this.settingsWindow.el, this.forgotPWWindow.el, this.newPassWindow.el, this.commentsWindow.el, this.adminWindow.el, this.moderatorWindow.el)
-
+    navbar: {
+        el        : HTMLDivElement,
+        hamburger : HTMLButtonElement,
+        pane      : HTMLDivElement,
+        register  : HTMLButtonElement,
+        login     : HTMLButtonElement,
+        logout    : HTMLButtonElement,
+        comments  : HTMLButtonElement,
+        settings  : HTMLButtonElement,
+        moderator : HTMLButtonElement,
+        admin     : HTMLButtonElement
     }
     
-    setFromState(state:State) {
-        this.hideAll()
-        if(state.ownProfile != undefined) {
-            this.settingsWindow.ownProfile.updateProfile(state.ownProfile)
+    window: {
+        register       : CafeRegisterWindow,
+        login          : CafeLoginWindow,
+        forgotPassword : CafePwResetRequestWindow,
+        setNewPassword : CafeNewPasswordWindow,
+        comments       : CafeCommentsWindow,
+        settings       : CafeSettingsWindow,
+        moderator      : CafeModerationWindow,
+        admin          : CafeAdminWindow,
+        container      : HTMLDivElement
+        viewing?       : CafeWindow
+    }
+    
+    constructor() {
+        this.el = Dom.div('', CSS.cafe)
+        this.message = new CafeMessageDisplay()
+        
+        this.window = {
+            register       : new CafeRegisterWindow(),
+            login          : new CafeLoginWindow(),
+            forgotPassword : new CafePwResetRequestWindow(),
+            setNewPassword : new CafeNewPasswordWindow(),
+            comments       : new CafeCommentsWindow(),
+            settings       : new CafeSettingsWindow(),
+            moderator      : new CafeModerationWindow(),
+            admin          : new CafeAdminWindow(),
+            container      : Dom.div(undefined, CSS.navbar.windowContainer)
         }
         
-        if(state.ownProfile == undefined) {
+        this.window.viewing = this.window.register
+        
+        this.navbar = {
+            el        : Dom.div('', CSS.navbar.container),
+            hamburger : Dom.button('', CSS.navbar.hamburger),
+            pane      : Dom.div('', CSS.navbar.pane),
+            register  : Dom.button("Register", CSS.navbar.button),
+            login     : Dom.button("Login", CSS.navbar.button),
+            logout    : Dom.button("Logout", CSS.navbar.button),
+            comments  : Dom.button("Comments", CSS.navbar.button),
+            settings  : Dom.button("Settings", CSS.navbar.button),
+            moderator : Dom.button("Moderate", CSS.navbar.button),
+            admin     : Dom.button("Admin", CSS.navbar.button)
+        }
+        
+        this.navbar.el.append(
+            this.message.el,
+            this.navbar.hamburger,
+            this.navbar.pane
+        )
+        
+        this.window.container.append(
+            this.window.register.el,
+            this.window.login.el,
+            this.window.forgotPassword.el,
+            this.window.setNewPassword.el,
+            this.window.comments.el,
+            this.window.settings.el,
+            this.window.moderator.el,
+            this.window.admin.el,
+        )
+        
+        this.navbar.pane.append(
+            this.navbar.register,
+            this.navbar.login,
+            this.navbar.comments,
+            this.navbar.settings,
+            this.navbar.moderator,
+            this.navbar.admin,
+            this.navbar.logout
+        )
+        
+        this.el.append(this.navbar.el, this.window.container)
+        
+        this.navbar.hamburger.addEventListener('click', ()=>{
+            
+            if (this.navbar.pane.style.display == 'none') {
+                this.navbar.pane.style.display = 'inline'
+                this.navbar.hamburger.style.backgroundColor = '#8ca4e5'
+            }
+            else {
+                this.navbar.pane.style.display = 'none'
+                this.navbar.hamburger.style.backgroundColor = '#e6eae4'
+            }
+        })
+        
+        this.navbar.register.addEventListener('click', getNavClickCallback("register"))
+        this.navbar.login.addEventListener('click', getNavClickCallback("login"))
+        this.navbar.settings.addEventListener('click', getNavClickCallback("settings"))
+        this.navbar.comments.addEventListener('click', getNavClickCallback("comments"))
+        this.navbar.moderator.addEventListener('click', getNavClickCallback("moderation"))
+        this.navbar.admin.addEventListener('click', getNavClickCallback("admin"))
+        
+        this.navbar.logout.addEventListener('click', this.logoutButtonClicked.bind(this))
+    }
+    
+    
+    
+    setFromState(state: State) {
+        this.hideAll()
+        
+        if (state.ownProfile == undefined) {
             this.showLoggedOutButtons()
         }
         else {
+            this.window.settings.ownProfile.updateProfile(state.ownProfile)
+        
             this.showLoggedInButtons()
-            this.logoutButton.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
+            this.navbar.logout.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
+            
             if(state.ownProfile.LoggedInAs.IsAdmin) {
-                showInlineBlock(this.adminButton)
-                showInlineBlock(this.moderatorButton)
+                showInlineBlock(this.navbar.admin)
+                showInlineBlock(this.navbar.moderator)
             }
-            else if(state.ownProfile.LoggedInAs.IsDomainModerator) {
-                showInlineBlock(this.moderatorButton)
-            }
-            else if(state.ownProfile.LoggedInAs.IsGlobalModerator) {
-                showInlineBlock(this.moderatorButton)
-            }
+            
+            else if(state.ownProfile.LoggedInAs.IsDomainModerator)
+                showInlineBlock(this.navbar.moderator)
+                
+            else if(state.ownProfile.LoggedInAs.IsGlobalModerator)
+                showInlineBlock(this.navbar.moderator)
         }
         
         switch(state.viewing) {
             case "register":
-                this.currentlyViewing = this.registerWindow
-                setActive(this.registerButton)
+                this.window.viewing = this.window.register
+                setActive(this.navbar.register)
                 break;
                 
             case "login":
-                this.currentlyViewing = this.loginWindow
-                setActive(this.loginButton)
+                this.window.viewing = this.window.login
+                setActive(this.navbar.login)
                 break;
                 
             case "settings":
-                this.currentlyViewing = this.settingsWindow
-                setActive(this.settingsButton)
+                this.window.viewing = this.window.settings
+                setActive(this.navbar.settings)
                 break;
                 
             case "forgotpassword":
-                this.currentlyViewing = this.forgotPWWindow
-                setActive(this.settingsButton)
+                this.window.viewing = this.window.forgotPassword
+                setActive(this.navbar.settings)
                 break;
             
             case "comments":
-                this.currentlyViewing = this.commentsWindow
-                setActive(this.commentsButton)
+                this.window.viewing = this.window.comments
+                setActive(this.navbar.comments)
                 break;
 
             case "newPassword":
-                this.currentlyViewing = this.newPassWindow
+                this.window.viewing = this.window.setNewPassword
                 break;
 
             case "admin":
-                this.currentlyViewing = this.adminWindow
+                this.window.viewing = this.window.admin
+                setActive(this.navbar.admin)
                 break;
 
             case "moderation":
-                this.currentlyViewing = this.moderatorWindow
+                this.window.viewing = this.window.moderator
+                setActive(this.navbar.moderator)
                 break;
                 
             default:
-                this.currentlyViewing = undefined
+                this.window.viewing = undefined
                 break;
         }
         
-        if(this.currentlyViewing != undefined) {
-            this.currentlyViewing.show()
-        }
-
-        this.commentsWindow.settingChangeReceived(state.settings)
-        
+        if (this.window.viewing != undefined)
+            this.window.viewing.show()
+            
+        this.window.comments.settingChangeReceived(state.settings)
+    }
+    
+    showLoggedInButtons() {
+        showInlineBlock(this.navbar.logout)
+        showInlineBlock(this.navbar.settings)
+        showInlineBlock(this.navbar.comments)
     }
     
     showLoggedOutButtons() {
-        showInlineBlock(this.registerButton)
-        showInlineBlock(this.loginButton)
-        showInlineBlock(this.commentsButton)
+        showInlineBlock(this.navbar.register)
+        showInlineBlock(this.navbar.login)
+        showInlineBlock(this.navbar.comments)
     }
-
-    showLoggedInButtons() {
-        showInlineBlock(this.logoutButton)
-        showInlineBlock(this.settingsButton)
-        showInlineBlock(this.commentsButton)
-    }
-
-
+    
     hideAll() {
-        this.newPassWindow.hide()
-        this.forgotPWWindow.hide()
-        this.settingsWindow.hide()
-        this.registerWindow.hide()
-        this.loginWindow.hide()
-        this.settingsWindow.hide()
-        this.commentsWindow.hide()
-        this.adminWindow.hide()
-        this.moderatorWindow.hide()
-        hide(this.registerButton)
-        hide(this.loginButton)
-        hide(this.logoutButton)
-        hide(this.settingsButton)
-        hide(this.commentsButton)
-        hide(this.adminButton)
-        hide(this.moderatorButton)
+        this.window.register.hide()
+        this.window.login.hide()
+        this.window.forgotPassword.hide()
+        this.window.setNewPassword.hide()
+        this.window.comments.hide()
+        this.window.settings.hide()
+        this.window.moderator.hide()
+        this.window.admin.hide()
+        hide(this.navbar.register)
+        hide(this.navbar.login)
+        hide(this.navbar.logout)
+        hide(this.navbar.settings)
+        hide(this.navbar.comments)
+        hide(this.navbar.moderator)
+        hide(this.navbar.admin)
     }
-
+    
     logoutButtonClicked() {
         this.hideAll()
         this.showLoggedOutButtons()
         let logout: Client.Logout = {}
-        let event = new CustomEvent<Client.Logout>("logout", {detail:logout})
+        let event = new CustomEvent<Client.Logout>("logout", {detail: logout})
         document.dispatchEvent(event)
     }
-    
 }
 
-// private
-function getNavClickCallback(stateTo:StateView) {
+
+
+function getNavClickCallback(stateTo: StateView) {
     return function() {
         let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
-            detail: {
-                viewing: stateTo
-            }
+            detail: {viewing: stateTo}
         })
         document.dispatchEvent(event)
     }
 }
 
-// private util function. Sets display to "none" and removes the "active" class from the classlist.
-function hide(element:HTMLElement) {
-    element.style.display = "none"
+
+
+function hide(element: HTMLElement) {
+    element.style.display = 'none'
     setInactive(element)
 }
 
-// Sets display to "inline-block"
-function showInlineBlock(element:HTMLElement) {
-    element.style.display = "inline-block"
+function setActive(el: HTMLElement) {
+    
 }
 
-// Adds class CSS.activeNavTab
-function setActive(element:HTMLElement) {
-    element.classList.add(CSS.activeNavTab)
 
+
+function setInactive(el: HTMLElement) {
+    
 }
 
-// Removes class CSS.activeNavTab
-function setInactive(element:HTMLElement) {
-    element.classList.remove(CSS.activeNavTab)
+
+
+function showInlineBlock(el: HTMLElement) {
+    el.style.display = 'inline-block'
 }
-
-function getHamburger() {
-    let nav = Dom.el("nav", CSS.hamburger)
-    let hbutton = Dom.el("img", CSS.hamburgerImage)
-    hbutton.src = HamSVG
-    hbutton.title = "Click this hamburger to toggle the navigation menu."
-    nav.append(hbutton) 
-    let container = Dom.div(undefined, CSS.navButtonsContainer, {
-        display:"block"
-    })
-
-    function toggler() {
-        if(container.style.display == "block") {
-            container.style.display = "none"
-        } else {
-            container.style.display = "block"
-        }
-    }
-    hbutton.addEventListener("click", toggler)
-    nav.append(container)
-    return [nav, container]
-}
-

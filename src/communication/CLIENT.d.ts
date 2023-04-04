@@ -12,7 +12,7 @@ type HTTPMethod = {
 export type ClientMap = {
     'register'              : [Client.Register, HTTPMethod["POST"]],
     'login'                 : [Client.Login, HTTPMethod["POST"]],
-    'logout'                : [Client.Logout, HTTPMethod["PUT"]],
+    'logout'                : [Client.Logout, HTTPMethod["POST"]],
     'pwResetReq'            : [Client.PasswordReset, HTTPMethod["POST"]],
     //'pwResetCode'         : [Client.PasswordResetCode, HTTPMethod["POST"]],
     'newPassword'           : [Client.SetNewPass, HTTPMethod["POST"]],

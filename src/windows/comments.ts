@@ -1,17 +1,20 @@
 import { CafeWindow } from "./base"
 import { CafeCommentSortDisplay } from "../ui/commentSort"
-import { Server } from "../SERVER"
+import { Server } from "../communication/SERVER"
 import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
+import { CafeDom } from "../util/cafeDom"
 import { CommentReplySection } from "../section/commentReply"
 import { PseudoUrlSection } from "../section/pseudoURL"
+import { Settings } from "../Settings"
+import { Client } from "../communication/CLIENT"
 
 import "./comments.css"
-import { Settings } from "../Settings"
-import { Client } from "../CLIENT"
+import { State } from "../State"
 
 const CSS = {
-    commentContainer : "comments-container"
+    viewing: 'comments-url-viewing',
+    container: 'comments-container'
 }
 
 /**
@@ -28,14 +31,41 @@ const CSS = {
 export class CafeCommentsWindow extends CafeWindow {
     data                : Server.FullPage
     displayedComments   : Map<number, CafeComment>
+    
+    viewingLabel        : HTMLDivElement
+    purlSection         : PseudoUrlSection
     commentSortSettings : CafeCommentSortDisplay
+    
     commentContainer    : HTMLDivElement
     newCommentSection   : CommentReplySection
-    purlSection         : PseudoUrlSection
-    currentlyViewing    : HTMLDivElement
+    
     
     constructor() {
+        super()
+        
+        this.data = { Domain: "", Path: "", Comments: [] }
+        this.displayedComments = new Map<number, CafeComment>()
+        
+        this.viewingLabel = Dom.div('', CSS.viewing)
+        this.purlSection = new PseudoUrlSection()
+        
+        this.commentContainer = Dom.div('', CSS.container)
+        this.commentSortSettings = new CafeCommentSortDisplay()
+        this.newCommentSection = new CommentReplySection(0, true)
+        
+        this.el.append (
+            this.viewingLabel,
+            this.purlSection.el,
+            this.commentSortSettings.el,
+            this.commentContainer,
+            this.newCommentSection.el
+        )
+        
+        this.setCurrentlyViewing()
+        
+        /*
         super() // TODO: add parameters for CSS and whatnot
+        
         this.data = {
             Domain: "",
             Path: "",
@@ -47,8 +77,8 @@ export class CafeCommentsWindow extends CafeWindow {
         this.newCommentSection = new CommentReplySection(0, true)
         this.purlSection = new PseudoUrlSection()
         
-        this.commentContainer = Dom.div(undefined, CSS.commentContainer)
-        this.currentlyViewing = Dom.textEl('div')
+        this.commentContainer = Dom.div(undefined, CSS.container)
+        this.currentlyViewing = Dom.textEl('div', CSS.url.viewing)
         this.setCurrentlyViewing()
         
         this.el.append(
@@ -58,7 +88,9 @@ export class CafeCommentsWindow extends CafeWindow {
             this.commentContainer,
             this.newCommentSection.el
         )
+        */
     }
+    
     
     /** All instances of CafeComment is cleared, and new instances are created for every Comment in the parameter array */
     populateNewComments(data: Server.FullPage, sortnew: Client.SortOption = "new", sortascending = false) {
@@ -67,12 +99,12 @@ export class CafeCommentsWindow extends CafeWindow {
         this.setCurrentlyViewing(data.Domain, data.Path)
         
         // Clear the map.
-        for(let cafecom of this.displayedComments.values()) {
+        for (let cafecom of this.displayedComments.values()) {
             cafecom.destroy()
         }
+        
         this.displayedComments.clear()
         this.resortComments(sortnew, sortascending)
-        
         
         // populate with the new comments. 
         for (let d of this.data.Comments) {
@@ -82,13 +114,13 @@ export class CafeCommentsWindow extends CafeWindow {
     
     setCurrentlyViewing(url?: string, Path?: string) {
         if (url == undefined || url.length == 0) {
-            this.currentlyViewing.textContent = 'Visit a webpage to view comments.'
+            this.viewingLabel.textContent = 'You are not viewing any comments.'
         }
         else {
-            this.currentlyViewing.textContent = 'You are viewing ' + url + '/' + Path + "."
+            this.viewingLabel.textContent = 'You are viewing comments for ' + url + '/' + Path
         }
     }
-
+    
     /** Called by Cafe when settings changes */
     settingChangeReceived(data: Settings) {
         console.log("settingChangRecieved called in CommentWindow with data", data)

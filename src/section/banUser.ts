@@ -1,6 +1,6 @@
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { Client } from "../CLIENT";
+import { Client } from "../communication/CLIENT";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],

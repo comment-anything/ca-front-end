@@ -1,6 +1,6 @@
 import { CafeSection } from "./base";
-import { Server } from "../SERVER";
-import { Client } from "../CLIENT";
+import { Server } from "../communication/SERVER";
+import { Client } from "../communication/CLIENT";
 import { Dom } from "../util/dom";
 
 import "./sectionGeneralCSS.css"

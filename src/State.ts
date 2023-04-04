@@ -1,13 +1,14 @@
-import { Server } from "./SERVER";
+import { Server } from "./communication/SERVER";
 import { Settings } from "./Settings";
 
 export type StateView = "register" | "login" | "logout" | "forgotpassword" | "newPassword" | "comments" | "settings" | "moderation" | "reports" | "none" | "admin"
 
 // State holds the current state of the front end, including who is logged in and what window is being viewed. Cafe passes State to NavBar to realize a state change.
 export class State {
-    viewing: StateView
-    ownProfile?: {LoggedInAs: Server.UserProfile, Email: string}
-    settings: Settings
+    viewing     : StateView
+    ownProfile? : { LoggedInAs: Server.UserProfile, Email: string }
+    settings    : Settings
+    
     constructor() {
         this.viewing = "register"
         this.settings = new Settings()
@@ -16,7 +17,8 @@ export class State {
 
 
     stateChangeRequest(newstate: Partial<State>) {
-        console.log("Got state change request!", newstate)
+        console.log("Got state change request!", newstate as State)
+        
         if(newstate.ownProfile) {
             if(this.ownProfile) {
                 Object.assign(this.ownProfile, newstate.ownProfile)
@@ -24,15 +26,16 @@ export class State {
                 this.ownProfile = newstate.ownProfile
             }
         }
-        if(newstate.viewing) {
+        
+        if (newstate.viewing) {
             this.viewing = newstate.viewing
         }
+        
         if(newstate.settings) {
             Object.assign(this.settings, newstate.settings)
         }
-        let ev = new CustomEvent<State>("StateChanged", {
-            detail: this
-        })
+        
+        let ev = new CustomEvent<State>("StateChanged", { detail: this })
         document.dispatchEvent(ev)
     }
     
@@ -74,9 +77,7 @@ function stateChangeEmit(newState:State) {
 }
 
 function settingsChangeEmit(settings:Settings) {
-    let event = new CustomEvent<Settings>("SettingsChange", {
-        detail: settings
-    })
+    let event = new CustomEvent<Settings>("SettingsChange", { detail: settings })
     document.dispatchEvent(event)
 }
 

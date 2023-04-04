@@ -1,7 +1,7 @@
 
 import { Cafe } from "./Cafe";
 import { CafeNavBar } from "./navbar";
-import { ServerResponse, Server, ServerMap } from "./SERVER";
+import { ServerResponse, Server, ServerMap } from "./communication/SERVER";
 
 // Dispatcher is responsible for parsing an array of server responses and dispatching them to the appropriate objects around the front end for rendering to the user.
 export class Dispatcher {
@@ -88,12 +88,12 @@ export class Dispatcher {
 
     /** dispatchFullPageResponse calls populateNewComments on commentsWindow */
     dispatchFullPageResponse(message: Server.FullPage, cafe: Cafe) {
-        cafe.navbar.commentsWindow.populateNewComments(message)
+        cafe.navbar.window.comments.populateNewComments(message)
     }
 
     /** dispatchCommentUpdate calls updateComment on commentsWindow */
     dispatchCommentUpdate(message: Server.Comment, cafe:Cafe) {
-        cafe.navbar.commentsWindow.updateComment(message)
+        cafe.navbar.window.comments.updateComment(message)
     }
     
     /** dispatchUserUpdate calls userChange on the Cafe root object to change state reflecting any changes that may have happened to the User and to change what is visible on their profile */
@@ -111,28 +111,28 @@ export class Dispatcher {
 
     /** dispatchNewPassResponse sends the response to the newPassWindow so it can request a state change on success and also dispatches it to the message display so errors and success messages can be displayed. */
     dispatchNewPassResponse(newpassresponse:Server.NewPassResponse, cafe:Cafe) {
-        cafe.navbar.newPassWindow.parseNewPassResponse(newpassresponse)
+        cafe.navbar.window.setNewPassword.parseNewPassResponse(newpassresponse)
         this.dispatchMessage(newpassresponse as Server.Message, cafe.navbar)
     }
 
     dispatchFeedbackReport(feedbackReport: Server.FeedbackReport, cafe:Cafe) {
-        cafe.navbar.adminWindow.feedbackReport.update(feedbackReport.Records)
+        cafe.navbar.window.admin.feedbackReport.update(feedbackReport.Records)
     }
     
     dispatchUsersReport(usersReport: Server.AdminUsersReport, cafe:Cafe) {
-        cafe.navbar.adminWindow.usersReport.update(usersReport)
+        cafe.navbar.window.admin.usersReport.update(usersReport)
     }
     
     dispatchCommentReport(commentReport: Server.CommentReport, cafe: Cafe) {
-        cafe.navbar.moderatorWindow.reports.updateCommentReport(commentReport)
+        cafe.navbar.window.moderator.reports.updateCommentReport(commentReport)
     }
     
     dispatchCommentReports(commentReports: Server.CommentReports, cafe: Cafe) {
-        cafe.navbar.moderatorWindow.reports.populateCommentReports(commentReports.Reports)
+        cafe.navbar.window.moderator.reports.populateCommentReports(commentReports.Reports)
     }
 
     dispatchAdminAccessLogs(accessLogs: Server.AdminAccessLogs, cafe: Cafe) {
-        cafe.navbar.adminWindow.accessLogs.update(accessLogs.Logs)
+        cafe.navbar.window.admin.accessLogs.update(accessLogs.Logs)
     }
 }
 

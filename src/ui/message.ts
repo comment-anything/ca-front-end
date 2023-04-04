@@ -1,48 +1,75 @@
-import { Server } from "../SERVER";
+import { Server } from "../communication/SERVER";
 import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 
 import "./message.css"
 
-
 const CSS = {
-    message_class : "server-message",
-    message_success_false : "server-message-success-false",
-    message_success_true : "server-message-success-true"
+    main: 'main-message-layout',
+    message: {
+        generic : "server-message",
+        success : "server-message-success-true",
+        failure : "server-message-success-false"
+    },
+    fun: {
+        dude         : "comment-dude",
+        speechBubble : "dude-speech-bubble-area",
+        speechArrow  : "dude-speech-bubble-arrow",
+        speechBubbleFull : "dude-speech-bubble-full"
+    }
+
 }
 
 export class CafeMessageDisplay extends UIInput<Server.Message> {
 
-    displayedText: HTMLDivElement
-
+    displayedText    : HTMLDivElement
+    speechBubbleArea : HTMLDivElement
+    
     constructor() {
-        super({Success:true, Text:"Welcome"})
-        this.displayedText = Dom.div(undefined, CSS.message_class)
-        this.el.appendChild(this.displayedText)
-        this.displayedText.classList.add(CSS.message_success_true)
+        super({ Success:true, Text:"Welcome" })
+        this.el.classList.add(CSS.main)
+        
+        let dude = Dom.div('', CSS.fun.dude)
+        let bubarrow = Dom.div('', CSS.fun.speechArrow)
+        let fullSpeechBubble = Dom.div('', CSS.fun.speechBubbleFull)
+        
+        this.speechBubbleArea = Dom.div('', CSS.fun.speechBubble)
+        this.displayedText = Dom.div(undefined, CSS.message.generic)
+        
+        this.speechBubbleArea.append(this.displayedText)
+        fullSpeechBubble.append(bubarrow, this.speechBubbleArea)
+        
+        this.el.append(
+            dude,
+            fullSpeechBubble
+        )
+        
+        this.displayedText.classList.add(CSS.message.success)
         this.updateMessage(this.data)
     }
-
+    
     // updateMessage changes the message which is shown.
     updateMessage(d?: Server.Message) {
         if(d != undefined) {
-            this.el.removeChild(this.displayedText)
-            this.el.append(this.displayedText)
+            
+            this.speechBubbleArea.removeChild(this.displayedText)
+            this.speechBubbleArea.append(this.displayedText)
+            
             if(d.Success) {
-                this.displayedText.classList.remove(CSS.message_success_false)
-                this.displayedText.classList.add(CSS.message_success_true)
+                this.displayedText.classList.remove(CSS.message.failure)
+                this.displayedText.classList.add(CSS.message.success)
             } else {
-                this.displayedText.classList.remove(CSS.message_success_true)
-                this.displayedText.classList.add(CSS.message_success_false)
+                this.displayedText.classList.remove(CSS.message.success)
+                this.displayedText.classList.add(CSS.message.failure)
             }
+            
             this.displayedText.textContent = d.Text
             this.data = d
         }
     }
-
+    
     // clearMessage clears the currently displayed message.
     clearMessage() {
-        this.updateMessage({Success:true, Text:""})
+        this.updateMessage({ Success:true, Text: "" })
     }
-
 }

@@ -1,4 +1,4 @@
-import { Client } from "../CLIENT"
+import { Client } from "../communication/CLIENT"
 import { Dom } from "../util/dom"
 import { CafeDom } from "../util/cafeDom"
 import { CafeWindow } from "./base"

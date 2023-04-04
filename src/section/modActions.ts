@@ -1,5 +1,5 @@
 
-import { Client } from "../CLIENT";
+import { Client } from "../communication/CLIENT";
 import { DatetimeNowString, DatetimeOffsetString } from "../util/date";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";

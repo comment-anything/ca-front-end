@@ -1,7 +1,7 @@
-import { Client } from "../CLIENT";
+import { Client } from "../communication/CLIENT";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { Server } from "../SERVER";
+import { Server } from "../communication/SERVER";
 import { CafeCommentReportDisplay } from "../ui/commentReport";
 
 const CSS = {
