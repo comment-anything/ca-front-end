@@ -1,16 +1,15 @@
 import { Dispatcher } from "./dispatcher";
-import { Fetcher } from "./fetcher";
+import { Fetcher } from "./communication/fetcher"
 import { CafeNavBar } from "./navbar";
-import { State } from "./State";
-
+import { State, StateView } from "./State";
+import { ClientMap } from "./communication/CLIENT"
 
 const browser_storage_key = import.meta.env.VITE_BROWSER_STORAGE_KEY
 
 type SerializedData = {
-    state: State,
-    token: string
+    state : State,
+    token : string
 }
-
 
 /** Cafe stands for "Comment Anywhere Front End". Cafe is the base class that is composed of other major classes used in the Front end. It is responsible for updating the State and listening for user input events on the DOM, and transmitting them to the fetcher when appropriate. 
  @listens StateEvent
@@ -19,20 +18,22 @@ type SerializedData = {
 **/
 export class Cafe {
 
-    fetcher: Fetcher
-    state: State
-    navbar: CafeNavBar;
-    dispatcher: Dispatcher
+    fetcher    : Fetcher
+    state      : State
+    navbar     : CafeNavBar
+    dispatcher : Dispatcher
     
     constructor() {
-        this.fetcher = new Fetcher()
-        this.state = new State()
-        this.navbar = new CafeNavBar()
+        this.fetcher    = new Fetcher()
+        this.state      = new State()
+        this.navbar     = new CafeNavBar()
         this.dispatcher = new Dispatcher()
+        
         this.setClientEventListeners()
         this.setStateEventListeners()
         this.navbar.setFromState(this.state)
         this.deserializePick()
+        
         if(typeof browser == "undefined") {
             console.warn("You are not using comment anywhere as an extension. This is dangerous, and your credentials could be stolen!")
         }
@@ -98,7 +99,7 @@ export class Cafe {
             console.log("LocalStorage saved this data:", saved_data)
         }
     }
-
+    
     /** Called when user logs out; clears the token from storage to prevent bugs */
     clearToken() {
         if(typeof browser != "undefined") {
@@ -115,160 +116,71 @@ export class Cafe {
             // clear it from browser storage
         } else {
             let savedData = localStorage.getItem(browser_storage_key)
+            
             if(savedData != undefined) {
                 let parsed = JSON.parse(savedData) as SerializedData
                 parsed.token = ""
                 parsed.state.ownProfile = undefined
                 localStorage.setItem(browser_storage_key, JSON.stringify(parsed))
-
             }
         }
     }
-
+    
+    addListenerWithFetch<K extends keyof ClientMap>(APIendpoint: K, httpmethod: ClientMap[K][1], retrieveResponses: ()=>void) {
+        let cafe = this
+        
+        document.addEventListener(APIendpoint, (event) => {
+            let data = event.detail
+            console.log("CLIENT REQUESTED THE \"" + APIendpoint + "\" API ENDPOINT. SENDING DATA:", data)
+            cafe.fetcher.fetch(APIendpoint, httpmethod, data, retrieveResponses)
+        })
+    }
+    
     // Called as part of the constructor to set listeners for ClientEvents.
     setClientEventListeners() {
         let my = this // to scope Cafe into callbacks
         let retrieveResponses = my.checkForResponses.bind(this)
         
-        document.addEventListener("register", (ev)=>{
-            let data = ev.detail
-            console.log("REGISTER EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("register", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("login", (ev)=>{
-            let data = ev.detail
-            console.log("LOGIN EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("login", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("logout", (ev)=>{
-            let data = ev.detail
-            console.log("LOGOUT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("logout", "PUT", data, retrieveResponses)
-        })
-        document.addEventListener("pwResetReq", (ev)=>{
-            let data = ev.detail
-            console.log("FORGOT PASSWORD EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("pwResetReq", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("newPassword", (ev)=>{
-            let data = ev.detail
-            console.log("SET NEW PASSWORD EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("newPassword", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("changeEmail", (ev)=> {
-            let data = ev.detail
-            console.log("CHANGE EMAIL EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("changeEmail", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("changeProfile", (ev)=> {
-            let data = ev.detail
-            console.log("CHANGE PROFILE BLURB EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("changeProfile", "POST", data, retrieveResponses)
-
-        })
-        document.addEventListener("getComments", (ev)=> {
-            let data = ev.detail
-            console.log("GET COMMENTS EVENT RECEIVED WITH DATA: ", data)
-            // Cant do this with GET! Get requests can't have a body! Everything will be post!
-            my.fetcher.fetch("getComments", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("newComment", (ev)=> {
-            let data = ev.detail
-            console.log("NEW COMMENT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("newComment", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("voteComment", (ev)=> {
-            let data = ev.detail
-            console.log("NEW COMMENT EVENT RECEIVED WITH DATA: ", data)
-            // Cant do this with GET! Get requests can't have a body! Everything will be post!
-            my.fetcher.fetch("voteComment", "POST", data, retrieveResponses)
-        })
-        document.addEventListener("viewUsersReport", (ev)=> {
-            let data = ev.detail
-            console.log("NEW VIEW USERSREPORT EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("viewUsersReport", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("viewFeedback", (ev)=> {
-            let data = ev.detail
-            console.log("NEW VIEW FEEDBACK EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("viewFeedback", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("toggleFeedbackHidden", (ev)=> {
-            let data = ev.detail
-            console.log("NEW TOGGLE FEEDBACK HIDDEN EVENT RECEIVED WITH DATA: ", data)
-            my.fetcher.fetch("toggleFeedbackHidden", "POST", data, retrieveResponses)
-        })
-
-        document.addEventListener("newFeedback", (ev)=> {
-            let data = ev.detail
-            console.log("NEW NEW FEEDBACK EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("newFeedback", "POST", data, retrieveResponses)
-        })
-
-        document.addEventListener("assignAdmin", (ev)=> {
-            let data = ev.detail
-            console.log("NEW ASSIGN ADMIN EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("assignAdmin", "POST", data, retrieveResponses)
-        })
-
-        document.addEventListener("assignGlobalModerator", (ev)=> {
-            let data = ev.detail
-            console.log("NEW ASSIGN GLOBMOD EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("assignGlobalModerator", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("viewCommentReports", (ev)=> {
-            let data = ev.detail
-            console.log("NEW COMMENT REPORT EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("viewCommentReports", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("newReport", (ev)=> {
-            let data = ev.detail
-            console.log("POST COMMENT REPORT EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("newReport", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("viewLogs", (ev)=> {
-            let data = ev.detail
-            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("viewLogs", "POST", data, retrieveResponses)
-        })
-        
-        document.addEventListener("moderate", (ev)=> {
-            let data = ev.detail
-            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("moderate", "POST", data, retrieveResponses)
-        })
-
-        document.addEventListener("viewModRecords", (ev)=> {
-            let data = ev.detail
-            console.log("VIEW LOGS EV RECEIVED W DATA:", data)
-            my.fetcher.fetch("viewModRecords", "POST", data, retrieveResponses)
-        })
-
-        document.addEventListener("ban", (ev) => {
-            console.log("BAN EV RECEIVED W DATA", ev.detail)
-            my.fetcher.fetch("ban", "POST", ev.detail, retrieveResponses)
-        })
+        my.addListenerWithFetch("register",              "POST", retrieveResponses)
+        my.addListenerWithFetch("login",                 "POST", retrieveResponses)
+        my.addListenerWithFetch("logout",                "POST", retrieveResponses)
+        my.addListenerWithFetch("pwResetReq",            "POST", retrieveResponses)
+        my.addListenerWithFetch("newPassword",           "POST", retrieveResponses)
+        my.addListenerWithFetch("changeEmail",           "POST", retrieveResponses)
+        my.addListenerWithFetch("changeProfile",         "POST", retrieveResponses)
+        my.addListenerWithFetch("getComments",           "POST", retrieveResponses)
+        my.addListenerWithFetch("newComment",            "POST", retrieveResponses)
+        my.addListenerWithFetch("voteComment",           "POST", retrieveResponses)
+        my.addListenerWithFetch("viewUsersReport",       "POST", retrieveResponses)
+        my.addListenerWithFetch("viewFeedback",          "POST", retrieveResponses)
+        my.addListenerWithFetch("toggleFeedbackHidden",  "POST", retrieveResponses)
+        my.addListenerWithFetch("newFeedback",           "POST", retrieveResponses)
+        my.addListenerWithFetch("assignAdmin",           "POST", retrieveResponses)
+        my.addListenerWithFetch("assignGlobalModerator", "POST", retrieveResponses)
+        my.addListenerWithFetch("viewCommentReports",    "POST", retrieveResponses)
+        my.addListenerWithFetch("newReport",             "POST", retrieveResponses)
+        my.addListenerWithFetch("viewLogs",              "POST", retrieveResponses)
+        my.addListenerWithFetch("moderate",              "POST", retrieveResponses)
+        my.addListenerWithFetch("viewModRecords",        "POST", retrieveResponses)
+        my.addListenerWithFetch("ban",                   "POST", retrieveResponses)
         
         // Front End error catch
         document.addEventListener("FrontEndError", (ev)=> {
             console.error("Front End Error!")
             my.navbar.message.updateMessage(ev.detail)
         })
-
     }
     
     /** Called as part of the constructor to set listens for StateEvents. */
     setStateEventListeners() {
         let my = this
+        
         document.addEventListener("StateChangeRequest", (ev)=>{
             my.state.stateChangeRequest(ev.detail)
         })
+        
         document.addEventListener("StateChanged", ()=> {
+            
             console.log("state change event received", my.state)
             my.navbar.setFromState(my.state)
             my.serialize()

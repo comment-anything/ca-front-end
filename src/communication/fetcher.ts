@@ -37,7 +37,6 @@ export class Fetcher {
         }).then((jsonArray)=> {
             this.responses = jsonArray
         }).catch((error)=> {
-            console.error(`Error fetching from server!`, error)
             let message : Server.Message = {
                 Success: false,
                 Text: "Error fetching from server!"

@@ -25,15 +25,17 @@
     margin: 1%;
     cursor: text;
     width: 90%;
+    
+    box-shadow: 0px 2px 4px #00000041;
+}
+
+.text-input-generic-container:focus-within {
+    border-color: rgb(109, 109, 240);
+    box-shadow: 0px 2px 4px rgba(71, 61, 211, 0.26)
 }
 
 .text-input-half-generic-container {
     width: 42.5%;
-}
-
-.text-input-focus-container {
-    border-color: rgb(109, 109, 240);
-    box-shadow: 1px 1px 2px rgb(161, 159, 187)
 }
 
 .check-box-generic-label {
@@ -58,13 +60,47 @@
     margin: 1%;
     cursor: text;
     width: 90%;
+    
+    box-shadow: 0px 2px 4px #00000041;
 }
 
 .form-submit-button {
-    background-color: rgb(103, 255, 161);
+    background-color: #354779;
     border-color: rgb(146, 146, 175);
+    color: rgb(230, 230, 235);
     padding: 2%;
     cursor:pointer;
     font-size: 110%;
     border-radius: 8px;
+}
+
+.icon-button-texture {
+    background-size: cover;
+    width: 70%;
+    height: 70%;
+    margin: auto;
+}
+
+.icon-button-container {
+    min-width: 20px;
+    min-height: 20px;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    border: none;
+    border-radius: 4px;
+    margin: 4px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.432);
+}
+
+.generic-dropdown {
+    border: none;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.623);
+    position: relative;
+}
+
+.button-check-box {
+    border: none;
+    padding: 3px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.623);
 }

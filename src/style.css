@@ -2,7 +2,10 @@
 html {
     font-family: 'Montserrat';
 }
-
+body {
+    padding:0px;
+    margin:0px;
+}
 button {
     font-family: 'Montserrat';
     margin-left:auto;

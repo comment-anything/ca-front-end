@@ -1,8 +1,8 @@
-import { Client } from "../CLIENT";
+import { Client } from "../communication/CLIENT";
 import { CafeFeedback } from "../ui/feedback";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { Server } from "../SERVER";
+import { Server } from "../communication/SERVER";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],

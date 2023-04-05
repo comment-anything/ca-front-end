@@ -1,4 +1,4 @@
-import {Server} from "../SERVER"
+import {Server} from "../communication/SERVER"
 import { CafeCommentVote } from "../ui/commentVote"
 import {CafeSection} from "./base"
 

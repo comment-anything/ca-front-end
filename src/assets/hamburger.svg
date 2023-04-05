@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 18 28" width="18" height="15" version="1.1" id="svg4" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs id="defs8">
+    <bx:grid x="0" y="0" width="2" height="2"/>
+  </defs>
+  <rect style="fill: rgb(53, 71, 121);" y="7.592" width="14" height="2.204" rx="1" ry="1" x="-2"/>
+  <rect style="fill: rgb(53, 71, 121);" y="13.592" width="14" height="2.204" rx="1" ry="1" x="-2"/>
+  <rect style="fill: rgb(53, 71, 121);" y="19.796" width="14" height="2.204" rx="1" ry="1" x="-2"/>
+</svg>

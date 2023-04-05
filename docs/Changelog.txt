@@ -1,3 +1,17 @@
+4/2/2023: Luke
+- Moved CLIENT.d.ts, SERVER.d.ts, and fetcher.ts to "communication" folder
+- Moved all SVG files to the "src/assets" folder.
+- cafe.ts: addListenerWithFetch() abstracted function.
+- navbar.ts: Organized class members.
+- pseudoURL.ts: Organized class members and improved UI.
+- comment.css: Removed extra "cafe-window" style.
+- commentSort.ts: Organized class members and improved UI.
+- message.ts: Implemented the "comment anywhere dude" and speech bubble.
+- cafeDom.ts: Added genericIconButton(), genericDropdown(), and toggleButton()
+- eventman.ts: Created the EventManager class
+- comments.ts: Reworked layout of the CafeCommentsWindow
+- login.ts: Began work improving the UI.
+
 3/29/2023: Karl 
 - "/ban" pipeline 
 - improved logout, user updating. Think I fixed some of the bugs there. 

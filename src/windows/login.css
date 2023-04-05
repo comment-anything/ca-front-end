@@ -1,9 +1,7 @@
 .login-register-text-input-container {
-    background-color: rgba(255, 255, 255, 0.658);
-    border-radius: 25px;
-    width: 70%;
-    
-    padding: 5%;
+    width: 100%;
+    padding-top: 15%;
+    padding-bottom: 15%;
     
     display: flex;
     flex-wrap: wrap;

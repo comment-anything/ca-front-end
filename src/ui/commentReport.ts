@@ -1,10 +1,10 @@
-import { Server } from "../SERVER"
+import { Server } from "../communication/SERVER"
 import { UIInput } from "./base"
 import { Dom } from "../util/dom"
 import { CafeDom } from "../util/cafeDom"
 
 import "./commentReport.css"
-import { Client } from "../CLIENT"
+import { Client } from "../communication/CLIENT"
 
 const CSS = {
     reportHeader: {

@@ -1,5 +1,5 @@
-import { Client } from "../CLIENT";
-import { Server } from "../SERVER";
+import { Client } from "../communication/CLIENT";
+import { Server } from "../communication/SERVER";
 import { CafeAccessLog } from "../ui/accessLog";
 import { DatetimeNowString, DatetimeTodayStartString } from "../util/date";
 import { Dom } from "../util/dom";
