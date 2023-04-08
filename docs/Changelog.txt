@@ -1,3 +1,16 @@
+4/8/2023: Karl
+- Fixed nav pane not showing issue. Strangely, it had to do with setting the blur backdrop. Removing that did most of the fixing.
+- Adjusted nav pane CSS so that it is all the way on the left.
+- Removed top border radius from main window
+- Fixed navbar not changing window on logout... for example, you would stay on the "moderator" tab even though your buttons would change. Now, if you aren't on comments or register tab, you switch to login tab at the time of logout.
+- Nav pane now hides after window changes.
+- Created a second .env file, `.env.production`. This file is not pushed to git but should be added.
+- Now running vite with --mode production will connect to the remote Comment Anywhere server as configured in `env.production`
+- Created scripts to dev in mode production and build in mode production.
+    - `npm run dev-p` : runs "vite --mode production"
+    - `npm run dist` and `npm run dist-w` builds the extension in production (for linux and windows respectively)
+
+
 4/2/2023: Luke
 - Moved CLIENT.d.ts, SERVER.d.ts, and fetcher.ts to "communication" folder
 - Moved all SVG files to the "src/assets" folder.

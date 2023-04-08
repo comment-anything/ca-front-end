@@ -117,17 +117,7 @@ export class CafeNavBar {
         
         this.el.append(this.navbar.el, this.window.container)
         
-        this.navbar.hamburger.addEventListener('click', ()=>{
-            
-            if (this.navbar.pane.style.display == 'none') {
-                this.navbar.pane.style.display = 'inline'
-                this.navbar.hamburger.style.backgroundColor = '#8ca4e5'
-            }
-            else {
-                this.navbar.pane.style.display = 'none'
-                this.navbar.hamburger.style.backgroundColor = '#e6eae4'
-            }
-        })
+        this.navbar.hamburger.addEventListener('click', this.toggleNavPane.bind(this))
         
         this.navbar.register.addEventListener('click', getNavClickCallback("register"))
         this.navbar.login.addEventListener('click', getNavClickCallback("login"))
@@ -138,6 +128,25 @@ export class CafeNavBar {
         
         this.navbar.logout.addEventListener('click', this.logoutButtonClicked.bind(this))
     }
+
+    toggleNavPane(_ev?: MouseEvent, show_hide?:boolean) {
+        if(show_hide == undefined) {
+            if (this.navbar.pane.style.display == 'none') {
+                show_hide = true;
+            }
+            else {
+                show_hide = false
+            }
+        } 
+        if(show_hide == true) {
+            this.navbar.pane.style.display = 'block'
+            this.navbar.hamburger.style.backgroundColor = '#8ca4e5'
+        } else {
+            this.navbar.pane.style.display = 'none'
+            this.navbar.hamburger.style.backgroundColor = '#e6eae4'
+
+        }
+    }
     
     
     
@@ -146,6 +155,9 @@ export class CafeNavBar {
         
         if (state.ownProfile == undefined) {
             this.showLoggedOutButtons()
+            if(state.viewing != "comments" && state.viewing != "register" ) {
+                state.viewing = "login"
+            }
         }
         else {
             this.window.settings.ownProfile.updateProfile(state.ownProfile)
@@ -229,6 +241,7 @@ export class CafeNavBar {
     }
     
     hideAll() {
+        this.toggleNavPane(undefined, false)
         this.window.register.hide()
         this.window.login.hide()
         this.window.forgotPassword.hide()
