@@ -190,7 +190,7 @@ export class Cafe {
             this.state.ownProfile = undefined
             my.clearToken()
             let ev = new CustomEvent<State>("StateChanged", {
-                detail: my.state 
+                detail: my.state
             })
             document.dispatchEvent(ev)
         })

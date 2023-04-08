@@ -12,8 +12,6 @@
     min-height: 70px;
     
     padding: 3px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
     
     filter: drop-shadow(0px 1px 1px #10206671);
     z-index: 200;
@@ -46,24 +44,19 @@
     background-color: #354779;
     display: none;
     align-items: center;
-    backdrop-filter: blur(9px);
+    margin-left: -5px;
     animation-duration: 0.15s;
     animation-name: slidein;
-    z-index: 10000;
 }
 
 @keyframes slidein {
     from {
-        backdrop-filter: blur(0px);
         opacity: 0%;
-        margin-left: 0%;
         width: 0%;
     }
     to {
         opacity: 100%;
-        margin-left: 0%;
         width: 50%;
-        backdrop-filter: blur(9px);
     }
 }
 
