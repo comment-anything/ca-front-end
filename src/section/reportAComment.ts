@@ -1,4 +1,5 @@
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
@@ -15,7 +16,7 @@ export class ReportCommentSection extends CafeSection {
         super()
         this.targetCommentID = commentID
 
-        this.toggleButton = Dom.button("Report")
+        this.toggleButton = CafeDom.textLink(Dom.button("Report"), {})
 
         this.container = Dom.div(undefined, undefined, {display:"none"})
 

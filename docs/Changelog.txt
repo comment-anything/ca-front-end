@@ -1,3 +1,10 @@
+4/9/2023: Luke
+- Improved look of ui comments.
+- Improved look of vote dimensions.
+- Created icons for the vote dimensions.
+- CafeDom function for creating "text link" elements.
+
+
 4/8/2023: Karl
 - Fixed nav pane not showing issue. Strangely, it had to do with setting the blur backdrop. Removing that did most of the fixing.
 - Adjusted nav pane CSS so that it is all the way on the left.

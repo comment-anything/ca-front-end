@@ -3,13 +3,15 @@ import { Dom } from "../util/dom";
 import { CafeWindow } from "./base";
 import { CafeOwnProfileDisplay } from "../ui/ownProfile";
 import { NewFeedbackSection } from "../section/newFeedback";
+import { CafeCommentSortDisplay } from "../ui/commentSort";
 
 /** CafeSettingsWindow displays user settings and provides options for the user to reset their password or verify their email.  */
 export class CafeSettingsWindow extends CafeWindow {
-    passwordResetButton: HTMLButtonElement;
-    ownProfile: CafeOwnProfileDisplay;
-    newfeedbackSection: NewFeedbackSection;
-    //CafeCommentSortDisplay commentSortSettings
+    passwordResetButton : HTMLButtonElement;
+    ownProfile          : CafeOwnProfileDisplay;
+    newfeedbackSection  : NewFeedbackSection;
+    //commentSortSettings : CafeCommentSortDisplay
+    
     
     
     constructor() {
@@ -30,6 +32,5 @@ export class CafeSettingsWindow extends CafeWindow {
     passwordResetClicked() {
         let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
         document.dispatchEvent(state_event);
-        
     }
 }

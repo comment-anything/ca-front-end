@@ -1,9 +1,11 @@
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 import "./commentReply.css"
 
 const CSS = {
+    container: 'comment-reply-container',
     textArea: "comment-reply-textarea",
     submit: "comment-reply-submit"
 }
@@ -22,9 +24,11 @@ export class CommentReplySection extends CafeSection {
      */
     constructor(replyTo: number, alwaysOpen=false) {
         super()
+        this.el.classList.add(CSS.container)
+        
         this.repliesTo = replyTo
         this.alwaysOpen = alwaysOpen
-        this.openbutton = Dom.button("Reply")
+        this.openbutton = CafeDom.textLink(Dom.button("Reply"), {})
         this.replyArea = Dom.div()
         this.content = Dom.el("textarea", CSS.textArea, {display: "none"})
         

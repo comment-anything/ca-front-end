@@ -8,30 +8,87 @@ import { CommentVoteSection } from "../section/commentVoteSection";
 import "./comment.css"
 import arrow from "./arrow.svg"
 import { ReportCommentSection } from "../section/reportAComment";
+import { CafeDom } from "../util/cafeDom";
+
+
 
 const CSS = {
-    usernameHeader: "username-header",
-    baseComment: "cafe-comment",
-    childComments: "comment-child-container",
-    content: "cafe-comment-content",
-    postTime : "cafe-comment-posted-time",
-    collapseButton: "cafe-comment-collapse-button"
+    shading : 'ui-comment-parent-shade',
+    block   : 'ui-comment-block',
+    content : 'ui-comment-content',
+    
+    header: {
+        container : 'ui-comment-header-container',
+        time      : 'ui-comment-header-time'
+    },
+    
+    footer: {
+        container : 'ui-comment-footer-container'
+    },
+    
+    replies: {
+        nested : 'ui-comment-replies-nested'
+    }
 } 
+
 
 
 export class CafeComment extends UIInput<Server.Comment> {
     
-    username       : HTMLDivElement
-    content        : HTMLDivElement
-    replySection   : CommentReplySection
-    reportSection  : ReportCommentSection
-    childContainer : HTMLDivElement
-    collapseButton : HTMLDivElement
-    submittedAt    : HTMLTableCellElement;
-    voteSection    : CommentVoteSection
+    commentBlock: HTMLDivElement
+    content: HTMLDivElement
+    
+    header: {
+        username  : HTMLButtonElement
+        postedAt  : HTMLDivElement
+        container : HTMLDivElement
+    }
+    
+    footer: {
+        voteSection    : CommentVoteSection
+        replySection   : CommentReplySection
+        reportSection  : ReportCommentSection
+        container      : HTMLDivElement
+    }
+    
+    replies: {
+        container      : HTMLDivElement,
+        collapseButton : HTMLDivElement,
+    }
     
     constructor(comment: Server.Comment) {
         super(comment)
+        this.el.classList.add(CSS.shading)
+        
+        this.commentBlock = Dom.div('', CSS.block)
+        this.content = Dom.div('', CSS.content)
+        this.content.textContent = (comment == undefined) ? "" : comment.Content
+        
+        this.header = {
+            username  : CafeDom.textLink(Dom.button(), {}),
+            postedAt  : Dom.div('', CSS.header.time),
+            container : Dom.div('', CSS.header.container)
+        }
+        
+        let date = new Date(comment.TimePosted * 1000)
+        this.header.username.textContent = (comment == undefined) ? "" : comment.Username
+        this.header.postedAt.textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString()
+        
+        this.footer = {
+            voteSection    : new CommentVoteSection(comment),
+            replySection   : new CommentReplySection(comment.CommentId),
+            reportSection  : new ReportCommentSection(comment.CommentId),
+            container      : Dom.div('', CSS.footer.container)
+        }
+        
+        this.replies = {
+            container      : Dom.div('', CSS.replies.nested),
+            collapseButton : Dom.div()
+        }
+        
+        this.appendsBasedOnRemoved()
+        
+        /*
         this.el.classList.add(CSS.baseComment)
         
         // Initialize HTML elements
@@ -66,17 +123,18 @@ export class CafeComment extends UIInput<Server.Comment> {
         this.submittedAt = Dom.textEl("td", date.toLocaleDateString() + " " + date.toLocaleTimeString(), CSS.postTime)
         
         this.appendsBasedOnRemoved();
+        */
     }
     
     /** Toggle collapsed children */
     toggleCollapsedChildren() {
-        if (this.childContainer.style.display == "none") {
-            this.childContainer.style.display = "block"
-            this.collapseButton.style.transform = "rotate(0deg)"
+        if (this.replies.container.style.display == "none") {
+            this.replies.container.style.display = "block"
+            this.replies.container.style.transform = "rotate(0deg)"
         }
         else {
-            this.childContainer.style.display = "none"
-            this.collapseButton.style.transform = "rotate(270deg)"
+            this.replies.container.style.display = "none"
+            this.replies.container.style.transform = "rotate(270deg)"
         }
     }
     
@@ -84,51 +142,63 @@ export class CafeComment extends UIInput<Server.Comment> {
         let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
         document.dispatchEvent(state_event)
     }
-
+    
     /** Used to control el appending so that votes and reply button are not visible when a comment is removed. */
     appendsBasedOnRemoved() {
-        this.el.append(
-            this.username,
-            this.submittedAt,
-            this.content,
-            this.voteSection.el,
-            this.replySection.el,
-            this.reportSection.el,
-            this.collapseButton,
-            this.childContainer
+        
+        this.header.container.append(
+            this.header.username,
+            this.header.postedAt
         )
+        
+        this.footer.container.append(
+            this.footer.voteSection.el,
+            this.footer.replySection.el,
+            this.footer.reportSection.el
+        )
+        
+        this.commentBlock.append(
+            this.header.container,
+            this.content,
+            this.footer.container
+        )
+        
+        this.el.append(
+            this.commentBlock,
+            this.replies.collapseButton,
+            this.replies.container
+        )
+        
         if(this.data && this.data.Removed) {
-            this.voteSection.el.remove()
-            this.replySection.el.remove()
-            this.reportSection.el.remove()
+            this.footer.voteSection.el.remove()
+            this.footer.replySection.el.remove()
+            this.footer.reportSection.el.remove()
         }
     }
     
     update(data: Server.Comment) {
         this.data = data
-        this.username.textContent = data.Username
+        this.header.username.textContent = data.Username
         this.content.textContent = data.Content
         let date = new Date(data.TimePosted * 1000)
-        this.submittedAt.textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString()
-        this.voteSection.update(data)
+        this.header.postedAt.textContent = date.toLocaleDateString() + " " + date.toLocaleTimeString()
+        this.footer.voteSection.update(data)
         this.appendsBasedOnRemoved()
     }
     
     /** Add a child CafeComment to the parent  */
     addChild(child: CafeComment) {
-        this.childContainer.appendChild(child.el)
+        this.replies.container.appendChild(child.el)
         // The moment this is called, we have at least one child comment. Show the "Expand/Collapse button"
-        this.collapseButton.style.display = "block"
+        this.replies.collapseButton.style.display = "block"
     }
 
     /** Overwrite the default so we also call destroy on the sections. That way, all listeners are removed. */
     destroy(): void {
         super.destroy()
-        this.replySection.destroy()
-        this.reportSection.destroy()
+        this.footer.replySection.destroy()
+        this.footer.reportSection.destroy()
     }
-
-    
 }
 
 

@@ -1,4 +1,9 @@
 
+.comment-reply-container {
+    display: inline;
+    margin: auto;
+}
+
 .comment-reply-textarea {
     width: 75%;
     margin-left: auto;
@@ -6,4 +11,5 @@
 }
 .comment-reply-submit {
     color: black;
+    margin: auto;
 }

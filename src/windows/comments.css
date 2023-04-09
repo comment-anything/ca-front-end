@@ -6,9 +6,6 @@
 
 .comments-container {
     width: 95%;
-    min-height: 380px;
-    max-height: 380px;
-    overflow: auto;
     margin: 20px;
     padding-left: 0px;
     margin-left: 5px;

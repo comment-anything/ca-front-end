@@ -5,24 +5,102 @@ import { UIInput } from "./base";
 
 import "./commentVote.css"
 import arrow from "./arrow.svg"
+import { CafeDom } from "../util/cafeDom";
+import { EventManager } from "../util/eventman";
 
 const CSS = {
-    upvotebutton: "comment-vote-button",
-    downvotebutton: "comment-vote-button",
-    numberDisplay: "comment-vote-number-display",
-    categoryDisplay: "comment-vote-category-display",
-    voteContainer: "comment-vote-container"
+    container : 'ui-comment-vote-container',
+    
+    buttons: {
+        hitbox     : 'ui-comment-vote-hitbox',
+        updownvote : 'ui-comment-upvote-downvote-button',
+        container  : 'ui-comment-vote-buttons-container'
+    }
 }
 
 export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
-    commentId : number
-    voteType  : Client.VoteType
-    up        : HTMLButtonElement
-    down      : HTMLButtonElement
-    total     : HTMLDivElement
+    
+    eventman : EventManager<CafeCommentVote>
+    
+    voteData: {
+        commentId : number
+        voteType  : Client.VoteType
+    }
+    
+    buttons : {
+        hitbox    : HTMLButtonElement
+        up        : HTMLButtonElement
+        down      : HTMLButtonElement
+        container : HTMLDivElement
+    }
+    
+    total  : HTMLDivElement
     
     constructor(type: Client.VoteType, commentId: number, voteDim: Server.CommentVoteDimension) {
         super(voteDim)
+        this.el.classList.add(CSS.container)
+        
+        this.eventman = new EventManager(this)
+        
+        this.voteData = {
+            commentId : commentId,
+            voteType  : type
+        }
+        
+        this.buttons = {
+            hitbox    : Dom.button('', CSS.buttons.hitbox),
+            up        : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'upvote.svg'}),
+            down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'downvote.svg'}),
+            container : Dom.div('', CSS.buttons.container)
+        }
+        
+        this.total = Dom.div(String(voteDim.Ups + voteDim.Downs));
+        
+        switch (type)
+        {
+            case "funny":
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'funny.svg'})
+                break
+                
+            case "factual":
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'factual.svg'})
+                break
+            
+            case "agree":
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'agree.svg'})
+                break
+        }
+        
+        this.buttons.container.append(
+            this.buttons.up,
+            this.buttons.down,
+            this.buttons.hitbox
+        )
+        
+        this.showUpvoteButtons(false)
+        
+        this.eventman.watchEventListener('mouseenter', this.buttons.container, ()=>{
+            this.showUpvoteButtons(true)
+        })
+        
+        this.eventman.watchEventListener('mouseleave', this.buttons.container, ()=>{
+            this.showUpvoteButtons(false)
+        })
+        
+        this.eventman.watchEventListener('click', this.buttons.up, ()=>{
+            this.upVoteClicked()
+        })
+        
+        this.eventman.watchEventListener('click', this.buttons.down, ()=>{
+            this.downVoteClicked()
+        })
+        
+        this.el.append(
+            this.buttons.container,
+            this.total
+        )
+        
+        /*
         this.el.classList.add(CSS.voteContainer)
         this.commentId = commentId
 
@@ -51,19 +129,31 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         )
         this.clickListen(this.up, this.upVoteClicked, true)
         this.clickListen(this.down, this.downVoteClicked, true)
+        */
+    }
+    
+    showUpvoteButtons(show: boolean) {
+        
+        if (show) {
+            this.buttons.up.style.transform = 'scaleY(100%)'
+            this.buttons.down.style.transform = 'scaleY(100%)'
+        } else {
+            this.buttons.up.style.transform = 'scaleY(0%)'
+            this.buttons.down.style.transform = 'scaleY(0%)'
+        }
 
     }
-
+    
     update(data: Server.CommentVoteDimension) {
         this.data = data
-        console.log(`📉 cvote for ${this.commentId} ups: ${this.up}, down: ${this.down}, result: ${String(data.Ups + data.Downs)}`)
+        console.log(`📉 cvote for ${this.voteData.commentId} ups: ${this.buttons.up}, down: ${this.buttons.down}, result: ${String(data.Ups + data.Downs)}`)
         this.total.textContent = String(data.Ups + data.Downs)
     }
     
     upVoteClicked() {
         let upvote: Client.CommentVote = {
-            VotingOn: this.commentId,
-            VoteType: this.voteType,
+            VotingOn: this.voteData.commentId,
+            VoteType: this.voteData.voteType,
             Value: 1
         }
         
@@ -72,9 +162,9 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
     }
     
     downVoteClicked() {
-        let upvote: Client.CommentVote  = {
-            VotingOn: this.commentId,
-            VoteType: this.voteType,
+        let upvote: Client.CommentVote = {
+            VotingOn: this.voteData.commentId,
+            VoteType: this.voteData.voteType,
             Value: -1
         }
         

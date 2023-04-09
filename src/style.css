@@ -8,11 +8,17 @@ body {
 }
 button {
     font-family: 'Montserrat';
+    display:block;
+}
+
+/*
+button {
+    font-family: 'Montserrat';
     margin-left:auto;
     margin-right:auto;
     display:block;
 }
-
+*/
 
 h1 {
     font-family: "Overpass";
