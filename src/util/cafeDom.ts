@@ -22,7 +22,8 @@ const CSS = {
     button: {
         submitForm    : 'form-submit-button',
         texture       : 'icon-button-texture',
-        iconContainer : 'icon-button-container'
+        iconContainer : 'icon-button-container',
+        textLink      : 'button-text-link'
     },
     dropdown: {
         generic: 'generic-dropdown'
@@ -128,6 +129,15 @@ export namespace CafeDom {
             el.textContent = content.label
         
         el.classList.add(CSS.checkBox.button)
+        return el
+    }
+    
+    export function textLink(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        el.classList.add(CSS.button.textLink)
+        
+        if (content.label != undefined)
+            el.textContent = content.label
+        
         return el
     }
 }

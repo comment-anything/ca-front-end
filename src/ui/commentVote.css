@@ -1,3 +1,40 @@
+
+.ui-comment-vote-container {
+    display: inline-block;
+    margin: auto;
+    text-align: center;
+}
+
+.ui-comment-vote-buttons-container {
+    display: flex;
+    padding: 1px;
+    border-radius: 6px;
+    flex-direction: column;
+}
+
+.ui-comment-vote-buttons-container:hover {
+    background-color: rgb(224, 224, 224);
+}
+
+.ui-comment-vote-hitbox {
+    width: 24px;
+    height: 24px;
+}
+
+.ui-comment-upvote-downvote-button {
+    box-shadow: none;
+    padding: 0px;
+    margin: auto;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.ui-comment-upvote-downvote-button:hover {
+    background-color: rgb(173, 173, 173);
+}
+
+
+/*
 .comment-vote-button {
     background-color: none;
     display: block;
@@ -23,3 +60,4 @@
     display:inline-block; 
 
 }
+*/

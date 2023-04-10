@@ -1,7 +1,7 @@
 import { Dispatcher } from "./dispatcher";
 import { Fetcher } from "./communication/fetcher"
 import { CafeNavBar } from "./navbar";
-import { State, StateView } from "./State";
+import { State } from "./State";
 import { ClientMap } from "./communication/CLIENT"
 
 const browser_storage_key = import.meta.env.VITE_BROWSER_STORAGE_KEY
