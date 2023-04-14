@@ -45,6 +45,7 @@ export class Fetcher {
                 detail: message
             })
             document.dispatchEvent(event)
+            console.log(JSON.stringify(error, undefined, 5));
         })
         
         callback()

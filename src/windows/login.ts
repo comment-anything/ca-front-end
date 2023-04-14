@@ -2,7 +2,7 @@ import { Client } from "../communication/CLIENT"
 import { CafeDom } from "../util/cafeDom"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
-import { StateView } from "../State"
+import { State } from "../State"
 
 import "./login.css"
 
@@ -35,7 +35,8 @@ export class CafeLoginWindow extends CafeWindow {
         this.el.append(
             CafeDom.fullSizeGenericTextInput(this.username, {label: "Username"}),
             CafeDom.fullSizeGenericTextInput(this.password, {label: "Password"}),
-            CafeDom.formSubmitButton(this.submitLoginButton, {label: "Login"})
+            CafeDom.formSubmitButton(this.submitLoginButton, {label: "Login"}),
+            CafeDom.formSubmitButton(this.forgotPasswordButton, {label: "Forgot Password"})
         )
         
         /*
@@ -63,7 +64,9 @@ export class CafeLoginWindow extends CafeWindow {
     }
     
     forgotPasswordClicked(): void {
-        let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail: "forgotpassword"})
-        document.dispatchEvent(state_event)
+        let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            detail: {viewing: "forgotpassword"}
+        })
+        document.dispatchEvent(event)
     }
 }

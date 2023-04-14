@@ -1,4 +1,4 @@
-import { StateView } from "../State";
+import { State, StateView } from "../State";
 import { Dom } from "../util/dom";
 import { CafeWindow } from "./base";
 import { CafeOwnProfileDisplay } from "../ui/ownProfile";
@@ -28,9 +28,10 @@ export class CafeSettingsWindow extends CafeWindow {
         this.el.append(header, this.ownProfile.el, this.passwordResetButton, this.newfeedbackSection.el)
     }
     
-    /** When the user clicks the password reset button, a password reset request will be dispatched to the server, the user will be logged out, and the password change state transition process will begin */
+    /** When the user clicks the password reset button, a password reset request chain will start */
     passwordResetClicked() {
-        let state_event = new CustomEvent<StateView>("StateChangeRequest", {detail:"forgotpassword"})
+        let state_event = new CustomEvent<Partial<State>>("StateChangeRequest", {detail:{
+            viewing:"forgotpassword"}})
         document.dispatchEvent(state_event);
     }
 }

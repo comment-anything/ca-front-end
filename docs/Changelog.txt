@@ -1,3 +1,8 @@
+4/14/2023: Karl 
+- Fixed password reset request pipeline to work with server (State transitions require passing a Partial<State> rather than just the "viewing" value desired)
+- Input PW reset code now also displays the pw response message from the server more permanently, in case user forgets what the problem was 
+
+
 4/9/2023: Luke
 - Improved look of ui comments.
 - Improved look of vote dimensions.

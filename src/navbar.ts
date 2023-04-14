@@ -155,7 +155,7 @@ export class CafeNavBar {
         
         if (state.ownProfile == undefined) {
             this.showLoggedOutButtons()
-            if(state.viewing != "comments" && state.viewing != "register" ) {
+            if(state.viewing != "comments" && state.viewing != "register" && state.viewing != "forgotpassword" && state.viewing != "newPassword") {
                 state.viewing = "login"
             }
         }
