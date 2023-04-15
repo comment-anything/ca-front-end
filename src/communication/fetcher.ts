@@ -29,7 +29,7 @@ export class Fetcher {
         console.log("fetching from", targetURL)
 
         let h_list :string[] = []
-        myheaders.forEach( (v,k,p)=> {
+        myheaders.forEach( (_v,k,_p)=> {
             h_list.push(k)
         })
         console.log("have headers", h_list)

@@ -1,3 +1,10 @@
+4/15/2023: Karl
+- Created a content script and a background script.
+- Content script will get the current URL of the page the user is on and port it to the background script.
+- Background script will send the URL to the popup 
+- Currently, all are communicating, and debug information is printing, but URL is not yet being sent. 
+
+
 4/15/2023: Karl 
 - Changed manifest to v2 because I was having trouble getting permissions to allow extension to access external server. 
 - Created a debug system that reroutes console.log and displays logged messages as HTML elements on top of comment anywhere. This is for accessing console logs while in the extension, where the console is not available. To enable it, set VITE_EXTENSION_DEBUG_MODE=true in the .env file. 

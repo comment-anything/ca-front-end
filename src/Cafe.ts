@@ -29,6 +29,7 @@ export class Cafe {
         this.navbar     = new CafeNavBar()
         this.dispatcher = new Dispatcher()
         
+        this.setBrowserEventListeners()
         this.setClientEventListeners()
         this.setStateEventListeners()
         this.navbar.setFromState(this.state)
@@ -195,6 +196,22 @@ export class Cafe {
             document.dispatchEvent(ev)
         })
     }
+
+    /** Sets the content script listeners (if running as an extension, and browser is available) */
+    setBrowserEventListeners() {
+        if(typeof browser != undefined) {
+            console.log("adding port...")
+            let myPort = browser.runtime.connect({name: "popup-port"})
+            myPort.postMessage({
+                message: "Hello from popup!"
+            })
+            myPort.onMessage.addListener( (m)=> {
+                console.log("received message", m)
+            })
+        }
+    }
+
+
     
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
