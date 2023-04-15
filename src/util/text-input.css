@@ -70,8 +70,32 @@
     color: rgb(230, 230, 235);
     padding: 2%;
     cursor:pointer;
-    font-size: 110%;
+    font-size: 16px;
     border-radius: 8px;
+}
+
+.form-submit-button:hover {
+    background-color: #4d6095;
+}
+
+.form-submit-button-small {
+    background-color: #354779;
+    border-color: rgb(146, 146, 175);
+    color: rgb(230, 230, 235);
+    padding: 2%;
+    cursor:pointer;
+    font-size: 12px;
+    border-radius: 8px;
+
+}
+.form-submit-button-small:hover {
+    background-color: #4d6095;
+}
+
+.centered-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .icon-button-texture {

@@ -1,5 +1,4 @@
 
-import { m } from "vitest/dist/types-aac763a5"
 import { Dom } from "./dom"
 
 import "./text-input.css"
@@ -21,12 +20,16 @@ const CSS = {
     },
     button: {
         submitForm    : 'form-submit-button',
+        submitFormSmall: 'form-submit-button-small',
         texture       : 'icon-button-texture',
         iconContainer : 'icon-button-container',
         textLink      : 'button-text-link'
     },
     dropdown: {
         generic: 'generic-dropdown'
+    },
+    general: {
+        centeredBlock: 'centered-block'
     }
 }
 
@@ -108,6 +111,29 @@ export namespace CafeDom {
     export function formSubmitButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
         el.classList.add(CSS.button.submitForm)
         return el
+    }
+
+    export function formSubmitButtonCenteredBlock(content:string="", styleOverrides:Partial<CSSStyleDeclaration>={}) {
+        let button = Dom.button(content)
+        button.classList.add(CSS.button.submitForm, CSS.general.centeredBlock)
+        Object.assign(button.style, styleOverrides)
+        return button
+    }
+
+    export function formSubmitButtonSmall(content:string="", styleOverrides:Partial<CSSStyleDeclaration>={}): HTMLButtonElement {
+        let button = Dom.button(content)
+        button.classList.add(CSS.button.submitFormSmall);
+        Object.assign(button.style, styleOverrides)
+        return button;
+    }
+
+    export function formSubmitButtonSmallCenteredBlock(content:string="", styleOverrides:Partial<CSSStyleDeclaration>={}): HTMLButtonElement {
+        let button = Dom.button(content)
+        button.style
+        button.classList.add(CSS.button.submitFormSmall, CSS.general.centeredBlock);
+        Object.assign(button.style, styleOverrides)
+        return button;
+
     }
     
     export function genericIconButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {

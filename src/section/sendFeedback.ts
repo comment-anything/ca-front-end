@@ -1,12 +1,6 @@
-import { Client } from "../communication/CLIENT";
-import { CafeFeedback } from "../ui/feedback";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { Server } from "../communication/SERVER";
-import { State, StateView } from "../State";
 import "./sendFeedback.css"
-import { CafeSettingsWindow } from "../windows/settings";
-import { CafeNavBar } from "../navbar";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
@@ -23,7 +17,6 @@ export class Feedback  extends CafeSection {
     constructor() {
         super()
         this.feedbacktext = Dom.createInputElement("text", CSS.centeretnr)
-        //let sectionLabel = Dom.div("Ban Records", CSS.sectionLabel)
         this.openbutton = Dom.button("Click me to request a feedback report")
         this.sendbutton = Dom.button("Submit report")
         this.feedbackType = Dom.select(["bug", "feature", "general", "all"])

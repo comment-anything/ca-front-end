@@ -35,6 +35,8 @@
     font-size: 18px;
     padding-bottom: 5px;
     font-weight: bold;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 5px;
 }
 
 .section-label-as-button:hover {

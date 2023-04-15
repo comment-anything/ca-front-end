@@ -1,6 +1,7 @@
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 
 
 /**
@@ -19,7 +20,7 @@ export class OwnEmailSection extends CafeSection {
     constructor(email?: string) {
         super()
         this.email = Dom.div()
-        this.changeButton = Dom.button("Change email")
+        this.changeButton = CafeDom.formSubmitButtonSmall("Change email")
 
         // A div for displaying where they will enter their password.
         this.passwordDiv = Dom.div(undefined, undefined, {display:"none"})
@@ -34,7 +35,8 @@ export class OwnEmailSection extends CafeSection {
         this.emailDiv.append(emailLabel, this.newEmail)
 
         // A button to submit.
-        this.submitButton = Dom.button("Submit", undefined, {display:"none"})
+        this.submitButton = CafeDom.formSubmitButtonSmall("Submit")
+        this.submitButton.style.display = "none"
 
         this.el.append(this.email, this.changeButton, this.passwordDiv, this.emailDiv, this.submitButton)
 

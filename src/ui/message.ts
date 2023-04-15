@@ -34,6 +34,7 @@ export class CafeMessageDisplay extends UIInput<Server.Message> {
         let fullSpeechBubble = Dom.div('', CSS.fun.speechBubbleFull)
         
         this.speechBubbleArea = Dom.div('', CSS.fun.speechBubble)
+        this.speechBubbleArea.title = "Messages from the server will appear in this speech bubble."
         this.displayedText = Dom.div(undefined, CSS.message.generic)
         
         this.speechBubbleArea.append(this.displayedText)

@@ -1,4 +1,5 @@
 import { Client } from "../communication/CLIENT"
+import { CafeDom } from "../util/cafeDom"
 import { Dom } from "../util/dom"
 import { CafeSection } from "./base"
 
@@ -15,11 +16,11 @@ export class OwnProfileBlurbSection extends CafeSection {
         super()
         
         this.profileBlurb = Dom.div()
-        this.editProfileBlurbButton = Dom.button("Edit")
+        this.editProfileBlurbButton = CafeDom.formSubmitButtonSmall("Edit")
         
         this.editProfileBlurbDiv = Dom.div(undefined, undefined, {display:"none"})
         this.editProfileTextarea = Dom.el("textarea")
-        this.editProfileSubmitButton = Dom.button("Submit")
+        this.editProfileSubmitButton = CafeDom.formSubmitButtonSmall("Submit")
         this.editProfileBlurbDiv.append(this.editProfileTextarea, this.editProfileSubmitButton)
         
         this.clickListen(this.editProfileBlurbButton, this.toggleProfileTextArea, true)

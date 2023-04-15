@@ -1,3 +1,14 @@
+4/15/2023: Karl 
+- 'title' accessibility for navbar and a few other places
+- default buttons no longer display as block 
+- some new CafeDom functions for smaller form  buttons, and centered form  buttons
+- own-profile section of settings made into drop-down section
+- in settings and sub-sections, buttons converted to comment anywhere style 
+- forgot password button moved into own-profile section
+- section labels now have a lightgray border bottom
+- Message area now expands when a message from the server comes in that is too big... then fades back to default. Absolute positioning prevents page resizing.
+- added hover color change to buttons 
+
 4/14/2023: Karl 
 - Fixed password reset request pipeline to work with server (State transitions require passing a Partial<State> rather than just the "viewing" value desired)
 - Input PW reset code now also displays the pw response message from the server more permanently, in case user forgets what the problem was 
