@@ -1,4 +1,9 @@
 4/15/2023: Karl 
+- Changed manifest to v2 because I was having trouble getting permissions to allow extension to access external server. 
+- Created a debug system that reroutes console.log and displays logged messages as HTML elements on top of comment anywhere. This is for accessing console logs while in the extension, where the console is not available. To enable it, set VITE_EXTENSION_DEBUG_MODE=true in the .env file. 
+
+
+4/15/2023: Karl 
 - 'title' accessibility for navbar and a few other places
 - default buttons no longer display as block 
 - some new CafeDom functions for smaller form  buttons, and centered form  buttons

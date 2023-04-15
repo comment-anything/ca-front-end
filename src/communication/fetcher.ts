@@ -26,6 +26,14 @@ export class Fetcher {
         myheaders.set("Content-Type", "application/json")
         myheaders.set(cookie_name, this.token)
 
+        console.log("fetching from", targetURL)
+
+        let h_list :string[] = []
+        myheaders.forEach( (v,k,p)=> {
+            h_list.push(k)
+        })
+        console.log("have headers", h_list)
+
         await fetch(targetURL, {
             method: httpmethod,
             mode: "cors",
@@ -37,6 +45,8 @@ export class Fetcher {
         }).then((jsonArray)=> {
             this.responses = jsonArray
         }).catch((error)=> {
+            console.log("ERROR FETCHING",error)
+            console.log("ERROR TYPE", typeof error)
             let message : Server.Message = {
                 Success: false,
                 Text: "Error fetching from server!"

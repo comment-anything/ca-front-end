@@ -11,8 +11,8 @@
     "coverage": "vitest run --coverage",
     "build-extension": "npm run build && cp assets/. dist/ -a",
     "build-extension-w": "npm run build && Xcopy /E /I assets dist",
-    "dist": "npm run build --mode production && cp assets/. dist/ -a",
-    "dist-w": "npm run build --mode production && Xcopy /E /I assets dist"
+    "dist": "vite build --mode production && cp assets/. dist/ -a",
+    "dist-w": "vite build --mode production && Xcopy /E /I assets dist"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "^0.28.4",
