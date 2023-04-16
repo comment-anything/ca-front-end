@@ -42,8 +42,8 @@ export class OwnEmailSection extends CafeSection {
 
         this.update(email)
 
-        this.clickListen(this.changeButton, this.changeButtonClicked, true)
-        this.clickListen(this.submitButton, this.submitButtonClicked, true)
+        this.eventman.watchEventListener('click', this.changeButton, this.changeButtonClicked, true)
+        this.eventman.watchEventListener('click', this.submitButton, this.submitButtonClicked, true)
         
     }
     

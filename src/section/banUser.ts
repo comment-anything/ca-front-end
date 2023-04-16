@@ -42,8 +42,8 @@ export class BanUserSection extends CafeSection {
             this.sendBanButton
         )
         this.el.append(sectionLabel, this.dropDownContainer)
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.sendBanButton, this.banButtonClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.sendBanButton, this.banButtonClicked, true)
     }
 
     toggleFold() {

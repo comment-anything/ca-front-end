@@ -37,8 +37,8 @@ export class AssignAdminSection extends CafeSection {
         this.container.append(assignContainer)
 
         this.el.append(sectionLabel, this.container)
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.assignButton, this.assignAdminClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.assignButton, this.assignAdminClicked, true)
     }
 
     /** Toggles whether the section is folder, by clicking on the section header. */

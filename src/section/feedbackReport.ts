@@ -52,9 +52,9 @@ export class FeedbackReportSection extends CafeSection {
 
         this.el.append(sectionLabel, this.dropDownContainer)
 
-        this.clickListen(sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
 
-        this.clickListen(this.requestFeedbackButton, this.getFeedbackReportClicked, true)
+        this.eventman.watchEventListener('click', this.requestFeedbackButton, this.getFeedbackReportClicked, true)
     }
 
     toggleFold() {

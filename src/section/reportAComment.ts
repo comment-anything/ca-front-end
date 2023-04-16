@@ -27,8 +27,8 @@ export class ReportCommentSection extends CafeSection {
         this.submitReportButton = Dom.button("Submit Report")
         this.container.append(label, this.reportText, this.submitReportButton)
 
-        this.clickListen(this.toggleButton, this.toggleFold, true)
-        this.clickListen(this.submitReportButton, this.submitReport, true)
+        this.eventman.watchEventListener('click', this.toggleButton, this.toggleFold)
+        this.eventman.watchEventListener('click', this.submitReportButton, this.submitReport)
     }
 
     toggleFold() {

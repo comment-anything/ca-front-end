@@ -49,10 +49,9 @@ export class UsersReportSection extends CafeSection {
         this.lastReportContainer.append(table, this.refreshButton)
 
         this.el.append(sectionLabel, this.lastReportContainer)
-
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.refreshButton, this.getUsersReportClicked, true)
-
+        
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold)
+        this.eventman.watchEventListener('click', this.refreshButton, this.getUsersReportClicked)
     }
 
     update(data: Server.AdminUsersReport) {

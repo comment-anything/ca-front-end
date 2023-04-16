@@ -64,8 +64,8 @@ export class ModActionsReportSection  extends CafeSection {
         this.dropDownContainer.append(requestContainer, this.recsTable)
 
         this.el.append(sectionLabel, this.dropDownContainer)
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.requestModRecordsButton, this.requestActionsClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.requestModRecordsButton, this.requestActionsClicked, true)
     }
 
     toggleFold() {

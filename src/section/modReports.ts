@@ -15,8 +15,8 @@ export class ModeratorsReportSection extends CafeSection {
     forDomainInput                : HTMLInputElement; 
     requestDomainModeratorsButton : HTMLButtonElement;
     requestGlobalModeratorsButton : HTMLButtonElement;
-    domainModRecords              : Map<number, CafeDomainModDisplay>
-    globalModRecords              : Map<number, CafeGlobalModDisplay>
+    //domainModRecords              : Map<number, CafeDomainModDisplay>
+    //globalModRecords              : Map<number, CafeGlobalModDisplay>
     dropDownContainer             : HTMLDivElement;
     
     constructor(){
@@ -40,7 +40,7 @@ export class ModeratorsReportSection extends CafeSection {
             
             this.dropDownContainer.append(requestContainer)
             this.el.append(sectionLabel, this.dropDownContainer)
-            this.clickListen(sectionLabel, this.toggleFold, true)
+            this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
     }
     
     hide(element:HTMLElement) {

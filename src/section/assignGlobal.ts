@@ -48,9 +48,9 @@ export class AssignGlobalModSection extends CafeSection {
         this.container.append(assignContainer, removeContainer)
 
         this.el.append(sectionLabel, this.container)
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.assignButton, this.assignGlobalClicked, true)
-        this.clickListen(this.removeButton, this.removeGlobalClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.assignButton, this.assignGlobalClicked, true)
+        this.eventman.watchEventListener('click', this.removeButton, this.removeGlobalClicked, true)
     }
 
     /** Toggles whether the section is folder, by clicking on the section header. */

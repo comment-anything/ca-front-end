@@ -3,6 +3,8 @@
 - CafeCommentVote: Fixed memory leak. Listeners weren't properly deallocated when destroying a comment. Now using destroy() function for CommentVoteSection and CafeCommentVote.
 - UIInput<T>: Replaced the listeners array with an event manager. Removed clicklisten(). destroy() now calls eventman.destroyEventListeners()
 - Integrated the event manager for the necessary UIInput child classes (CafeCommentReportDisplay, CafeCommentSortDisplay, CafeFeedback, CafeOwnProfileDisplay).
+- CafeSection: Replaced the listeners array with an event manager. Removed clicklisten(). destroy() now calls eventman.destroyEventListeners()
+- Integrated the event manager for all CafeSection child classes (except CommentVoteSection)
 
 4/15/2023: Karl
 - Created a content script and a background script.

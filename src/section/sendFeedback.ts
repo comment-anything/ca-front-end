@@ -14,6 +14,7 @@ export class Feedback  extends CafeSection {
     sendbutton: HTMLButtonElement;
     feedbacktext : HTMLInputElement;
     feedbackType: HTMLSelectElement;
+    
     constructor() {
         super()
         this.feedbacktext = Dom.createInputElement("text", CSS.centeretnr)
@@ -35,15 +36,16 @@ export class Feedback  extends CafeSection {
         this.dropDownContainer.append(requestContainer)
 
 
-        this.el.append(this.openbutton, this.dropDownContainer,
-            )
+        this.el.append(this.openbutton, this.dropDownContainer)
 
-        this.clickListen(this.openbutton, this.toggleFold, true)
-        this.clickListen(this.sendbutton, this.submitClicked, true)
+        this.eventman.watchEventListener('click', this.openbutton, this.toggleFold)
+        this.eventman.watchEventListener('click', this.sendbutton, this.submitClicked)
     }
+    
     hide(element:HTMLElement) {
         element.style.display = "none"
     }
+    
     hideAll() {
         this.hide(this.dropDownContainer)
         this.hide(this.openbutton)

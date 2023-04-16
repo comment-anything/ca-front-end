@@ -67,8 +67,8 @@ export class AccessLogSection extends CafeSection {
             this.logsTable
             )
         this.el.append(sectionLabel, this.dropDownContainer)
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.requestLogs, this.requestLogsClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.requestLogs, this.requestLogsClicked, true)
 
     }
     /** Toggles whether the section is folder, by clicking on the section header. */

@@ -30,8 +30,8 @@ export class CommentReportsSection extends CafeSection {
             this.viewReportsButton
         )
         
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.viewReportsButton, this.viewReportsClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.viewReportsButton, this.viewReportsClicked, true)
         
         this.el.append(
             sectionLabel,
