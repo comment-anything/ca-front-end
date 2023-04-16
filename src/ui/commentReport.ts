@@ -144,10 +144,16 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         )
         
         // Add click event listeners for the section buttons to show the appropriate section when clicked
+        this.eventman.watchEventListener('click', this.contentButton, ()=>{ this.showContainer(this.contentContainer) })
+        this.eventman.watchEventListener('click', this.reasonButton, ()=>{ this.showContainer(this.reasonContainer) })
+        this.eventman.watchEventListener('click', this.moderateButton, ()=>{ this.showContainer(this.moderateContainer) })
+        
+        /*
         this.clickListen(this.contentButton, ()=>{ this.showContainer(this.contentContainer) })
         this.clickListen(this.reasonButton, ()=>{ this.showContainer(this.reasonContainer) })
         this.clickListen(this.moderateButton, ()=>{ this.showContainer(this.moderateContainer) })
-        
+        */
+       
         // Overall append function
         this.el.append(
             headerContainer,
@@ -162,7 +168,8 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         this.showContainer(this.contentContainer)
 
         // listen for event dispatch to submit moderation
-        this.clickListen(this.submitModerationButton, this.submitModerationButtonClicked, true)
+        this.eventman.watchEventListener('click', this.submitModerationButton, this.submitModerationButtonClicked)
+        //this.clickListen(this.submitModerationButton, this.submitModerationButtonClicked, true)
     }
     
     /** Hides all containers, and then shows the specified one. */

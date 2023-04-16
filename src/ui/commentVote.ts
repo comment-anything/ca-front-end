@@ -20,8 +20,6 @@ const CSS = {
 
 export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
     
-    eventman : EventManager<CafeCommentVote>
-    
     voteData: {
         commentId : number
         voteType  : Client.VoteType
@@ -39,8 +37,6 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
     constructor(type: Client.VoteType, commentId: number, voteDim: Server.CommentVoteDimension) {
         super(voteDim)
         this.el.classList.add(CSS.container)
-        
-        this.eventman = new EventManager(this)
         
         this.voteData = {
             commentId : commentId,

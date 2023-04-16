@@ -47,7 +47,8 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         this.hideButton.title = "Toggle whether this feedback is hidden and should be shown on future feedback requests."
         this.controls.append(this.hideButton)
 
-        this.clickListen(this.hideButton, this.hideButtonClicked, true)
+        //this.clickListen(this.hideButton, this.hideButtonClicked, true)
+        this.eventman.watchEventListener('click', this.hideButton, this.hideButtonClicked)
         
         this.el.append(this.id, this.submittedAt, this.feedbackType, this.userId, this.username, this.content, this.controls)
     }

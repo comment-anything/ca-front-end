@@ -1,3 +1,9 @@
+4/16/2023: Luke
+- Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
+- CafeCommentVote: Fixed memory leak. Listeners weren't properly deallocated when destroying a comment. Now using destroy() function for CommentVoteSection and CafeCommentVote.
+- UIInput<T>: Replaced the listeners array with an event manager. Removed clicklisten(). destroy() now calls eventman.destroyEventListeners()
+- Integrated the event manager for the necessary UIInput child classes (CafeCommentReportDisplay, CafeCommentSortDisplay, CafeFeedback, CafeOwnProfileDisplay).
+
 4/15/2023: Karl
 - Created a content script and a background script.
 - Content script will get the current URL of the page the user is on and port it to the background script.

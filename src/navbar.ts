@@ -107,7 +107,6 @@ export class CafeNavBar {
                 n[key].title = titleTexts[key]
             }
         }
-
         
         this.navbar.el.append(
             this.message.el,

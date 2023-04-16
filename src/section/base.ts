@@ -3,7 +3,7 @@ import { Dom } from "../util/dom";
 export class CafeSection {
     el: HTMLDivElement;
     listeners : Array<[HTMLElement, (e:any)=>any, string]>
-
+    
     constructor(classNames?:string|string[]) {
         this.el = Dom.div()
         if(classNames != undefined) {
