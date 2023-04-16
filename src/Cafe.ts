@@ -4,6 +4,9 @@ import { CafeNavBar } from "./navbar";
 import { State } from "./State";
 import { ClientMap } from "./communication/CLIENT"
 
+import { T_ExtensionMsg as M } from "./communication/EXTENSTION";
+import { Settings } from "./Settings";
+
 const browser_storage_key = import.meta.env.VITE_BROWSER_STORAGE_KEY
 
 type SerializedData = {
@@ -28,14 +31,17 @@ export class Cafe {
         this.state      = new State()
         this.navbar     = new CafeNavBar()
         this.dispatcher = new Dispatcher()
-        
+        this.checkActiveUrl = ()=>{}
+
+        this.setBrowserEventListeners()
         this.setClientEventListeners()
         this.setStateEventListeners()
-        this.navbar.setFromState(this.state)
         this.deserializePick()
         
         if(typeof browser == "undefined") {
             console.warn("You are not using comment anywhere as an extension. This is dangerous, and your credentials could be stolen!")
+        } else {
+            this.checkActiveUrl()
         }
     }
     /**
@@ -195,6 +201,44 @@ export class Cafe {
             document.dispatchEvent(ev)
         })
     }
+
+    checkActiveUrl: ()=>void
+
+    /** Sets the content script listeners (if running as an extension, and browser is available) */
+    setBrowserEventListeners() {
+        let my = this;
+
+        if(typeof browser != undefined) {
+            let myport : M.Popup.Port = browser.runtime.connect({name: "popup-port"}) as any
+            
+            myport.onMessage.addListener( (m)=> {
+                if(m.type == "message") {
+                    console.log("port msg:", m.data)
+                } else if(m.type == "href") {     
+                    if(my.state.settings.onPseudoUrlPage != true) {
+                        let partialState : Partial<State> = {
+                            settings: {
+                                url: m.data
+                            } as Settings
+                        }
+                        let e = new CustomEvent<Partial<State>>("StateChangeRequest", {
+                            detail: partialState
+                        })
+                        document.dispatchEvent(e)
+                    }
+                    console.log("port href msg: ", m.data)
+                }
+            })
+
+            this.checkActiveUrl = () => {
+                myport.postMessage({
+                    type: "send-href"
+                })
+            }
+        }
+    }
+
+
     
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {

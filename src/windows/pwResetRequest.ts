@@ -1,7 +1,7 @@
 import { Client } from "../communication/CLIENT"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
-import { StateView } from "../State"
+import { State } from "../State"
 
 import "./login.css"
 
@@ -41,8 +41,10 @@ export class CafePwResetRequestWindow extends CafeWindow {
         document.dispatchEvent(event);
         
         // TODO. Make sure there was a successful server response before traversing to the next page
-        let event2 = new CustomEvent<StateView>("StateChangeRequest", {
-            detail: "newPassword"
+        let event2 = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            detail: {
+                viewing: "newPassword"
+            }
         })
         document.dispatchEvent(event2);
     }

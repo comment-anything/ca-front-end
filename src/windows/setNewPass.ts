@@ -2,7 +2,7 @@ import { Client } from "../communication/CLIENT"
 import { Dom } from "../util/dom"
 import { CafeWindow } from "./base"
 import { Server } from "../communication/SERVER"
-import { StateView } from "../State"
+import { State } from "../State"
 
 
 
@@ -23,9 +23,11 @@ export class CafeNewPasswordWindow extends CafeWindow {
     newPassword   : HTMLInputElement
     reNewPassword : HTMLInputElement
     submitButton  : HTMLButtonElement
+    innerMessage: HTMLDivElement
     
     constructor() {
         super(CSS.windowName, 'NewPassword')
+        this.innerMessage = Dom.div();
         this.email = Dom.createInputElement('email', CSS.inputField)
         this.code = Dom.createInputElement('text', CSS.inputField)
         this.newPassword = Dom.createInputElement('password', CSS.inputField)
@@ -35,6 +37,7 @@ export class CafeNewPasswordWindow extends CafeWindow {
         this.submitButton.addEventListener("click", this.submitButtonClicked.bind(this))
         
         this.el.append(
+            this.innerMessage,
             Dom.createContainerWithLabel('Email', CSS.inputLabel, "div", this.email, CSS.inputSection),
             Dom.createContainerWithLabel('Code', CSS.inputLabel, "div", this.code, CSS.inputSection),
             Dom.createContainerWithLabel('New password', CSS.inputLabel, "div", this.newPassword, CSS.inputSection),
@@ -63,8 +66,13 @@ export class CafeNewPasswordWindow extends CafeWindow {
      */
     parseNewPassResponse(response: Server.NewPassResponse) {
         if(response.Success == true) {
-            let event = new CustomEvent<StateView>("StateChangeRequest", {detail:"login"})
+            let event = new CustomEvent<Partial<State>>("StateChangeRequest", {detail:{
+                viewing:"login"}
+            })
             document.dispatchEvent(event)
+            this.innerMessage.innerHTML = ""
+        } else {
+            this.innerMessage.innerHTML = response.Text
         }
     }
 }

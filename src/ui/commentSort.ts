@@ -7,9 +7,6 @@ import { Settings } from "../Settings"
 import { State } from "../State"
 import { CafeDom } from "../util/cafeDom"
 
-const CSS = {
-    sortRow : "profile-info-row"
-}
 
 /** Shows the users comment viewing settings and allows the user to change them */
 export class CafeCommentSortDisplay extends UIInput<Settings> {

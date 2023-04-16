@@ -1,4 +1,5 @@
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
@@ -30,7 +31,9 @@ export class NewFeedbackSection extends CafeSection {
         this.content = Dom.el("textarea")
         contContainer.append(lab2, this.content)
 
-        this.submit = Dom.button("Submit Feedback")
+        this.submit = CafeDom.formSubmitButtonCenteredBlock("Submit Feedback", {
+            marginTop: "10px"
+        })
         
         this.container.append(catContainer, contContainer, this.submit)
 

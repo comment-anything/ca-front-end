@@ -24,7 +24,20 @@ const CSS = {
         pane      : 'cafe-navbar-pane',
         button    : 'cafe-navbar-pane-button',
         windowContainer : 'cafe-window-container'
-    }
+    },
+    active: "cafe-navbar-active-button"
+}
+
+const titleTexts : Record<string, string> = {
+    hamburger : "Click this button to show navigation options.",
+    register  : "Click this button to register an account with Comment Anywhere.",
+    login     : "Click this button login in to Comment Anywhere.",
+    logout    : "Click this button to logout of Comment Anywhere.",
+    comments  : "Click this button to view a Comment section.",
+    settings  : "Click this button to view your settings.",
+    moderator : "Click this button to view moderation options.",
+    admin     : "Click this button to view administrator options."
+
 }
 
 export class CafeNavBar {
@@ -87,6 +100,14 @@ export class CafeNavBar {
             moderator : Dom.button("Moderate", CSS.navbar.button),
             admin     : Dom.button("Admin", CSS.navbar.button)
         }
+
+        for(let key of Object.keys(titleTexts)) {
+            let n = this.navbar as Record<string, HTMLElement>
+            if( n[key] != undefined) {
+                n[key].title = titleTexts[key]
+            }
+        }
+
         
         this.navbar.el.append(
             this.message.el,
@@ -155,7 +176,7 @@ export class CafeNavBar {
         
         if (state.ownProfile == undefined) {
             this.showLoggedOutButtons()
-            if(state.viewing != "comments" && state.viewing != "register" ) {
+            if(state.viewing != "comments" && state.viewing != "register" && state.viewing != "forgotpassword" && state.viewing != "newPassword") {
                 state.viewing = "login"
             }
         }
@@ -287,13 +308,13 @@ function hide(element: HTMLElement) {
 }
 
 function setActive(el: HTMLElement) {
-    
+    el.classList.add(CSS.active)
 }
 
 
 
 function setInactive(el: HTMLElement) {
-    
+    el.classList.remove(CSS.active)
 }
 
 

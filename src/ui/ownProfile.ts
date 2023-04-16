@@ -5,8 +5,11 @@ import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 
 import "./ownProfile.css"
+import { State } from "../State";
+import { CafeDom } from "../util/cafeDom";
 
 const CSS = {
+    sectionLabel : ["section-label", "section-label-as-button"],
     profileRow : "profile-info-row",
     profileChangeRow : "profile-blurb-row"
 }
@@ -14,19 +17,26 @@ const CSS = {
 CafeOwnProfileDisplay is used to display a User's own profile to them
 */
 export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
+    
+    /** Drop down elements */
+    dropDownContainer   : HTMLDivElement
+
     username            : HTMLDivElement
     createdOn           : HTMLDivElement
     domainsModerating   : HTMLDivElement
     isAdmin             : HTMLDivElement
     isDomainModerator   : HTMLDivElement
     isGlobalModerator   : HTMLDivElement
-    
     emailSection        : OwnEmailSection
     profileBlurbSection : OwnProfileBlurbSection
     bannedFrom: HTMLDivElement;
     
     constructor(profile?:Server.UserProfile) {
         super(profile)
+
+        this.dropDownContainer = Dom.div()
+        let sectionLabel = Dom.div("About You", CSS.sectionLabel)
+        sectionLabel.title = "Click this to show or hide your own user profile."
         
         let container_username = Dom.div(undefined, CSS.profileRow)
         let label_username = Dom.textEl("label","Username");
@@ -77,8 +87,9 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         container_isGlobalModerator.append(label_isGlobalModerator,this.isGlobalModerator)
         
         
+        let passwordResetButton = CafeDom.formSubmitButtonSmallCenteredBlock("Request Password Reset", {marginTop: "10px"})
         
-        this.el.append(
+        this.dropDownContainer.append(
             container_username,
             container_email,
             container_profile,
@@ -88,9 +99,17 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             container_isAdmin,
             container_isDomainModerator,
             container_isGlobalModerator,
+            passwordResetButton
         )
+        this.el.append(sectionLabel, this.dropDownContainer)
+
+        this.clickListen(sectionLabel, this.toggleFold, true)
 
         this.updateProfile({LoggedInAs:profile, Email:""})
+
+        this.clickListen(passwordResetButton, this.passwordResetClicked, true)
+
+
     }
     
     updateProfile(newProfile : {LoggedInAs?:Server.UserProfile, Email?:string}) {
@@ -115,5 +134,21 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.emailSection.update("")
             this.profileBlurbSection.update("")
         }
+    }
+
+    toggleFold() {
+        if(this.dropDownContainer.style.display == "none") {
+            this.dropDownContainer.style.display = "block"
+        } else {
+            this.dropDownContainer.style.display = "none"
+        }
+    }
+
+    
+    /** When the user clicks the password reset button, a password reset request chain will start */
+    passwordResetClicked() {
+        let state_event = new CustomEvent<Partial<State>>("StateChangeRequest", {detail:{
+            viewing:"forgotpassword"}})
+        document.dispatchEvent(state_event);
     }
 }

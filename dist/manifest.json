@@ -1,20 +1,36 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Comment Anywhere",
   "description": "Get and post comments for any page.",
-  "version": "0.0.1",
+  "version": "0.5.0",
   
-  "action": {
+  "browser_action": {
+    "default_icon": {
+        "98": "icons/CA-Logo.png",
+        "48": "icons/CA-Logo.png"
+    },
+    "default_area": "navbar",
+    "default_title": "Comment Anywhere",
     "default_popup": "index.html"
   },
-  
-  "icons": {
-      "98": "icons/CA-Logo.png"
-  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*", "<all_urls>"],
+      "js": ["content.bundle.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "page": "background-page.html",
+    "persistent": true
+  }
+  ,
   "permissions": [
     "activeTab",
     "scripting",
     "storage",
-    "tabs"
-]
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+] 
 }
