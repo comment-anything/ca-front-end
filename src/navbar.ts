@@ -24,7 +24,8 @@ const CSS = {
         pane      : 'cafe-navbar-pane',
         button    : 'cafe-navbar-pane-button',
         windowContainer : 'cafe-window-container'
-    }
+    },
+    active: "cafe-navbar-active-button"
 }
 
 const titleTexts : Record<string, string> = {
@@ -307,13 +308,13 @@ function hide(element: HTMLElement) {
 }
 
 function setActive(el: HTMLElement) {
-    
+    el.classList.add(CSS.active)
 }
 
 
 
 function setInactive(el: HTMLElement) {
-    
+    el.classList.remove(CSS.active)
 }
 
 

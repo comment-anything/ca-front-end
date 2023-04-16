@@ -2,7 +2,13 @@
 - Created a content script and a background script.
 - Content script will get the current URL of the page the user is on and port it to the background script.
 - Background script will send the URL to the popup 
-- Currently, all are communicating, and debug information is printing, but URL is not yet being sent. 
+- Currently, all are communicating, and debug information is printing, URL is being sent 
+- Created types for browser.port validation and message passing
+- Cafe.checkActiveUrl(), a function that is set if CA is running as a browser extension 
+- Cafe.setBrowserEventListeners 
+- State.settingsUpdate moved to Settings.settingsUpdate
+- ** Settings will dispatch a GetComments request if a URL is changed at the time Settings.settingsUpdate is called!!! ** That's how the comments are updated to the current page when the popup is loaded 
+- some cleanup, type fixing
 
 
 4/15/2023: Karl 

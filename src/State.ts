@@ -32,34 +32,13 @@ export class State {
         }
         
         if(newstate.settings) {
-            Object.assign(this.settings, newstate.settings)
+            this.settings.settingsUpdate(newstate.settings)
         }
         
         let ev = new CustomEvent<State>("StateChanged", { detail: this })
         document.dispatchEvent(ev)
     }
     
-    /** Called in response to an event emitted when some component wants to change the client-side settings. */
-    settingsUpdate(settingsChange: Partial<Settings>) {
-        console.log("settingsChangeRequest received", settingsChange)
-        if(settingsChange.viewHidden != undefined) {
-            this.settings.viewHidden = settingsChange.viewHidden
-        }
-        if(settingsChange.sortedBy != undefined) {
-            this.settings.sortedBy = settingsChange.sortedBy
-        }
-        if(settingsChange.sortAscending != undefined) {
-            this.settings.sortAscending = settingsChange.sortAscending
-        }
-        if(settingsChange.onPseudoUrlPage != undefined) {
-            this.settings.onPseudoUrlPage = settingsChange.onPseudoUrlPage
-        }
-        if(settingsChange.url != undefined) {
-            this.settings.url = settingsChange.url
-        }
-        settingsChangeEmit(this.settings)
-
-    }
 
     // Changes ownProfile member. If nothing is passed in, the loaded user profile is cleared.
     loadProfile(userProfile?:{LoggedInAs: Server.UserProfile, Email: string}, preventStateChange?:boolean) {

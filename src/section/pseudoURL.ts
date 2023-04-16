@@ -18,9 +18,9 @@ export class PseudoUrlSection extends CafeSection {
     
     ui: {
         purl   : HTMLDivElement
-        edit   : HTMLDivElement
-        search : HTMLDivElement
-        cancel : HTMLDivElement
+        edit   : HTMLButtonElement
+        search : HTMLButtonElement
+        cancel : HTMLButtonElement
     }
     
     showingAll : boolean
@@ -64,9 +64,11 @@ export class PseudoUrlSection extends CafeSection {
     }
     
     cancelButtonClicked() {
-        let event = new CustomEvent<Partial<Settings>>("SettingsChangeRequest", {
+        let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
             detail: {
-                onPseudoUrlPage: false
+                settings: {
+                    onPseudoUrlPage: false
+                } as Settings
             }
         })
         document.dispatchEvent(event)
@@ -88,9 +90,7 @@ export class PseudoUrlSection extends CafeSection {
     
     settingsChange(data: Settings) {
         console.log("Settings change received in pseudo URL section with value", data)
-        if (data.onPseudoUrlPage) {
-            this.input.purl.value = data.url
-        }
+        this.input.purl.value = data.url
     }
 
     /**

@@ -3,14 +3,12 @@ import { CafeCommentSortDisplay } from "../ui/commentSort"
 import { Server } from "../communication/SERVER"
 import { CafeComment } from "../ui/comment"
 import { Dom } from "../util/dom"
-import { CafeDom } from "../util/cafeDom"
 import { CommentReplySection } from "../section/commentReply"
 import { PseudoUrlSection } from "../section/pseudoURL"
 import { Settings } from "../Settings"
 import { Client } from "../communication/CLIENT"
 
 import "./comments.css"
-import { State } from "../State"
 
 const CSS = {
     viewing: 'comments-url-viewing',

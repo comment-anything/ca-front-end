@@ -1,41 +1,54 @@
 
+import { T_ExtensionMsg as M } from "../communication/EXTENSTION"
 
 console.log("YES THIS RAN!")
 
-let contentPort : browser.runtime.Port
-let popupPort : browser.runtime.Port
+let contentPort : M.Background.Port.Content
+let popupPort : M.Background.Port.Popup
 
+
+/**
+ * Transfers messages from the content script to the popup.
+ * 
+ * The popup, when it starts, will request the URL of the page the content script is on.
+ * 
+ * The background script passes that request on and, when it gets a response, sends it back to the Popup 
+ */
 function connected(p:browser.runtime.Port) {
-    if(p.name == "cscript-port") {
-        contentPort = p
-        p.postMessage({
-            message: "I see you, content script!"
+    let mport = p as M.Background.Port.Content | M.Background.Port.Popup
+    if(mport.name == "cscript-port") {
+        contentPort = mport as M.Background.Port.Content
+        contentPort.postMessage({
+            command: "message",
+            data: "I see you content port! (from background) "
+        })
+        contentPort.onMessage.addListener( (r)=> {
+            if(r.type == "href") {
+                if(popupPort != undefined) {
+                    popupPort.postMessage({
+                        type: "href",
+                        data: r.data
+                    })
+                }
+            }
         })
     }
-    if(p.name == "popup-port") {
-        popupPort = p
-        p.postMessage({
-            message: "I see you, popup!",
-            url: window.location.href
+    else if(mport.name == "popup-port") {
+        popupPort = mport as M.Background.Port.Popup
+        popupPort.postMessage({
+            type: "message",
+            data: "I see you, popup! (from background)"
         })
-        if(contentPort != undefined) {
-            contentPort.postMessage({
-                message: "Background connected to popup!"
-            })
-            popupPort.postMessage({
-                message: "So, can you get messages?!",
-                url: window.location.href
-            })
-        }
+        popupPort.onMessage.addListener( (r) => {
+            if(r.type == "send-href") {
+                if(contentPort != undefined) {
+                    contentPort.postMessage({
+                        command: "send-href"
+                    })
+                }
+            }
+        })
     }
 }
 
 browser.runtime.onConnect.addListener(connected)
-
-
-browser.storage.onChanged.addListener((changes)=> {
-    contentPort.postMessage({
-        message: "background: I registered a browser.storage change!",
-        changes: changes
-    })
-})
