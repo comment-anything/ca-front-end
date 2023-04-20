@@ -1,3 +1,7 @@
+4/20/2023: Karl
+- /amILoggedIn pipeline implementation; request sent after local data deserialized 
+- renamed npm script build-extension to dist-local
+
 4/16/2023: Luke
 - Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
 - CafeCommentVote: Fixed memory leak. Listeners weren't properly deallocated when destroying a comment. Now using destroy() function for CommentVoteSection and CafeCommentVote.

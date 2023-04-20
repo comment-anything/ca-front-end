@@ -32,11 +32,15 @@ export type ClientMap = {
     "viewLogs"     : [Client.ViewAccessLogs, HTTPMethod["POST"]]
     "moderate"     : [Client.Moderate, HTTPMethod["POST"]],
     "viewModRecords" : [Client.ViewModRecords, HTTPMethod["POST"]],
-    "ban" : [Client.Ban, HTTPMethod["POST"]]
+    "ban" : [Client.Ban, HTTPMethod["POST"]],
+    "amILoggedIn": [Client.AmILoggedIn, HTTPMethod["POST"]]
 }
 
 /** The Client namespace contains data structures that are sent to the server. Descriptions start on page 48 of the Design Document. */
 export namespace Client {
+
+    /** Sent to server when popup is open; checks if user is logged in with the token */
+    type AmILoggedIn = {}
     
     /** Register is dispatched to the server when the client clicks “Submit” on the register form. */
     type Register = {

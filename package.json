@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build-extension": "vite build --mode development",
+    "dist-local": "vite build --mode dev",
     "dist": "vite build --mode production"
   },
   "devDependencies": {
