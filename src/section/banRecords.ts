@@ -34,10 +34,11 @@
                     Dom.createContainer("div", CSS.tnr, this.forDomain),
                     this.requestGlobalBansButton,
                     this.requestDomainBansButton
-                    )
-                    this.dropDownContainer.append(requestContainer)
-                    this.el.append(sectionLabel, this.dropDownContainer)
-                    this.clickListen(sectionLabel, this.toggleFold, true)
+                )
+                
+                this.dropDownContainer.append(requestContainer)
+                this.el.append(sectionLabel, this.dropDownContainer)
+                this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
             }
             hide(element:HTMLElement) {
                 element.style.display = "none"

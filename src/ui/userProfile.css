@@ -1,0 +1,35 @@
+
+.ui-user-profile-element {
+    background-color: white;
+    position: absolute;
+    max-width: 150px;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.274);
+    display: flex;
+    justify-content: space-between;
+}
+
+.ui-user-profile-close {
+    display: flex;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ui-user-profile-close:hover {
+    background-color: rgba(194, 194, 194, 0.548);
+}
+
+.ui-user-profile-username {
+    font-size: 12px;
+    color:blue;
+    padding-bottom: 8px;
+    
+}
+
+.ui-user-profile-blurb {
+    font-size: 10px;
+    color: rgb(73, 73, 73);
+}

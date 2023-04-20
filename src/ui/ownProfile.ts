@@ -103,12 +103,13 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         )
         this.el.append(sectionLabel, this.dropDownContainer)
 
-        this.clickListen(sectionLabel, this.toggleFold, true)
+        //this.clickListen(sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold)
 
         this.updateProfile({LoggedInAs:profile, Email:""})
 
-        this.clickListen(passwordResetButton, this.passwordResetClicked, true)
-
+        //this.clickListen(passwordResetButton, this.passwordResetClicked, true)
+        this.eventman.watchEventListener('click', passwordResetButton, this.passwordResetClicked)
 
     }
     

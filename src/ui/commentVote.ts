@@ -20,8 +20,6 @@ const CSS = {
 
 export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
     
-    eventman : EventManager<CafeCommentVote>
-    
     voteData: {
         commentId : number
         voteType  : Client.VoteType
@@ -40,8 +38,6 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         super(voteDim)
         this.el.classList.add(CSS.container)
         
-        this.eventman = new EventManager(this)
-        
         this.voteData = {
             commentId : commentId,
             voteType  : type
@@ -49,8 +45,8 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         
         this.buttons = {
             hitbox    : Dom.button('', CSS.buttons.hitbox),
-            up        : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'upvote.svg'}),
-            down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'downvote.svg'}),
+            up        : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'upvote'}),
+            down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'downvote'}),
             container : Dom.div('', CSS.buttons.container)
         }
         
@@ -59,15 +55,15 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         switch (type)
         {
             case "funny":
-                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'funny.svg'})
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'funny'})
                 break
                 
             case "factual":
-                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'factual.svg'})
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'factual'})
                 break
             
             case "agree":
-                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'agree.svg'})
+                this.buttons.hitbox = CafeDom.genericIconButton(this.buttons.hitbox, {asset:'agree'})
                 break
         }
         

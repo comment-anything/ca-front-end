@@ -43,9 +43,9 @@ export class PseudoUrlSection extends CafeSection {
         
         this.ui = {
             purl   : CafeDom.fullSizeGenericTextInput(this.input.purl, {label: "Pseudo URL"}),
-            edit   : CafeDom.genericIconButton(this.input.edit, {asset: 'edit-pen-icon.svg'}),
-            search : CafeDom.genericIconButton(this.input.search, {asset: 'search-icon.svg'}),
-            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close.svg'})
+            edit   : CafeDom.genericIconButton(this.input.edit, {asset: 'edit-pen-icon'}),
+            search : CafeDom.genericIconButton(this.input.search, {asset: 'search-icon'}),
+            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close'})
         }
         
         this.showingAll = false
@@ -58,9 +58,9 @@ export class PseudoUrlSection extends CafeSection {
         )
         
         this.makeAllVisible(false)
-        this.clickListen(this.input.edit, this.toggleFold, true)
-        this.clickListen(this.input.cancel, this.cancelButtonClicked, true)
-        this.clickListen(this.input.search, this.submitButtonClicked, true)
+        this.eventman.watchEventListener('click', this.input.edit, this.toggleFold)
+        this.eventman.watchEventListener('click', this.input.cancel, this.cancelButtonClicked)
+        this.eventman.watchEventListener('click', this.input.search, this.submitButtonClicked)
     }
     
     cancelButtonClicked() {

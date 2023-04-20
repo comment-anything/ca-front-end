@@ -40,8 +40,8 @@ export class NewFeedbackSection extends CafeSection {
 
         this.el.append(sectionLabel, this.container)
 
-        this.clickListen(sectionLabel, this.toggleFold, true)
-        this.clickListen(this.submit, this.submitFeedbackClicked, true)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.submit, this.submitFeedbackClicked, true)
     }
 
     /** Toggles whether the section is folder, by clicking on the section header. */

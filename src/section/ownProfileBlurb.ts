@@ -23,8 +23,8 @@ export class OwnProfileBlurbSection extends CafeSection {
         this.editProfileSubmitButton = CafeDom.formSubmitButtonSmall("Submit")
         this.editProfileBlurbDiv.append(this.editProfileTextarea, this.editProfileSubmitButton)
         
-        this.clickListen(this.editProfileBlurbButton, this.toggleProfileTextArea, true)
-        this.clickListen(this.editProfileSubmitButton, this.submitProfileEditClicked, true)
+        this.eventman.watchEventListener('click', this.editProfileBlurbButton, this.toggleProfileTextArea, true)
+        this.eventman.watchEventListener('click', this.editProfileSubmitButton, this.submitProfileEditClicked, true)
         
         this.el.append (
             this.profileBlurb, this.editProfileBlurbButton, this.editProfileBlurbDiv

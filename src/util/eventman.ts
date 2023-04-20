@@ -1,6 +1,10 @@
 
+
+
 /** Used by a class to manage all active event listeners. */
 export class EventManager<T> {
+    
+    static globalListeners: Array<[HTMLElement, (e:any)=>any, string]> = []
     
     source    : T
     listeners : Array<[HTMLElement, (e:any)=>any, string]>
@@ -18,6 +22,7 @@ export class EventManager<T> {
         
         el.addEventListener(type, fun)
         this.listeners.push([el, fun, type])
+        EventManager.globalListeners.push([el, fun, type])
     }
     
     /** Add multiple listeners to each associated element. */
@@ -33,6 +38,7 @@ export class EventManager<T> {
             let [el, listener, type] = triplet
             el.removeEventListener(type, listener)
         }
+        this.listeners = []
     }
 }
 

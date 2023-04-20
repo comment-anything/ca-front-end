@@ -196,6 +196,7 @@ export class CafeComment extends UIInput<Server.Comment> {
     /** Overwrite the default so we also call destroy on the sections. That way, all listeners are removed. */
     destroy(): void {
         super.destroy()
+        this.footer.voteSection.destroy()
         this.footer.replySection.destroy()
         this.footer.reportSection.destroy()
     }

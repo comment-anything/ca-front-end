@@ -2,6 +2,7 @@
 import { Dom } from "./dom"
 
 import "./text-input.css"
+import "../svg/svg.css"
 
 const CSS = {
     /* CSS for text input boxes */
@@ -138,7 +139,7 @@ export namespace CafeDom {
     
     export function genericIconButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
         let icon = Dom.div('', CSS.button.texture)
-        icon.style.backgroundImage = 'url("src/assets/' + content.asset + '")'
+        icon.classList.add('svg-' + content.asset)
         el.classList.add(CSS.button.iconContainer)
         el.append(icon)
         return el

@@ -20,4 +20,10 @@ export class CommentVoteSection extends CafeSection{
         this.factual.update(data.Factual)
         this.agree.update(data.Agree)
     }
+    
+    destroy() {
+        this.funny.destroy()
+        this.factual.destroy()
+        this.agree.destroy()
+    }
 }

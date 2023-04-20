@@ -22,7 +22,7 @@
 }
 
 .cafe-navbar-hamburger {
-    background-image: url("./assets/hamburger.svg");
+    background-image: url("./svg/hamburger.svg");
     background-size: cover;
     background-color: #e6eae4;
     width: 28px;

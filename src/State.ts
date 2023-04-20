@@ -14,8 +14,7 @@ export class State {
         this.settings = new Settings()
         settingsChangeEmit(this.settings)
     }
-
-
+    
     stateChangeRequest(newstate: Partial<State>) {
         console.log("Got state change request!", newstate as State)
         

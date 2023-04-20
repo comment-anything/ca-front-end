@@ -1,3 +1,12 @@
+4/16/2023: Luke
+- Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
+- CafeCommentVote: Fixed memory leak. Listeners weren't properly deallocated when destroying a comment. Now using destroy() function for CommentVoteSection and CafeCommentVote.
+- UIInput<T>: Replaced the listeners array with an event manager. Removed clicklisten(). destroy() now calls eventman.destroyEventListeners()
+- Integrated the event manager for the necessary UIInput child classes (CafeCommentReportDisplay, CafeCommentSortDisplay, CafeFeedback, CafeOwnProfileDisplay).
+- CafeSection: Replaced the listeners array with an event manager. Removed clicklisten(). destroy() now calls eventman.destroyEventListeners()
+- Integrated the event manager for all CafeSection child classes (except CommentVoteSection)
+- svg/svg.css: Fixed icons not showing up in the extension. I noticed that Vite only exports SVGs that are statically defined in CSS. I created CSS classes for each SVG. When specifying an image, instead of defining the background-image, inherit the necessary CSS class instead.
+
 4/16/2023: Karl
 - Patch, fixed "browser" errors when testing in server environment.
 

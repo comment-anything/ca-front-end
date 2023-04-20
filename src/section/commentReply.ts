@@ -47,8 +47,8 @@ export class CommentReplySection extends CafeSection {
             this.el.append(this.openbutton, this.replyArea)
         }
         
-        this.clickListen(this.openbutton, this.toggleReplyArea, true)
-        this.clickListen(this.submit, this.submitClicked, true)
+        this.eventman.watchEventListener('click', this.openbutton, this.toggleReplyArea, true)
+        this.eventman.watchEventListener('click', this.submit, this.submitClicked, true)
     }
     
     toggleReplyArea() {

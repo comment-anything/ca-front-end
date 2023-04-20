@@ -81,17 +81,33 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
             this.ui.viewHidden
         )
         
+        this.eventman.watchEventListener('click', this.input.sortAscending, ()=>{
+            this.sortAscending = !this.sortAscending
+            this.setActiveToggle(this.input.sortAscending, this.sortAscending)
+            this.emitStateChangeRequest()
+        })
+        
+        /*
         this.clickListen(this.input.sortAscending, ()=>{
             this.sortAscending = !this.sortAscending
             this.setActiveToggle(this.input.sortAscending, this.sortAscending)
             this.emitStateChangeRequest()
         }, true)
+        */
         
+        this.eventman.watchEventListener('click', this.input.viewHidden, ()=>{
+            this.viewHidden = !this.viewHidden
+            this.setActiveToggle(this.input.viewHidden, this.viewHidden)
+            this.emitStateChangeRequest()
+        })
+        
+        /*
         this.clickListen(this.input.viewHidden, ()=>{
             this.viewHidden = !this.viewHidden
             this.setActiveToggle(this.input.viewHidden, this.viewHidden)
             this.emitStateChangeRequest()
         }, true)
+        */
         
         /* 
         this.sortBy = Dom.el("select")
