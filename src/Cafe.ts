@@ -67,13 +67,15 @@ export class Cafe {
     /**
      * Determines whether CA is running in an extension and calls the appropriate deserialize method. 
      */
-    deserializePick() {
+    async deserializePick() {
         let me = this
         if(typeof browser != "undefined") {
             browser.storage.local.get().then( (v)=>{
                 if(v) {
                     let parse = JSON.parse(v[browser_storage_key])
                     me.deserialize(parse as SerializedData)
+                    /** Check if logged in when popup is opened */
+                    me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
                 }
             })
         } else {
@@ -82,6 +84,8 @@ export class Cafe {
                 let parsed = JSON.parse(vals)
                 console.log("PARSED DATA:",parsed)
                 me.deserialize(parsed)
+                /** Check if logged in when popup is opened */
+                me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
             }
         }
     }

@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 4/20/2023: Luke
 - Reimplemented the comment collapse button
+=======
+4/20/2023: Karl
+- /amILoggedIn pipeline implementation; request sent after local data deserialized 
+- renamed npm script build-extension to dist-local
+>>>>>>> master
 
 4/16/2023: Luke
 - Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
