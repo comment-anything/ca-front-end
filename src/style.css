@@ -5,6 +5,9 @@ html {
 body {
     padding:0px;
     margin:0px;
+    width: 440px;
+    height: 600px;
+    overflow-x: hidden;
 }
 button {
     font-family: 'Montserrat';
