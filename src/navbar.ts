@@ -13,6 +13,7 @@ import { CafePwResetRequestWindow } from "./windows/pwResetRequest"
 import { CafeRegisterWindow }       from "./windows/register"
 import { CafeNewPasswordWindow }    from "./windows/setNewPass"
 import { CafeSettingsWindow }       from "./windows/settings"
+import { CafeUserDisplay }          from "./ui/userProfile"
 
 import "./navbar.css"
 
@@ -37,12 +38,12 @@ const titleTexts : Record<string, string> = {
     settings  : "Click this button to view your settings.",
     moderator : "Click this button to view moderation options.",
     admin     : "Click this button to view administrator options."
-
 }
 
 export class CafeNavBar {
-    el      : HTMLDivElement
-    message : CafeMessageDisplay
+    el          : HTMLDivElement
+    message     : CafeMessageDisplay
+    userDisplay : CafeUserDisplay
     
     navbar: {
         el        : HTMLDivElement,
@@ -73,6 +74,7 @@ export class CafeNavBar {
     constructor() {
         this.el = Dom.div('', CSS.cafe)
         this.message = new CafeMessageDisplay()
+        this.userDisplay = new CafeUserDisplay()
         
         this.window = {
             register       : new CafeRegisterWindow(),
@@ -111,7 +113,8 @@ export class CafeNavBar {
         this.navbar.el.append(
             this.message.el,
             this.navbar.hamburger,
-            this.navbar.pane
+            this.navbar.pane,
+            this.userDisplay.el
         )
         
         this.window.container.append(

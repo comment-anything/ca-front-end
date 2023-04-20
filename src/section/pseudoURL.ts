@@ -43,9 +43,9 @@ export class PseudoUrlSection extends CafeSection {
         
         this.ui = {
             purl   : CafeDom.fullSizeGenericTextInput(this.input.purl, {label: "Pseudo URL"}),
-            edit   : CafeDom.genericIconButton(this.input.edit, {asset: 'edit-pen-icon.svg'}),
-            search : CafeDom.genericIconButton(this.input.search, {asset: 'search-icon.svg'}),
-            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close.svg'})
+            edit   : CafeDom.genericIconButton(this.input.edit, {asset: 'edit-pen-icon'}),
+            search : CafeDom.genericIconButton(this.input.search, {asset: 'search-icon'}),
+            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close'})
         }
         
         this.showingAll = false
