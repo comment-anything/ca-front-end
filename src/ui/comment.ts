@@ -27,7 +27,8 @@ const CSS = {
     },
     
     replies: {
-        nested : 'ui-comment-replies-nested'
+        nested : 'ui-comment-replies-nested',
+        collapseButton : 'ui-comment-replies-collapse-button'
     }
 } 
 
@@ -53,7 +54,7 @@ export class CafeComment extends UIInput<Server.Comment> {
     
     replies: {
         container      : HTMLDivElement,
-        collapseButton : HTMLDivElement,
+        collapseButton : HTMLButtonElement,
     }
     
     constructor(comment: Server.Comment) {
@@ -83,9 +84,10 @@ export class CafeComment extends UIInput<Server.Comment> {
         
         this.replies = {
             container      : Dom.div('', CSS.replies.nested),
-            collapseButton : Dom.div()
+            collapseButton : CafeDom.genericIconButton(Dom.button('', CSS.replies.collapseButton), {asset:'arrow'})
         }
         
+        this.eventman.watchEventListener('click', this.replies.collapseButton, this.toggleCollapsedChildren)
         this.appendsBasedOnRemoved()
         
         /*
@@ -130,11 +132,11 @@ export class CafeComment extends UIInput<Server.Comment> {
     toggleCollapsedChildren() {
         if (this.replies.container.style.display == "none") {
             this.replies.container.style.display = "block"
-            this.replies.container.style.transform = "rotate(0deg)"
+            this.replies.collapseButton.style.transform = "rotate(0deg)"
         }
         else {
             this.replies.container.style.display = "none"
-            this.replies.container.style.transform = "rotate(270deg)"
+            this.replies.collapseButton.style.transform = "rotate(270deg)"
         }
     }
     
@@ -174,6 +176,8 @@ export class CafeComment extends UIInput<Server.Comment> {
             this.footer.replySection.el.remove()
             this.footer.reportSection.el.remove()
         }
+        
+        this.replies.collapseButton.style.display = 'none';
     }
     
     update(data: Server.Comment) {
@@ -192,7 +196,7 @@ export class CafeComment extends UIInput<Server.Comment> {
         // The moment this is called, we have at least one child comment. Show the "Expand/Collapse button"
         this.replies.collapseButton.style.display = "block"
     }
-
+    
     /** Overwrite the default so we also call destroy on the sections. That way, all listeners are removed. */
     destroy(): void {
         super.destroy()

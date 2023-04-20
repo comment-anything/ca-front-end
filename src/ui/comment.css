@@ -29,7 +29,7 @@
 }
 
 .ui-comment-replies-nested {
-    margin-left: 16px;
+    margin-left: 24px;
 }
 
 .ui-comment-footer-container {
@@ -38,8 +38,16 @@
     justify-content: space-between;
 }
 
+.ui-comment-replies-collapse-button {
+    position: absolute;
+    left: 2px;
+    background-color: transparent;
+    box-shadow: none;
+}
 
-
+.ui-comment-replies-collapse-button:hover {
+    background-color: rgba(255, 0, 0, 0.466);
+}
 
 /*
 @font-face {

@@ -1,3 +1,6 @@
+4/20/2023: Luke
+- Re-implemented the comment collapse button
+
 4/16/2023: Luke
 - Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
 - CafeCommentVote: Fixed memory leak. Listeners weren't properly deallocated when destroying a comment. Now using destroy() function for CommentVoteSection and CafeCommentVote.

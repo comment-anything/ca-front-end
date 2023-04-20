@@ -17,8 +17,13 @@
 }
 
 .ui-comment-vote-hitbox {
+    background-color: rgb(228, 228, 228);
     width: 24px;
     height: 24px;
+}
+
+.ui-comment-vote-hitbox:hover {
+    background-color: rgb(228, 228, 228);
 }
 
 .ui-comment-upvote-downvote-button {
