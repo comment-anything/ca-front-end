@@ -1,5 +1,5 @@
 4/20/2023: Luke
-- Re-implemented the comment collapse button
+- Reimplemented the comment collapse button
 
 4/16/2023: Luke
 - Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
