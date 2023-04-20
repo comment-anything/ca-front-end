@@ -1,14 +1,14 @@
 
 
 .cafe-global {
-    width: 350px;
+    width: 100%;
     position: relative;
 }
 
 .cafe-navbar-container {
     background-color: #354779;
     position: fixed;
-    width: 350px;
+    width: 100%;
     min-height: 70px;
     
     padding: 3px;
@@ -18,7 +18,9 @@
 }
 
 .cafe-window-container {
+    width: 100%;
     padding-top: 100px;
+    padding-right: 30px;
 }
 
 .cafe-navbar-hamburger {
