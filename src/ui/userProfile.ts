@@ -64,8 +64,8 @@ export class CafeUserDisplay extends UIInput<Server.UserProfile> {
         }
         
         this.changeProfile(prof as Server.UserProfile)
-        this.show(10, 70)
-        //this.hide()
+        //this.show(10, 70)
+        this.hide()
         
         this.el.append(
             this.details.username, this.closeButton,
