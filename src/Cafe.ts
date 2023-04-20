@@ -208,7 +208,7 @@ export class Cafe {
     setBrowserEventListeners() {
         let my = this;
 
-        if(typeof browser != undefined) {
+        if(typeof browser != "undefined") {
             let myport : M.Popup.Port = browser.runtime.connect({name: "popup-port"}) as any
             
             myport.onMessage.addListener( (m)=> {

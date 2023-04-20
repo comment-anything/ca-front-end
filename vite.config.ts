@@ -1,8 +1,8 @@
 import { defineConfig } from "vite"
 
 export default defineConfig( ({command,mode,ssrBuild})=> {
-    console.log("👍\trunning custom VITE build config for Comment Anywhere!👍\n\n")
-    if(command === 'build') {
+    //if(command === 'build') {
+        console.log("👍\trunning custom VITE build config for Comment Anywhere!👍\n\n")
         return {
             publicDir: "assets",
             build: {
@@ -25,8 +25,8 @@ export default defineConfig( ({command,mode,ssrBuild})=> {
             },
 
         }
-    }
-    return {
+    //}
+    //return {
 
-    }
+    //}
 })
