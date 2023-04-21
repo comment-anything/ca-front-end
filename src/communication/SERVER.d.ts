@@ -50,6 +50,7 @@ export namespace Server {
         CreatedOn         : number,
         DomainsModerating : string[],
         DomainsBannedFrom : string[]
+        IsVerified        : string
         IsAdmin           : boolean,
         IsDomainModerator : boolean,
         IsGlobalModerator : boolean,

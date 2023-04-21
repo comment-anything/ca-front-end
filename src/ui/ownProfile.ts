@@ -22,6 +22,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
     dropDownContainer   : HTMLDivElement
 
     username            : HTMLDivElement
+    isVerified          : HTMLDivElement
     createdOn           : HTMLDivElement
     domainsModerating   : HTMLDivElement
     isAdmin             : HTMLDivElement
@@ -57,7 +58,12 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         let label_createdOn = Dom.textEl("label","Created On");
         this.createdOn = Dom.div();
         container_createdOn.append(label_createdOn,this.createdOn)
-
+        
+        let container_isVerified = Dom.div(undefined, CSS.profileRow)
+        let label_isVerified = Dom.textEl("label", "Verified?");
+        this.isVerified = Dom.div();
+        container_isVerified.append(label_isVerified, this.isVerified)
+        
         let container_bannedFrom = Dom.div(undefined, CSS.profileRow)
         let label_bannedFrom = Dom.textEl("label", "Banned From")
         this.bannedFrom = Dom.div()
@@ -94,6 +100,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             container_email,
             container_profile,
             container_createdOn,
+            container_isVerified,
             container_bannedFrom,
             container_domainsModerating,
             container_isAdmin,
@@ -118,6 +125,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.data = newProfile.LoggedInAs;
             this.username.textContent = this.data.Username
             this.createdOn.textContent = (new Date(this.data.CreatedOn)).toLocaleDateString()
+            this.isVerified.textContent = "Unavailable"
             this.domainsModerating.textContent = this.data.DomainsModerating ? this.data.DomainsModerating.join(",") : ""
             this.bannedFrom.textContent = this.data.DomainsBannedFrom ? this.data.DomainsBannedFrom.join(", ") : ""
             this.isAdmin.textContent = this.data.IsAdmin ? "yes" : "no"
@@ -129,6 +137,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.username.textContent = ""
             this.createdOn.textContent = ""
             this.domainsModerating.textContent = ""
+            this.isVerified.textContent = ""
             this.isAdmin.textContent = ""
             this.isDomainModerator.textContent = ""
             this.isGlobalModerator.textContent = ""
