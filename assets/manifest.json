@@ -6,8 +6,8 @@
   
   "browser_action": {
     "default_icon": {
-        "98": "icons/CA-Logo.png",
-        "48": "icons/CA-Logo.png"
+        "98": "icons/CA-Logo-98x98.png",
+        "48": "icons/CA-Logo-48x48.png"
     },
     "default_area": "navbar",
     "default_title": "Comment Anywhere",

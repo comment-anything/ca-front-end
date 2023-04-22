@@ -1,5 +1,43 @@
 # Comment Anywhere Front End
 
+Comment Anywhere is a browser extension created by Karl Miller and Luke Bates for their senior project at PennWest California. It allows users to post comments on any webpage on the internet.
+
+## Build Instructions
+
+Comment Anywhere Front End (Cafe) is coded in Typescript and packaged with Vite. It has no other dependencies. Some testing dependencies will be installed, but they are not currently used.
+
+You must have [npm](https://www.npmjs.com/) installed to execute the build scripts that Cafe uses, and to get the [vite](https://vitejs.dev/) dependency.
+
+If you do not have a .env file, you must create one in the root directory.
+
+It should look like this:
+
+```
+# Must match the url where the server is being hosted.
+VITE_API_ADDRESS=http://www.commentanywhere.net:3000
+
+# Must match the cookie name set by the back end.
+VITE_JWT_COOKIE_NAME=ca-auth-tok
+
+# The key for overall browser storage
+VITE_BROWSER_STORAGE_KEY=ca-browser-storage
+
+# EXTENSION_DEBUG
+VITE_EXTENSION_DEBUG_MODE=false
+```
+
+Run the command `npm i` to install [vite](https://vitejs.dev/). This is the bundler.
+
+Run `npm dist` to build the extension.
+
+Head to `about:debugging` -> `This Firefox` -> `Add Extensions` and open `dist/manifest.json` to test Cafe.
+
+More information about Comment Anywhere can be found on our [devlog](https://comment-anything.github.io/) and on the [static site](http://commentanywhere.net/).
+
+Our source code is not currently open source, though we may release it in the future.
+
+## Folder descriptions
+
 `src    ` Typescript source code and static assets.
 
 `dist   ` Build output folder.
@@ -8,7 +46,7 @@
 
 `assets ` Static assets (specific to the browser extension) to bundle with the extension.
 
-#### Instructions
+#### Instructions on developing
 
 - Create a `.env` file in the root folder with the address of the comment-anywhere server you are using.
 
@@ -114,12 +152,3 @@ VITE_SETTINGS_STORAGE_KEY=ca-saved-settings
   }
   ```
 
-#### TODO
-
-- **See if Vite offers command to include contents from `assets` into `dist`**
-
-- Description of transpilation process.
-
-- Description of testing process
-
-- Description of folders
