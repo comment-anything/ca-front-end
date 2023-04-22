@@ -159,7 +159,6 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
     /** Called by CommentWindow when settings changes */
     settingsChange(data:Settings) {
         this.data = data
-        console.log("settingChangRecieved called in CommentSort with data", data)
         this.sortAscending = data.sortAscending
         this.input.sortBy.value = data.sortedBy        
         this.viewHidden = data.viewHidden

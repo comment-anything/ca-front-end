@@ -9,6 +9,8 @@ const CSS = {
     textInput: {
         genericLabel          : 'text-input-generic-label',
         genericTextBox        : 'text-input-generic-text-box',
+        textLink              : 'text-input-generic-text-link',
+        genericTextArea       : 'text-area-generic-input',
         genericContainer      : 'text-input-generic-container',
         halfContainerOverride : 'text-input-half-generic-container',
         focusedContainer      : 'text-input-focus-container'
@@ -92,6 +94,24 @@ export namespace CafeDom {
         }))
         */
         return listeners;
+    }
+    
+    export function genericTextAreaInput(el: HTMLTextAreaElement, submit: HTMLButtonElement, content: UIContent): HTMLDivElement {
+        let container = Dom.div()
+        let label = Dom.textEl('div', content.label, CSS.textInput.genericLabel)
+        
+        el.classList.add(CSS.textInput.genericTextBox, CSS.textInput.genericTextArea)
+        container.classList.add(CSS.textInput.genericContainer)
+        
+        submit.classList.add(CSS.textInput.textLink)
+        
+        container.append(
+            label,
+            el,
+            submit
+        )
+        
+        return container
     }
     
     export function genericCheckBoxInput(el: HTMLInputElement, content: UIContent): HTMLDivElement {

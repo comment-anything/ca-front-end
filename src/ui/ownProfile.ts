@@ -7,6 +7,7 @@ import { UIInput } from "./base";
 import "./ownProfile.css"
 import { State } from "../State";
 import { CafeDom } from "../util/cafeDom";
+import { OwnProfileVerifySection } from "../section/ownVerify";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
@@ -27,9 +28,10 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
     isAdmin             : HTMLDivElement
     isDomainModerator   : HTMLDivElement
     isGlobalModerator   : HTMLDivElement
+    isVerified          : OwnProfileVerifySection
     emailSection        : OwnEmailSection
     profileBlurbSection : OwnProfileBlurbSection
-    bannedFrom: HTMLDivElement;
+    bannedFrom          : HTMLDivElement;
     
     constructor(profile?:Server.UserProfile) {
         super(profile)
@@ -57,7 +59,13 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
         let label_createdOn = Dom.textEl("label","Created On");
         this.createdOn = Dom.div();
         container_createdOn.append(label_createdOn,this.createdOn)
-
+        
+        // Is verified
+        let container_isVerified = Dom.div(undefined, CSS.profileRow)
+        let label_isVerified = Dom.textEl("label", "Verified?");
+        this.isVerified = new OwnProfileVerifySection()
+        container_isVerified.append(label_isVerified, this.isVerified.el)
+        
         let container_bannedFrom = Dom.div(undefined, CSS.profileRow)
         let label_bannedFrom = Dom.textEl("label", "Banned From")
         this.bannedFrom = Dom.div()
@@ -94,6 +102,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             container_email,
             container_profile,
             container_createdOn,
+            container_isVerified,
             container_bannedFrom,
             container_domainsModerating,
             container_isAdmin,
@@ -110,10 +119,11 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
 
         //this.clickListen(passwordResetButton, this.passwordResetClicked, true)
         this.eventman.watchEventListener('click', passwordResetButton, this.passwordResetClicked)
-
+        
     }
     
     updateProfile(newProfile : {LoggedInAs?:Server.UserProfile, Email?:string}) {
+        console.warn("`!` neProfile in ownProfile: ", newProfile)
         if(newProfile.LoggedInAs != undefined) {
             this.data = newProfile.LoggedInAs;
             this.username.textContent = this.data.Username
@@ -125,6 +135,7 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.isGlobalModerator.textContent = this.data.IsGlobalModerator ? "yes" : "no"
             this.emailSection.update(newProfile.Email ? newProfile.Email : "")
             this.profileBlurbSection.update(this.data.ProfileBlurb)
+            this.isVerified.update(newProfile.LoggedInAs.IsVerified)
         } else {
             this.username.textContent = ""
             this.createdOn.textContent = ""
@@ -134,9 +145,10 @@ export class CafeOwnProfileDisplay extends UIInput<Server.UserProfile> {
             this.isGlobalModerator.textContent = ""
             this.emailSection.update("")
             this.profileBlurbSection.update("")
+            this.isVerified.update()
         }
     }
-
+    
     toggleFold() {
         if(this.dropDownContainer.style.display == "none") {
             this.dropDownContainer.style.display = "block"

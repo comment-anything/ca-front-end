@@ -15,6 +15,7 @@ export class CommentReplySection extends CafeSection {
     openbutton : HTMLButtonElement
     replyArea  : HTMLDivElement
     content    : HTMLTextAreaElement
+    contentContainer : HTMLDivElement
     submit     : HTMLButtonElement
     repliesTo  : number
     alwaysOpen : boolean
@@ -30,15 +31,21 @@ export class CommentReplySection extends CafeSection {
         this.alwaysOpen = alwaysOpen
         this.openbutton = CafeDom.textLink(Dom.button("Reply"), {})
         this.replyArea = Dom.div()
-        this.content = Dom.el("textarea", CSS.textArea, {display: "none"})
+        this.content = Dom.el("textarea")
+        
+        
         
         if(alwaysOpen) {
-            this.submit = Dom.button("Submit New Comment", CSS.submit)
+            this.submit = CafeDom.textLink(Dom.button(), {label: "Submit new comment"}) //Dom.button("Submit New Comment", CSS.submit)
+            this.contentContainer = CafeDom.genericTextAreaInput(this.content, this.submit, {label: "Post a comment"})
         } else {
-            this.submit = Dom.button("Reply To Comment", CSS.submit, {display: "none"})
+            this.submit = CafeDom.textLink(Dom.button(), {label: "Reply to comment"})  //Dom.button("Reply To Comment", CSS.submit, {display: "none"})
+            this.contentContainer = CafeDom.genericTextAreaInput(this.content, this.submit, {label: "Reply to comment"})
         }
         
-        this.replyArea.append(this.content, this.submit)
+        this.replyArea.append(
+            this.contentContainer,
+        )
         
         if(alwaysOpen) {
             this.el.append(this.replyArea)
@@ -47,19 +54,20 @@ export class CommentReplySection extends CafeSection {
             this.el.append(this.openbutton, this.replyArea)
         }
         
+        this.toggleReplyArea()
         this.eventman.watchEventListener('click', this.openbutton, this.toggleReplyArea, true)
         this.eventman.watchEventListener('click', this.submit, this.submitClicked, true)
     }
     
     toggleReplyArea() {
-        if (this.content.style.display == "none") {
-            this.content.style.display = "block"
+        if (this.contentContainer.style.display == "none") {
+            this.contentContainer.style.display = "block"
             
             if (!this.alwaysOpen) {
                 this.submit.style.display = "block"
             }
         } else {
-            this.content.style.display = "none"
+            this.contentContainer.style.display = "none"
             
             if (!this.alwaysOpen) {
                 this.submit.style.display = "none"

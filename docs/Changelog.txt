@@ -1,11 +1,16 @@
-<<<<<<< HEAD
+4/21/2023: Luke & Karl
+- Created the requestVerificationCode and inputVerificationCode API endpoints and event listeners
+- Added the IsVerified field to the UserProfile server response
+- Created TextArea CafeDom; used it to cleanup the comment reply and posting sections.
+- Created the OwnProfileVerifySection
+- Got rid of etc console logging
+
 4/20/2023: Luke
 - Reimplemented the comment collapse button
-=======
+
 4/20/2023: Karl
 - /amILoggedIn pipeline implementation; request sent after local data deserialized 
 - renamed npm script build-extension to dist-local
->>>>>>> master
 
 4/16/2023: Luke
 - Cafe.ts: fixed typo comparing (typeof browser) with (undefined), instead of ("undefined")
