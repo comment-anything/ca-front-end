@@ -70,9 +70,9 @@ export class CafeNewPasswordWindow extends CafeWindow {
                 viewing:"login"}
             })
             document.dispatchEvent(event)
-            this.innerMessage.innerHTML = ""
+            this.innerMessage.textContent = ""
         } else {
-            this.innerMessage.innerHTML = response.Text
+            this.innerMessage.textContent = response.Text
         }
     }
 }

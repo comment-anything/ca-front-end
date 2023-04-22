@@ -186,7 +186,7 @@ export class CafeNavBar {
             this.window.settings.ownProfile.updateProfile(state.ownProfile)
         
             this.showLoggedInButtons()
-            this.navbar.logout.innerHTML = "Logout " + state.ownProfile.LoggedInAs.Username;
+            this.navbar.logout.textContent = "Logout " + state.ownProfile.LoggedInAs.Username;
             
             if(state.ownProfile.LoggedInAs.IsAdmin) {
                 showInlineBlock(this.navbar.admin)

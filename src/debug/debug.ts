@@ -14,7 +14,7 @@ export class Debug {
         this.logs = new Set()
         this.el = document.createElement("div")
         this.deleteAll = document.createElement("button")
-        this.deleteAll.innerHTML = "deleteAll"
+        this.deleteAll.textContent = "deleteAll"
 
         let deleteAll = ()=>{
             for(let [li, bf] of this.logs.values()) {

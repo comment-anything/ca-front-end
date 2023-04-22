@@ -4,36 +4,7 @@
  */
 export namespace Dom {
     
-    /*
-    export function createInputField(inputType: string): HTMLInputElement {
-        let field: HTMLInputElement = document.createElement('input')
-        field.type = inputType
-        field.classList.add('input-field')
-        return field
-    }
     
-    export function labeledElWrapper(label, elToLabel) {
-        
-        let usernameDiv = Dom.div()
-        let usernameLabel = Dom.el("label", label)
-        usernameDiv.append(elToLabel)
-        return usernameDiv
-    }
-    
-    export function createInputFieldRow(label: string, inputElement: HTMLInputElement): HTMLParagraphElement {
-        let rowElement = document.createElement('p')
-        let labelElement = document.createElement('div')
-        
-        labelElement.classList.add('field-label')
-        labelElement.innerHTML = label
-        
-        rowElement.appendChild(labelElement)
-        rowElement.appendChild(inputElement)
-        
-        return rowElement
-    }
-    */
-
     /* See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
     type HTMLInputElementType = 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'text' | 'time' | 'url' | 'week'
     

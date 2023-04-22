@@ -25,6 +25,11 @@
     "persistent": true
   }
   ,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "commentanywhere23@gmail.com"
+    }
+  },
   "permissions": [
     "activeTab",
     "scripting",

@@ -46,7 +46,7 @@ export class Debug {
         this.logs = new Set()
         this.el = document.createElement("div")
         this.deleteAll = document.createElement("button")
-        this.deleteAll.innerHTML = "deleteAll"
+        this.deleteAll.textContent = "deleteAll"
 
         let deleteAll = ()=>{
             for(let [li, bf] of this.logs.values()) {
@@ -65,7 +65,7 @@ export class Debug {
     }
     getStyle() {
         let stylel = document.createElement("style")
-        stylel.innerHTML = style
+        stylel.textContent = style
         return stylel
     }
 
