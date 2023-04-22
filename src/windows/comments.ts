@@ -121,7 +121,6 @@ export class CafeCommentsWindow extends CafeWindow {
     
     /** Called by Cafe when settings changes */
     settingChangeReceived(data: Settings) {
-        console.log("settingChangRecieved called in CommentWindow with data", data)
         this.commentSortSettings.settingsChange(data)
         this.purlSection.settingsChange(data)
         this.populateNewComments(this.data, data.sortedBy, data.sortAscending)

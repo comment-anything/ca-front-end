@@ -89,7 +89,6 @@ export class PseudoUrlSection extends CafeSection {
     }
     
     settingsChange(data: Settings) {
-        console.log("Settings change received in pseudo URL section with value", data)
         this.input.purl.value = data.url
     }
 
