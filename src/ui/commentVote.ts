@@ -4,17 +4,16 @@ import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 
 import "./commentVote.css"
-import arrow from "./arrow.svg"
 import { CafeDom } from "../util/cafeDom";
-import { EventManager } from "../util/eventman";
 
 const CSS = {
     container : 'ui-comment-vote-container',
     
     buttons: {
         hitbox     : 'ui-comment-vote-hitbox',
-        updownvote : 'ui-comment-upvote-downvote-button',
-        container  : 'ui-comment-vote-buttons-container'
+        container  : 'ui-comment-vote-buttons-container',
+        upvote: ['ui-comment-upvote-downvote-button', 'ui-comment-up'],
+        downvote: ['ui-comment-upvote-downvote-button', 'ui-comment-down']
     }
 }
 
@@ -45,8 +44,8 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         
         this.buttons = {
             hitbox    : Dom.button('', CSS.buttons.hitbox),
-            up        : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'upvote'}),
-            down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.updownvote), {asset:'downvote'}),
+            up        : CafeDom.genericIconButton(Dom.button('', CSS.buttons.upvote), {asset:'upvote'}),
+            down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.downvote), {asset:'downvote'}),
             container : Dom.div('', CSS.buttons.container)
         }
         
@@ -69,13 +68,14 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         
         this.buttons.container.append(
             this.buttons.up,
-            this.buttons.down,
-            this.buttons.hitbox
+            this.buttons.down
         )
+
+        this.buttons.hitbox.append(this.buttons.container)
         
         this.showUpvoteButtons(false)
         
-        this.eventman.watchEventListener('mouseenter', this.buttons.container, ()=>{
+        this.eventman.watchEventListener('mouseenter', this.buttons.hitbox, ()=>{
             this.showUpvoteButtons(true)
         })
         
@@ -92,40 +92,10 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
         })
         
         this.el.append(
-            this.buttons.container,
+            this.buttons.hitbox,
             this.total
         )
         
-        /*
-        this.el.classList.add(CSS.voteContainer)
-        this.commentId = commentId
-
-        this.voteType = type
-        let label_voteLabel = Dom.textEl("label",type, CSS.categoryDisplay);
-
-        this.up = Dom.button('', CSS.upvotebutton, {
-            backgroundImage: `url(${arrow})`,
-            backgroundSize: "contain",
-            transform: "rotate(180deg)"
-        })
-        this.up.style.backgroundImage = `url(${arrow})`
-        this.down = Dom.button("", CSS.downvotebutton, 
-        {
-            backgroundImage: `url(${arrow})`,
-            backgroundSize: "contain",
-        })
-
-        this.total = Dom.div( String(voteDim.Ups + voteDim.Downs), CSS.numberDisplay);
-        
-        this.el.append(
-            this.up,
-            label_voteLabel,
-            this.total,
-            this.down
-        )
-        this.clickListen(this.up, this.upVoteClicked, true)
-        this.clickListen(this.down, this.downVoteClicked, true)
-        */
     }
     
     showUpvoteButtons(show: boolean) {

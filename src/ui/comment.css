@@ -33,6 +33,7 @@
 }
 
 .ui-comment-footer-container {
+    margin-top: 10px;
     display: inline-block;
     align-items: flex-end;
     justify-content: space-between;
