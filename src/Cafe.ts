@@ -197,6 +197,12 @@ export class Cafe {
             my.navbar.setFromState(my.state)
             my.serialize()
         })
+
+        document.addEventListener("ClearURL", ()=> {
+            console.log("clear url event received")
+            my.navbar.setFromState(my.state)
+            my.serialize()
+        })
         
         document.addEventListener("logout", ()=>{
             this.state.ownProfile = undefined

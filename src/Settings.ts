@@ -1,3 +1,4 @@
+import { State } from "./State"
 import { Client } from "./communication/CLIENT"
 
 /**
@@ -36,7 +37,7 @@ export class Settings {
         if(settingsChange.onPseudoUrlPage != undefined) {
             this.onPseudoUrlPage = settingsChange.onPseudoUrlPage
         }
-        if(settingsChange.url != undefined) {
+        if(settingsChange.url != undefined && settingsChange.url != "") {
             if(settingsChange.url != this.url) {
                 let gc : Client.GetComments = {
                     Url: settingsChange.url,
@@ -49,7 +50,17 @@ export class Settings {
                 })
                 document.dispatchEvent(ev)
             } 
-            
+        } else {
+            this.url = ""
+            let event = new CustomEvent<Partial<State>>("ClearURL", {
+                detail: {
+                    settings: {
+                        url: "",
+                        onPseudoUrlPage: false
+                    } as Settings
+                }
+            })
+            document.dispatchEvent(event)
         }
 
     }

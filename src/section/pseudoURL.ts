@@ -6,6 +6,11 @@ import { Client } from "../communication/CLIENT";
 import { CafeDom } from "../util/cafeDom";
 
 
+const CSS = {
+    // defined in navbar.css
+    indicator: "psuedo-indicator"
+}
+
 
 export class PseudoUrlSection extends CafeSection {
     
@@ -21,18 +26,24 @@ export class PseudoUrlSection extends CafeSection {
         edit   : HTMLButtonElement
         search : HTMLButtonElement
         cancel : HTMLButtonElement
+        indicator: HTMLDivElement
     }
     
     showingAll : boolean
+
+    /** Updated whenever a settings change occurs */
+    on_purl: boolean
     
     
     
     constructor() {
         super()
+        this.on_purl = false
         this.el.style.display = 'flex'
         this.el.style.alignItems = 'center'
         this.el.style.paddingTop = '8px'
         this.el.style.paddingBottom = '8px'
+        this.el.style.position = "relative"
         
         this.input = {
             purl   : Dom.createInputElement('text'),
@@ -45,19 +56,21 @@ export class PseudoUrlSection extends CafeSection {
             purl   : CafeDom.fullSizeGenericTextInput(this.input.purl, {label: "Pseudo URL"}),
             edit   : CafeDom.genericIconButton(this.input.edit, {asset: 'edit-pen-icon'}),
             search : CafeDom.genericIconButton(this.input.search, {asset: 'search-icon'}),
-            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close'})
+            cancel : CafeDom.genericIconButton(this.input.cancel, {asset: 'close'}),
+            indicator: Dom.div("You are on a psuedo-url.", CSS.indicator)
         }
         
         this.showingAll = false
         
         this.el.append(
             this.ui.edit,
+            this.ui.indicator,
             this.ui.purl,
             this.ui.search,
             this.ui.cancel
         )
         
-        this.makeAllVisible(false)
+        this.setVisibility(false)
         this.eventman.watchEventListener('click', this.input.edit, this.toggleFold)
         this.eventman.watchEventListener('click', this.input.cancel, this.cancelButtonClicked)
         this.eventman.watchEventListener('click', this.input.search, this.submitButtonClicked)
@@ -67,12 +80,13 @@ export class PseudoUrlSection extends CafeSection {
         let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
             detail: {
                 settings: {
+                    url: "",
                     onPseudoUrlPage: false
                 } as Settings
             }
         })
         document.dispatchEvent(event)
-        this.toggleFold()
+        this.setVisibility(false)
     }
     
     submitButtonClicked() {
@@ -90,6 +104,8 @@ export class PseudoUrlSection extends CafeSection {
     
     settingsChange(data: Settings) {
         this.input.purl.value = data.url
+        this.on_purl = data.onPseudoUrlPage
+        this.setVisibility()
     }
 
     /**
@@ -105,25 +121,32 @@ export class PseudoUrlSection extends CafeSection {
     
     toggleFold() {
         if (this.showingAll) {
-            this.showingAll = false
-            this.makeAllVisible(false)
+            this.setVisibility(false)
         }
         else {
-            this.showingAll = true
-            this.makeAllVisible(true)
+            this.setVisibility(true)
         }
     }
-    
-    makeAllVisible(show: boolean) {
-        if (show) {
+
+    setVisibility(setTo?:boolean) {
+        if(setTo != undefined) {
+            this.showingAll = setTo
+        }
+        if(this.showingAll) {
             this.ui.purl.style.display = "inline"
             this.ui.search.style.display = "inline"
             this.ui.cancel.style.display = "inline"
-        }
-        else {
+            this.ui.indicator.style.display = "none"
+        } else {
             this.ui.purl.style.display = "none"
             this.ui.search.style.display = "none"
-            this.ui.cancel.style.display = "none"
+            if(this.on_purl) {
+                this.ui.indicator.style.display = "inline"
+                this.ui.cancel.style.display = "inline"
+            } else {
+                this.ui.cancel.style.display = "none"
+                this.ui.indicator.style.display = "none"
+            }
         }
     }
 }

@@ -80,6 +80,13 @@
     background-color: #8ca4e5;
 }
 
+.psuedo-indicator {
+    font-style: italic;
+    font-size: 10px;
+    color: red;
+    display: inline;
+}
+
 /*
 .hamburger-container {
     background-color: lightgray;

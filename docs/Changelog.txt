@@ -1,3 +1,10 @@
+
+
+4/22/2023: Karl
+- Finished "cancel" feature of pseudo-url 
+- added indicator for when you're on a pseudo url 
+- had to create a new StateEvent to handle "cancel"
+
 4/21/2023: Luke & Karl
 - Created the requestVerificationCode and inputVerificationCode API endpoints and event listeners
 - Added the IsVerified field to the UserProfile server response

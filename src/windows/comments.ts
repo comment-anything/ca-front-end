@@ -123,6 +123,11 @@ export class CafeCommentsWindow extends CafeWindow {
     settingChangeReceived(data: Settings) {
         this.commentSortSettings.settingsChange(data)
         this.purlSection.settingsChange(data)
+        if(data.url == "" || data.url == undefined) {
+            this.data.Comments = []
+            this.data.Domain = undefined!
+            this.data.Path = undefined!
+        }
         this.populateNewComments(this.data, data.sortedBy, data.sortAscending)
     }
     
