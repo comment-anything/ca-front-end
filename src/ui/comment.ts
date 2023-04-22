@@ -6,7 +6,6 @@ import { CommentReplySection } from "../section/commentReply";
 import { CommentVoteSection } from "../section/commentVoteSection";
 
 import "./comment.css"
-import arrow from "./arrow.svg"
 import { ReportCommentSection } from "../section/reportAComment";
 import { CafeDom } from "../util/cafeDom";
 

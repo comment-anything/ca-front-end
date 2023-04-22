@@ -77,15 +77,17 @@ export class PseudoUrlSection extends CafeSection {
     }
     
     cancelButtonClicked() {
-        let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
-            detail: {
-                settings: {
-                    url: "",
-                    onPseudoUrlPage: false
-                } as Settings
-            }
-        })
-        document.dispatchEvent(event)
+        if(this.on_purl) {
+            let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
+                detail: {
+                    settings: {
+                        url: "",
+                        onPseudoUrlPage: false
+                    } as Settings
+                }
+            })
+            document.dispatchEvent(event)
+        }
         this.setVisibility(false)
     }
     

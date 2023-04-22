@@ -48,6 +48,11 @@ export class CafeCommentVote extends UIInput<Server.CommentVoteDimension> {
             down      : CafeDom.genericIconButton(Dom.button('', CSS.buttons.downvote), {asset:'downvote'}),
             container : Dom.div('', CSS.buttons.container)
         }
+
+        this.buttons.up.title = "Vote up if you think this comment is " + type + "!"
+        this.buttons.down.title = "Vote down if you think this comment isn't " + type + "!"
+        
+
         
         this.total = Dom.div(String(voteDim.Ups + voteDim.Downs));
         
