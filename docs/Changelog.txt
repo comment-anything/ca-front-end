@@ -1,6 +1,8 @@
 4/23/2023: Luke
-- Fixed look of ban users
+- Fixed look of "ban users"
 - Created "hint" field for CafeDom
+- Created CafeDom.genericInputWithSubmit function
+- Fixed look of "Assign global mod"
 
 4/23/2023: Karl
 - patched /amILoggedIn

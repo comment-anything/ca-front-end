@@ -124,6 +124,25 @@ export namespace CafeDom {
         return container
     }
     
+    export function genericInputWithSubmit(el: HTMLInputElement, submit: HTMLButtonElement, content: UIContent): HTMLDivElement {
+        setHint(el, content)
+        let container = Dom.div()
+        let label = Dom.textEl('div', content.label, CSS.textInput.genericLabel)
+        
+        el.classList.add(CSS.textInput.genericTextBox, CSS.textInput.genericTextArea)
+        container.classList.add(CSS.textInput.genericContainer)
+        
+        submit.classList.add(CSS.textInput.textLink)
+        
+        container.append(
+            label,
+            el,
+            submit
+        )
+        
+        return container
+    }
+    
     export function genericCheckBoxInput(el: HTMLInputElement, content: UIContent): HTMLDivElement {
         setHint(el, content)
         let container = Dom.div()
