@@ -3,6 +3,7 @@
 - Created "hint" field for CafeDom
 - Created CafeDom.genericInputWithSubmit function
 - Fixed look of "Assign global mod"
+- Fixed look of "Assign Admin"
 
 4/23/2023: Karl
 - patched /amILoggedIn
