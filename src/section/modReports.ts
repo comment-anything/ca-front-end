@@ -1,13 +1,10 @@
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
-import { CafeGlobalModDisplay } from "../ui/globalModDisplay";
 import "./sendFeedback.css"
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
     inputLabel : "section-input-label-medium",
-    tnr : "times-new-roman",
-    centeretnr : "centered-times-new-roman"
 }
 
 export class ModeratorsReportSection extends CafeSection {
@@ -26,14 +23,14 @@ export class ModeratorsReportSection extends CafeSection {
 
         let requestContainer = Dom.div()
         
-        this.forDomainInput = Dom.createInputElement("text", CSS.centeretnr)
+        this.forDomainInput = Dom.createInputElement("text")
         this.requestGlobalModeratorsButton = Dom.button("Global Assignments")
         this.requestDomainModeratorsButton = Dom.button("Domain Assignments")
 
         requestContainer.append(
             Dom.createContainerWithLabel("URL:", CSS.inputLabel, "div", this.forDomainInput),
             
-            Dom.createContainer("div", CSS.tnr, this.forDomainInput),
+            Dom.createContainer("div", undefined, this.forDomainInput),
                 this.requestGlobalModeratorsButton,
                 this.requestDomainModeratorsButton
             )

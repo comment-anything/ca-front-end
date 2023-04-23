@@ -3,6 +3,12 @@ import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
+
+const CSS = {
+    container: 'comment-reply-container',
+    textArea: "comment-reply-textarea",
+    submit: "comment-reply-submit"
+}
 /** 
  * ReportCommentSection is used for a user reporting a rule-violating comment. One is instanced for every CafeComment. 
  */
@@ -15,17 +21,17 @@ export class ReportCommentSection extends CafeSection {
     constructor(commentID: number) {
         super()
         this.targetCommentID = commentID
+        this.el.classList.add(CSS.container)
 
         this.toggleButton = CafeDom.textLink(Dom.button("Report"), {})
-
-        this.container = Dom.div(undefined, undefined, {display:"none"})
+        
+        this.reportText = Dom.el("textarea")
+        this.submitReportButton = CafeDom.textLink(Dom.button(), {label:"Submit Report"})
+        this.container = CafeDom.genericTextAreaInput(this.reportText, this.submitReportButton, {label: "Report a comment"})
+        this.container.style.display = "none"
 
         this.el.append(this.toggleButton, this.container)
         
-        let label = Dom.textEl("label", "Report reason:", undefined, {display:"block"})
-        this.reportText = Dom.el("textarea")
-        this.submitReportButton = Dom.button("Submit Report")
-        this.container.append(label, this.reportText, this.submitReportButton)
 
         this.eventman.watchEventListener('click', this.toggleButton, this.toggleFold)
         this.eventman.watchEventListener('click', this.submitReportButton, this.submitReport)
