@@ -1,6 +1,7 @@
 import { Client } from "../communication/CLIENT";
 import { Server } from "../communication/SERVER";
 import { CafeAccessLog } from "../ui/accessLog";
+import { CafeDom } from "../util/cafeDom";
 import { DatetimeNowString, DatetimeTodayStartString } from "../util/date";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
@@ -52,7 +53,7 @@ export class AccessLogSection extends CafeSection {
         this.forEndpoint = Dom.createInputElement("text")
         this.forEndpoint.title = "Enter a value to only view logs associated with a particular API endpoint. Otherwise, no api Endpoint filtering will occur."
 
-        this.requestLogs = Dom.button("Request Logs")
+        this.requestLogs = CafeDom.formSubmitButtonCenteredBlock("Request Logs")
 
         requestContainer.append(
             Dom.createContainerWithLabel("From:", CSS.inputLabel, "div", this.from),

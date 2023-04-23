@@ -1,5 +1,6 @@
 
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { DatetimeNowString, DatetimeOffsetString } from "../util/date";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
@@ -47,9 +48,9 @@ export class ModActionsReportSection  extends CafeSection {
         this.forDomain = Dom.createInputElement("text")
         this.forDomain.title = "An optional filter to limit records only to those taken on a particular domain. No value will view all actions pertaining to domains you have authority to moderate."
 
-        this.requestModRecordsButton = Dom.button("Request Actions")
+        this.requestModRecordsButton = CafeDom.formSubmitButtonCenteredBlock("Request Actions")
         this.requestModRecordsButton.title = "Send the request to view moderation action records."
-
+        
         requestContainer.append(
             Dom.createContainerWithLabel("From:", CSS.inputLabel, "div", this.from),
             Dom.createContainerWithLabel("To:", CSS.inputLabel, "div", this.to),

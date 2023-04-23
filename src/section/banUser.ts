@@ -34,7 +34,7 @@ export class BanUserSection extends CafeSection {
             banned : Dom.createInputElement("checkbox")
         }
         
-        this.sendBanButton = Dom.button('Ban User')
+        this.sendBanButton = CafeDom.formSubmitButtonCenteredBlock("Ban User")
         
         this.dropDownContainer.append(
             CafeDom.fullSizeGenericTextInput(this.input.target, {label: "User", hint: "Input the username who will be banned/unbanned."}),

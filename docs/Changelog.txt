@@ -6,6 +6,7 @@
 - Fixed look of "Assign Admin"
 - Fixed look of "Feedback Reports"
 - Fixed look of "Comment Reports"
+- Updated look of various buttons
 
 4/23/2023: Karl
 - patched /amILoggedIn

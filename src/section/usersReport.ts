@@ -4,6 +4,7 @@ import { Client } from "../communication/CLIENT";
 import { Dom } from "../util/dom";
 
 import "./sectionGeneralCSS.css"
+import { CafeDom } from "../util/cafeDom";
 
 const CSS = {
     labelContainer : "section-container-table",
@@ -24,6 +25,7 @@ export class UsersReportSection extends CafeSection {
     lastReportContainer: HTMLDivElement;
     lastUpdate: HTMLTableCellElement;
     refreshButton: HTMLButtonElement;
+    
     constructor() {
         super()
         let sectionLabel = Dom.div("Users Report", CSS.sectionLabel)
@@ -37,7 +39,7 @@ export class UsersReportSection extends CafeSection {
         this.lastUpdate = Dom.el("td", CSS.tableData)
 
 
-        this.refreshButton = Dom.button("Get Users Report")
+        this.refreshButton = CafeDom.formSubmitButtonSmallCenteredBlock("Get Users Report")
         
         table.append(
             Dom.tableRow("Last Update: ", this.lastUpdate, undefined, CSS.label),
