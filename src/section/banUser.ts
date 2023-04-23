@@ -1,6 +1,7 @@
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
@@ -9,18 +10,45 @@ const CSS = {
 
 export class BanUserSection extends CafeSection {
     dropDownContainer: HTMLDivElement;
-    targetUser: HTMLInputElement;
-    reason: HTMLInputElement;
-    domain: HTMLInputElement;
-    ban: HTMLInputElement;
+    
+    input: {
+        target : HTMLInputElement
+        reason : HTMLInputElement
+        domain : HTMLInputElement
+        banned : HTMLInputElement
+    }
+    
     sendBanButton: HTMLButtonElement;
+    
     constructor() {
         super()
         let sectionLabel = Dom.div("Ban Users", CSS.sectionLabel)
         sectionLabel.title = "Ban users from domains or globally."
 
         this.dropDownContainer = Dom.div()
-
+        
+        this.input = {
+            target : Dom.createInputElement("text"),
+            reason : Dom.createInputElement("text"),
+            domain : Dom.createInputElement("text"),
+            banned : Dom.createInputElement("checkbox")
+        }
+        
+        this.sendBanButton = Dom.button('Ban User')
+        
+        this.dropDownContainer.append(
+            CafeDom.fullSizeGenericTextInput(this.input.target, {label: "User", hint: "Input the username who will be banned/unbanned."}),
+            CafeDom.fullSizeGenericTextInput(this.input.domain, {label: "Domain", hint: "Input the domain the user will be banned/unbanned from. If blank, it will be an attempt to ban/unban globally."}),
+            CafeDom.fullSizeGenericTextInput(this.input.reason, {label: "Reason", hint: "Please provide a reason for the ban/unban."}),
+            CafeDom.genericCheckBoxInput(this.input.banned, {label: "Banned?", hint: "Send the request to ban/unban a user."}),
+            this.sendBanButton
+        )
+        
+        this.el.append(sectionLabel, this.dropDownContainer)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.sendBanButton, this.banButtonClicked, true)
+        
+        /*
         this.targetUser = Dom.createInputElement("text");
         this.targetUser.title = "Input the username who will be banned/unbanned."
         this.reason = Dom.createInputElement("text")
@@ -44,6 +72,7 @@ export class BanUserSection extends CafeSection {
         this.el.append(sectionLabel, this.dropDownContainer)
         this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
         this.eventman.watchEventListener('click', this.sendBanButton, this.banButtonClicked, true)
+        */
     }
 
     toggleFold() {
@@ -57,10 +86,10 @@ export class BanUserSection extends CafeSection {
     banButtonClicked() {
         let ev = new CustomEvent<Client.Ban>("ban", {
             detail: {
-                Username: this.targetUser.value,
-                Reason: this.reason.value,
-                Domain: this.domain.value,
-                Ban: this.ban.checked
+                Username: this.input.target.value,
+                Reason: this.input.reason.value,
+                Domain: this.input.domain.value,
+                Ban: this.input.banned.checked
             }
         })
         document.dispatchEvent(ev);

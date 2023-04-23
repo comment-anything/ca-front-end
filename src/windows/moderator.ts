@@ -7,18 +7,19 @@ import { BanUserSection } from "../section/banUser";
 
 export class CafeModerationWindow extends CafeWindow {
     reports    : CommentReportsSection
-    ban : BanUserSection
-    moderators : ModeratorsReportSection
+    ban        : BanUserSection
     modActions : ModActionsReportSection
-    banRecords : BanRecordsSection
+    //banRecords : BanRecordsSection
+    //moderators : ModeratorsReportSection
     
     constructor() {
         super()
-        this.moderators = new ModeratorsReportSection()
-        this.modActions = new ModActionsReportSection()
-        this.banRecords = new BanRecordsSection()
+        
         this.reports = new CommentReportsSection()
         this.ban = new BanUserSection()
+        this.modActions = new ModActionsReportSection()
+        //this.moderators = new ModeratorsReportSection()
+        //this.banRecords = new BanRecordsSection()
         
         this.el.append(
             this.reports.el,

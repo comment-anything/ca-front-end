@@ -42,10 +42,17 @@ export namespace CafeDom {
     export type UIContent = {
         label?: string
         asset?: string
+        hint?: string
+    }
+    
+    function setHint(el: HTMLElement, content: UIContent) {
+        if (content.hint != undefined)
+            el.title = content.hint
     }
     
     /** Wrap an HTMLInputElement within a styled HTMLDivElement */
     export function fullSizeGenericTextInput(el: HTMLInputElement, content: UIContent, listeners?: []): HTMLDivElement {
+        setHint(el, content)
         // Create a full-sized container
         let container = Dom.div()
         
@@ -56,6 +63,7 @@ export namespace CafeDom {
     
     /** Wrap an HTMLInputElement within a styled HTMLDivElement */
     export function halfSizeGenericTextInput(el: HTMLInputElement, content: UIContent): HTMLDivElement {
+        setHint(el, content)
         // Create a half-sized container
         let container = Dom.div()
         container.classList.add(CSS.textInput.halfContainerOverride)
@@ -67,6 +75,7 @@ export namespace CafeDom {
     
     /** Adds CSS to input element. Creates label element. Contain all elements. Add event listeners to focus input. */
     function initializeGenericTextInput(el: HTMLInputElement, container: HTMLDivElement, content: UIContent): any[] {
+        setHint(el, content)
         el.classList.add(CSS.textInput.genericTextBox)
         container.classList.add(CSS.textInput.genericContainer)
         
@@ -97,6 +106,7 @@ export namespace CafeDom {
     }
     
     export function genericTextAreaInput(el: HTMLTextAreaElement, submit: HTMLButtonElement, content: UIContent): HTMLDivElement {
+        setHint(el, content)
         let container = Dom.div()
         let label = Dom.textEl('div', content.label, CSS.textInput.genericLabel)
         
@@ -115,6 +125,7 @@ export namespace CafeDom {
     }
     
     export function genericCheckBoxInput(el: HTMLInputElement, content: UIContent): HTMLDivElement {
+        setHint(el, content)
         let container = Dom.div()
         container.classList.add(CSS.checkBox.genericContainer)
         el.classList.add(CSS.checkBox.genericInput)
@@ -130,6 +141,7 @@ export namespace CafeDom {
     }
     
     export function formSubmitButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        setHint(el, content)
         el.classList.add(CSS.button.submitForm)
         return el
     }
@@ -158,6 +170,7 @@ export namespace CafeDom {
     }
     
     export function genericIconButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        setHint(el, content)
         let icon = Dom.div('', CSS.button.texture)
         icon.classList.add('svg-' + content.asset)
         el.classList.add(CSS.button.iconContainer)
@@ -166,11 +179,13 @@ export namespace CafeDom {
     }
     
     export function genericDropdown(el: HTMLSelectElement, content: UIContent): HTMLSelectElement {
+        setHint(el, content)
         el.classList.add(CSS.dropdown.generic)
         return el
     }
     
     export function toggleButton(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        setHint(el, content)
         
         if (content.label)
             el.textContent = content.label
@@ -180,6 +195,7 @@ export namespace CafeDom {
     }
     
     export function textLink(el: HTMLButtonElement, content: UIContent): HTMLButtonElement {
+        setHint(el, content)
         el.classList.add(CSS.button.textLink)
         
         if (content.label != undefined)

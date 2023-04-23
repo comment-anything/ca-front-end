@@ -1,3 +1,7 @@
+4/23/2023: Luke
+- Fixed look of ban users
+- Created "hint" field for CafeDom
+
 4/23/2023: Karl
 - patched /amILoggedIn
 
