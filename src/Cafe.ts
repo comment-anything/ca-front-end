@@ -66,29 +66,67 @@ export class Cafe {
      * Determines whether CA is running in an extension and calls the appropriate deserialize method. 
      */
     deserializePick() {
+        console.log("Cafe.ts: picking deserialization method")
         let me = this
         if(typeof browser != "undefined") {
+            console.log("Cafe.ts: picking browser storage")
             browser.storage.local.get().then( (v)=>{
+                console.log("Cafe.ts: got browser storage")
                 if(v) {
-                    let parse = JSON.parse(v[browser_storage_key])
-                    me.deserialize(parse as SerializedData)
-                    if(!me.state.settings.onPseudoUrlPage) {
-                        me.checkActiveUrl()
-                    } else {
-                        /** Check if logged in when popup is opened */
-                        me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
+                    try {
+                        let parse = JSON.parse(v[browser_storage_key])
+                        console.log("Cafe.ts: parsed", parse)
+                        me.deserialize(parse as SerializedData)
+                    } catch(e) {
+                        console.log("Cafe.ts: Exception ", e)
                     }
+                } else {
+                    let x : SerializedData = {
+                        state: {
+                            viewing: "login",
+                            settings: {
+                                onPseudoUrlPage: false,
+                                url: ""
+                            } as Settings
+                        } as State ,
+                        token: ""
+                    }
+                    console.log("Created ", x)
+                    me.deserialize(x)
                 }
+                if(!me.state.settings.onPseudoUrlPage) {
+                    me.checkActiveUrl()
+                } else {
+                    /** Check if logged in when popup is opened */
+                    me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
+                } 
             })
         } else {
             let vals = localStorage.getItem(browser_storage_key)
             if(vals) {
-                let parsed = JSON.parse(vals)
-                console.log("Cafe.ts: PARSED DATA:",parsed)
-                me.deserialize(parsed)
-                /** Check if logged in when popup is opened */
-                me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
+                try {
+                    let parsed = JSON.parse(vals)
+                    console.log("Cafe.ts: PARSED DATA:",parsed)
+                    me.deserialize(parsed as SerializedData)
+                } catch(e) {
+                    console.log("Cafe.ts: Exception", e)
+                }
+            } else {
+                let x : SerializedData = {
+                    state: {
+                        viewing: "login",
+                        settings: {
+                            onPseudoUrlPage: false,
+                            url: ""
+                        } as Settings
+                    } as State ,
+                    token: ""
+                }
+                me.deserialize(x)
             }
+            /** Check if logged in when popup is opened */
+            me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
+            
         }
     }
 
@@ -201,10 +239,11 @@ export class Cafe {
             my.serialize()
         })
 
-        document.addEventListener("ClearURL", ()=> {
+        document.addEventListener("ClearURL", (ev)=> {
             console.log("Cafe.ts: clear url event received")
+            my.state.settings.url = ev.detail.settings.url
+            my.state.settings.onPseudoUrlPage = ev.detail.settings.onPseudoUrlPage
             my.navbar.setFromState(my.state)
-            my.serialize()
         })
         
         document.addEventListener("logout", ()=>{
@@ -215,6 +254,8 @@ export class Cafe {
             })
             document.dispatchEvent(ev)
         })
+
+        
     }
 
     checkActiveUrl: ()=>void

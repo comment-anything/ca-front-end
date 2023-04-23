@@ -77,6 +77,7 @@ export class PseudoUrlSection extends CafeSection {
     }
     
     cancelButtonClicked() {
+        console.log("pseudoUrl.ts: cancel clicked")
         if(this.on_purl) {
             let event = new CustomEvent<Partial<State>>("ClearURL", {
                 detail: {
