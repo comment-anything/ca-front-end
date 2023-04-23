@@ -1,4 +1,5 @@
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
@@ -17,16 +18,51 @@ const CSS = {
  */
 export class AssignGlobalModSection extends CafeSection {
     container: HTMLDivElement;
+    
+    input: {
+        assignTo     : HTMLInputElement
+        assignButton : HTMLButtonElement
+        revokeFrom   : HTMLInputElement
+        revokeButton : HTMLButtonElement
+    }
+    
+    /*
     assignTo: HTMLInputElement;
     assignButton: HTMLButtonElement;
     removeFrom: HTMLInputElement;
     removeButton: HTMLButtonElement;
+    */
     constructor() {
         super(undefined)
+        
         let sectionLabel = Dom.div("Assign Global Mod", CSS.sectionLabel)
         sectionLabel.title = "Assign and remove global moderators."
+        
         this.container = Dom.div()
-
+        
+        this.input = {
+            assignTo     : Dom.createInputElement('text'),
+            assignButton : CafeDom.textLink(Dom.button('Grant'), {}),
+            revokeFrom   : Dom.createInputElement('text'),
+            revokeButton : CafeDom.textLink(Dom.button('Revoke'), {})
+        }
+        
+        this.container.append(
+            CafeDom.genericInputWithSubmit(this.input.assignTo, this.input.assignButton, {label: "Assign new user"}),
+            CafeDom.genericInputWithSubmit(this.input.revokeFrom, this.input.revokeButton, {label: "Revoke from user"})
+        )
+        
+        this.el.append(
+            sectionLabel,
+            this.container
+        )
+        
+        this.el.append(sectionLabel, this.container)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.input.assignButton, this.assignGlobalClicked, true)
+        this.eventman.watchEventListener('click', this.input.revokeButton, this.removeGlobalClicked, true)
+        
+        /* 
         let assignContainer = Dom.div(undefined, CSS.containers)
         let prespan1 = Dom.span("Grant global mod to ")
         this.assignTo = Dom.createInputElement("text", CSS.shortText)
@@ -51,8 +87,9 @@ export class AssignGlobalModSection extends CafeSection {
         this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
         this.eventman.watchEventListener('click', this.assignButton, this.assignGlobalClicked, true)
         this.eventman.watchEventListener('click', this.removeButton, this.removeGlobalClicked, true)
+        */
     }
-
+    
     /** Toggles whether the section is folder, by clicking on the section header. */
     toggleFold() {
         if(this.container.style.display == "none") {
@@ -65,7 +102,7 @@ export class AssignGlobalModSection extends CafeSection {
     assignGlobalClicked() {
         document.dispatchEvent(new CustomEvent<Client.AssignGlobalModerator>("assignGlobalModerator", {
             detail: {
-                User: this.assignTo.value,
+                User: this.input.assignTo.value,
                 IsDeactivation: false
             }
         }))
@@ -74,7 +111,7 @@ export class AssignGlobalModSection extends CafeSection {
     removeGlobalClicked() {
         document.dispatchEvent(new CustomEvent<Client.AssignGlobalModerator>("assignGlobalModerator", {
             detail: {
-                User: this.removeFrom.value,
+                User: this.input.revokeFrom.value,
                 IsDeactivation: true
             }
         }))

@@ -1,4 +1,5 @@
 import { Client } from "../communication/CLIENT";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
@@ -17,10 +18,33 @@ const CSS = {
  */
 export class AssignAdminSection extends CafeSection {
     container: HTMLDivElement;
-    assignTo: HTMLInputElement;
-    assignButton: HTMLButtonElement;
+    
+    input: {
+        assignTo     : HTMLInputElement
+        assignButton : HTMLButtonElement
+    }
+    
     constructor() {
         super(undefined)
+        
+        let sectionLabel = Dom.div("Assign Admin", CSS.sectionLabel)
+        sectionLabel.title = "Assign and remove other administrators."
+        this.container = Dom.div()
+        
+        this.input = {
+            assignTo: Dom.createInputElement("text"),
+            assignButton: CafeDom.textLink(Dom.button("Grant"), {})
+        }
+        
+        this.container.append(
+            CafeDom.genericInputWithSubmit(this.input.assignTo, this.input.assignButton, {label: "Grant admin priviledges to user"})
+        )
+        
+        this.el.append(sectionLabel, this.container)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.input.assignButton, this.assignAdminClicked, true)
+        
+        /* 
         let sectionLabel = Dom.div("Assign Admin", CSS.sectionLabel)
         sectionLabel.title = "Assign and remove other administrators."
         this.container = Dom.div()
@@ -39,6 +63,7 @@ export class AssignAdminSection extends CafeSection {
         this.el.append(sectionLabel, this.container)
         this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
         this.eventman.watchEventListener('click', this.assignButton, this.assignAdminClicked, true)
+        */
     }
 
     /** Toggles whether the section is folder, by clicking on the section header. */
@@ -53,7 +78,7 @@ export class AssignAdminSection extends CafeSection {
     assignAdminClicked() {
         document.dispatchEvent(new CustomEvent<Client.AssignAdmin>("assignAdmin", {
             detail: {
-                User: this.assignTo.value
+                User: this.input.assignTo.value
             }
         }))
     }

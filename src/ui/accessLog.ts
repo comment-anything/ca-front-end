@@ -14,6 +14,7 @@ export class CafeAccessLog extends UIInput<Server.AdminAccessLog> {
     url: HTMLTableCellElement;
     userId: HTMLTableCellElement;
     username: HTMLTableCellElement;
+    
     constructor(data: Server.AdminAccessLog) {
         super(data, "tr")
         this.blocker.remove()

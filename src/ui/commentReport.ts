@@ -7,6 +7,7 @@ import "./commentReport.css"
 import { Client } from "../communication/CLIENT"
 
 const CSS = {
+    container: 'ui-report-container',
     reportHeader: {
         state: 'comment-report-header-state',
         timeReported: 'comment-report-header-time-reported',
@@ -18,6 +19,7 @@ const CSS = {
         container: 'comment-report-buttons-container'
     },
     parentContainer: 'comment-report-parent-container',
+    subParentContainer: 'ui-report-sub-parent-container',
     content: {
         username: 'comment-report-username',
         infoBlock: 'comment-report-info-block'
@@ -66,6 +68,7 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
     constructor(data: Server.CommentReport) {
         super(data, "div");
         this.data = data
+        this.el.classList.add(CSS.container)
         
         // HEADER CONTAINER
         this.actionLabel = Dom.textEl("div", "", CSS.reportHeader.state)
@@ -129,7 +132,7 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         this.setHiddenTo = Dom.createInputElement('checkbox')
         this.setRemovedTo = Dom.createInputElement('checkbox')
         this.reason = Dom.el("textarea", CSS.moderate.reasonTextBox)
-        this.submitModerationButton = Dom.button("Confirm")
+        this.submitModerationButton = CafeDom.textLink(Dom.button("Confirm"), {})
         
         let hiddenCheckBox = CafeDom.genericCheckBoxInput(this.setHiddenTo, {label: "Flag Hidden?"})
         let removeCheckBox = CafeDom.genericCheckBoxInput(this.setRemovedTo, {label: "Flag Removal?"})
@@ -138,9 +141,12 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         this.moderateContainer.append(
             hiddenCheckBox,
             removeCheckBox,
+            CafeDom.genericTextAreaInput(this.reason, this.submitModerationButton, {label: "Reason for your action"})
+            /*
             actionReasonLabel,
             this.reason,
             this.submitModerationButton
+            */
         )
         
         // Add click event listeners for the section buttons to show the appropriate section when clicked
@@ -154,11 +160,13 @@ export class CafeCommentReportDisplay extends UIInput<Server.CommentReport> {
         this.clickListen(this.moderateButton, ()=>{ this.showContainer(this.moderateContainer) })
         */
        
+        let lastContainer = Dom.div('', CSS.subParentContainer)
+        lastContainer.append(headerContainer, parentContainer)
+        
         // Overall append function
         this.el.append(
-            headerContainer,
             buttonsContainer,
-            parentContainer
+            lastContainer
         )
         
         // Update from CommentReport data

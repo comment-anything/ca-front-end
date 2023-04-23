@@ -1,5 +1,17 @@
 
 /* --- Header Styles --- */
+.ui-report-container {
+    margin-bottom: 8px;
+}
+
+.ui-report-sub-parent-container {
+    background-color: white;
+    padding: 2px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+}
+
 .comment-report-header-state {
     color: red;
     display: inline-block;
@@ -13,10 +25,9 @@
 }
 
 .comment-report-header-container {
-    background-color: lightgray;
+    background-color: rgb(255, 216, 216);
     padding: 2px;
     border-radius: 2px;
-    margin: 2px;
 }
 
 /* --- Button Styles --- */
@@ -24,8 +35,13 @@
 .comment-report-button {
     display: inline-block;
     border: none;
-    margin: 2px;
-    width: 30%;
+    width: auto;
+    border-color: rgb(78, 78, 78);
+    border-width: 1px 1px 0px 1px;
+    border-radius: 3px 3px 0px 0px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border-style:solid;
 }
 
 .comment-report-buttons-container {
@@ -36,10 +52,7 @@
 /* --- Parent Container Styles --- */
 
 .comment-report-parent-container {
-    background-color: lightgray;
     padding: 10px;
-    padding-bottom: 5%;
-    margin-bottom: 5%;
 }
 
 /* --- Content Container Styles --- */

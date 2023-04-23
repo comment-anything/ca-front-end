@@ -1,6 +1,7 @@
 import { Client } from "../communication/CLIENT";
 import { Server } from "../communication/SERVER";
 import { CafeAccessLog } from "../ui/accessLog";
+import { CafeDom } from "../util/cafeDom";
 import { DatetimeNowString, DatetimeTodayStartString } from "../util/date";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
@@ -23,7 +24,7 @@ export class AccessLogSection extends CafeSection {
     requestLogs: any;
     logsTable: HTMLTableElement;
     activeLogs: CafeAccessLog[]
-
+    
     constructor() {
         super(undefined)
         this.activeLogs = []
@@ -52,7 +53,7 @@ export class AccessLogSection extends CafeSection {
         this.forEndpoint = Dom.createInputElement("text")
         this.forEndpoint.title = "Enter a value to only view logs associated with a particular API endpoint. Otherwise, no api Endpoint filtering will occur."
 
-        this.requestLogs = Dom.button("Request Logs")
+        this.requestLogs = CafeDom.formSubmitButtonCenteredBlock("Request Logs")
 
         requestContainer.append(
             Dom.createContainerWithLabel("From:", CSS.inputLabel, "div", this.from),
@@ -88,6 +89,7 @@ export class AccessLogSection extends CafeSection {
         data.ForUser = this.forUser.value
         data.ForIp = this.forIP.value
         data.ForEndpoint = this.forEndpoint.value
+        
         let ev = new CustomEvent<Client.ViewAccessLogs>("viewLogs", {
             detail: data as Client.ViewAccessLogs
         })
@@ -110,7 +112,7 @@ export class AccessLogSection extends CafeSection {
             this.logsTable.append(cal.el)
         }
     }
-
+    
     destroy() {
         super.destroy()
         for(let al of this.activeLogs) {

@@ -3,6 +3,7 @@ import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 import { Server } from "../communication/SERVER";
 import { CafeCommentReportDisplay } from "../ui/commentReport";
+import { CafeDom } from "../util/cafeDom";
 
 const CSS = {
     sectionLabel : ["section-label", "section-label-as-button"],
@@ -23,7 +24,7 @@ export class CommentReportsSection extends CafeSection {
         
         let sectionLabel = Dom.div("Comment Reports", CSS.sectionLabel)
         this.displayedReports = new Map<number, CafeCommentReportDisplay>()
-        this.viewReportsButton = Dom.button("View Reports")
+        this.viewReportsButton = CafeDom.formSubmitButtonCenteredBlock("View Reports")
         this.dropDownContainer = Dom.div()
         
         this.dropDownContainer.append(

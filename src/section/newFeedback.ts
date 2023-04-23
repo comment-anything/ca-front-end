@@ -16,6 +16,7 @@ export class NewFeedbackSection extends CafeSection {
     categorySelect: HTMLSelectElement;
     content: HTMLTextAreaElement;
     submit: HTMLButtonElement;
+    
     constructor() {
         super(undefined)
         let sectionLabel = Dom.div("New Feedback", CSS.sectionLabel)
@@ -30,12 +31,12 @@ export class NewFeedbackSection extends CafeSection {
         let lab2 = Dom.textEl("label", "Feedback")
         this.content = Dom.el("textarea")
         contContainer.append(lab2, this.content)
+        this.submit = CafeDom.textLink(Dom.button("Send"), {})
+        let contentContainer = CafeDom.genericTextAreaInput(this.content, this.submit, {label: "Share feedback with us!"})
 
-        this.submit = CafeDom.formSubmitButtonCenteredBlock("Submit Feedback", {
-            marginTop: "10px"
-        })
+
         
-        this.container.append(catContainer, contContainer, this.submit)
+        this.container.append(catContainer, contentContainer)
 
 
         this.el.append(sectionLabel, this.container)

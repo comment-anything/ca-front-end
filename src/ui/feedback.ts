@@ -1,32 +1,69 @@
 import { Client } from "../communication/CLIENT";
 import { Server } from "../communication/SERVER";
+import { CafeDom } from "../util/cafeDom";
 import { Dom } from "../util/dom";
 import { UIInput } from "./base";
 
-import "./table.css"
+import "./feedback.css"
 
 const CSS = {
-    smallData : ["data-small-centered", "data-content-bordered"],
-    dataContent: ["data-small-centered", "data-content-bordered"],
-    smallerHeader: "header-small"
+    container: 'ui-feedback-container',
+    header: {
+        container: 'ui-feedback-header-container'
+    },
+    content: 'ui-feedback-content-container'
 }
 
 export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
-    id: HTMLTableCellElement;
-    submittedAt: HTMLTableCellElement;
-    feedbackType: HTMLTableCellElement;
-    userId: HTMLTableCellElement;
-    username: HTMLTableCellElement;
-    content: HTMLTableCellElement;
-    setToHidden: boolean
-    controls: HTMLTableCellElement;
-    hideButton: HTMLButtonElement;
-
+    
+    header: {
+        feedbackType : HTMLDivElement
+        username     : HTMLDivElement
+        time         : HTMLDivElement
+        container    : HTMLDivElement
+    }
+    
+    content    : HTMLDivElement
+    hideButton : HTMLButtonElement
+    isHidden   : boolean
+    
     constructor(data: Server.FeedbackRecord) {
-        super(data, "tr")
+        super(data, "div")
+        this.el.classList.add(CSS.container)
         
         let date = new Date(data.SubmittedAt)
         let date_formatted = date.toLocaleDateString() + " " + date.toLocaleTimeString()
+        
+        this.isHidden = data.Hide
+        if (this.isHidden)
+            this.strikeThrough()
+        
+        this.header = {
+            feedbackType : Dom.div(data.FeedbackType.toUpperCase()),
+            username     : Dom.div(data.Username),
+            time         : Dom.div(date_formatted),
+            container    : Dom.div('', CSS.header.container)
+        }
+        
+        this.header.container.append(
+            this.header.feedbackType,
+            this.header.username,
+            this.header.time
+        )
+        
+        this.content = Dom.div(data.Content, CSS.content)
+        this.hideButton = CafeDom.textLink(Dom.button("Hide this feedback"), {})
+        
+        this.el.append(
+            this.header.container,
+            this.content,
+            this.hideButton
+        )
+        
+        this.eventman.watchEventListener('click', this.hideButton, this.hideButtonClicked)
+        
+        /*
+
         
         this.id = Dom.textEl("td", data.ID.toString(), CSS.smallData)
         this.submittedAt = Dom.textEl("td", date_formatted, CSS.smallData)
@@ -51,38 +88,30 @@ export class CafeFeedback extends UIInput<Server.FeedbackRecord> {
         this.eventman.watchEventListener('click', this.hideButton, this.hideButtonClicked)
         
         this.el.append(this.id, this.submittedAt, this.feedbackType, this.userId, this.username, this.content, this.controls)
+        */
     }
 
     private strikeThrough() {
-        this.id.style.textDecoration = "line-through"
-        this.submittedAt.style.textDecoration = "line-through"
-        this.feedbackType.style.textDecoration = "line-through"
-        this.userId.style.textDecoration = "line-through"
-        this.username.style.textDecoration = "line-through"
         this.content.style.textDecoration = "line-through"
+        this.content.style.color = "red"
     }
     
     private unstrike() {
-        this.id.style.textDecoration = "none"
-        this.submittedAt.style.textDecoration = "none"
-        this.feedbackType.style.textDecoration = "none"
-        this.userId.style.textDecoration = "none"
-        this.username.style.textDecoration = "none"
         this.content.style.textDecoration = "none"
-
+        this.content.style.color = "black"
     }
     
     private hideButtonClicked() {
-        if(this.setToHidden == true) {
-            this.setToHidden = false 
+        if(this.isHidden == true) {
+            this.isHidden = false 
             this.unstrike()
         } else {
-            this.setToHidden = true 
+            this.isHidden = true 
             this.strikeThrough()
         }
         let hidereq : Client.ToggleFeedbackHidden = {
             ID: this.data!.ID,
-            SetHiddenTo: this.setToHidden
+            SetHiddenTo: this.isHidden
         }
         let event = new CustomEvent<Client.ToggleFeedbackHidden>("toggleFeedbackHidden", {
             detail: hidereq

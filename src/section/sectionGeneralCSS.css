@@ -37,6 +37,7 @@
     font-weight: bold;
     border-bottom: 1px solid lightgray;
     margin-bottom: 5px;
+    user-select: none;
 }
 
 .section-label-as-button:hover {
