@@ -10,3 +10,8 @@
     margin-left:auto;
     margin-right:auto;
 }
+
+.window-login-button-container {
+    display: flex;
+    justify-content: space-evenly;
+}

@@ -11,7 +11,8 @@ const CSS = {
     inputSection: "cafe-window-input-section",
     inputField: "cafe-window-input-field",
     inputLabel: "cafe-window-input-label",
-    button: "cafe-window-button"
+    button: "cafe-window-button",
+    buttonContainer: "window-login-button-container"
 }
 
 
@@ -30,7 +31,7 @@ export class CafeLoginWindow extends CafeWindow {
         this.password.title = "Input your Comment Anywhere password."
         this.submitLoginButton = Dom.button('Login')
         this.submitLoginButton.title = "Click this button to login."
-        this.forgotPasswordButton = CafeDom.formSubmitButtonSmall('Forgot Password', {marginLeft: "125px"})
+        this.forgotPasswordButton = CafeDom.textLink(Dom.button('Forgot Password'), {})
         this.forgotPasswordButton.title = "Click this button to get a password reset code emailed to you."
 
         this.submitLoginButton.addEventListener("click", this.submitLoginClicked.bind(this))
@@ -39,11 +40,17 @@ export class CafeLoginWindow extends CafeWindow {
         this.username.addEventListener("keydown", enterListen)
         this.password.addEventListener("keydown", enterListen)
         
+        let buttonContainer = Dom.div('', CSS.buttonContainer)
+        buttonContainer.append(
+            CafeDom.formSubmitButton(this.submitLoginButton, {label: "Login"}),
+            this.forgotPasswordButton
+        )
+        
         this.el.append(
             CafeDom.fullSizeGenericTextInput(this.username, {label: "Username"}),
             CafeDom.fullSizeGenericTextInput(this.password, {label: "Password"}),
-            CafeDom.formSubmitButton(this.submitLoginButton, {label: "Login"}),
-            this.forgotPasswordButton
+            buttonContainer
+            
         )
         
         /*
