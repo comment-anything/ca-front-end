@@ -87,7 +87,7 @@ export class Cafe {
                 console.log("Cafe.ts: PARSED DATA:",parsed)
                 me.deserialize(parsed)
                 /** Check if logged in when popup is opened */
-                me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
+                me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
             }
         }
     }
