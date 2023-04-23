@@ -9,7 +9,6 @@ export default defineConfig( ({command,mode,ssrBuild})=> {
                 rollupOptions: {
                     input: {
                         index: "./src/main.ts",
-                        content: "./src/contentscript/content.ts",
                         background: "./src/backgroundscript/background.ts"
                     },
                     output: {

@@ -16,7 +16,7 @@ export class State {
     }
     
     stateChangeRequest(newstate: Partial<State>) {
-        console.log("Got state change request!", newstate as State)
+        console.log("STATE.ts: Got state change request!", newstate as State)
         
         if(newstate.ownProfile) {
             if(this.ownProfile) {
@@ -42,8 +42,25 @@ export class State {
     // Changes ownProfile member. If nothing is passed in, the loaded user profile is cleared.
     loadProfile(userProfile?:{LoggedInAs: Server.UserProfile, Email: string}, preventStateChange?:boolean) {
         this.ownProfile = userProfile
-        if(this.ownProfile && (this.viewing != "comments") && !preventStateChange) this.viewing = "none"
-        else if(this.ownProfile == undefined && preventStateChange != true) this.viewing = "login"
+        if(this.ownProfile == undefined && preventStateChange != true) {
+            if(this.viewing != "comments" && this.viewing != "login" && this.viewing != "register") {
+                console.log("State.ts: Forcing view to login.")
+                this.viewing = "login"
+            }
+        } else {
+            if(this.viewing == "admin" && this.ownProfile?.LoggedInAs.IsAdmin != true ){
+                console.log("State.ts: Not admin; Forcing view to settings.")
+                this.viewing = "settings"
+            }
+            if(this.viewing == "moderation" && this.ownProfile?.LoggedInAs.IsDomainModerator != true && this.ownProfile?.LoggedInAs.IsGlobalModerator != true) {
+                console.log("State.ts: Not moderator; Forcing view to settings.")
+                this.viewing = "settings"
+            }
+            if(this.viewing == "login" || this.viewing == "register") {
+                console.log("State.ts: Not logged out, forcing view to settings.")
+                this.viewing = "settings"
+            }
+        }
         stateChangeEmit(this);
     }
 }

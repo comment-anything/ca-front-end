@@ -3,6 +3,10 @@
 - added indicator for when you're on a pseudo url 
 - had to create a new StateEvent to handle "cancel"
 - improved upvote and downvote buttons
+MAJOR:
+- fixed the not getting the right current url (got rid of content script and used tabs API instead)
+- fixed state changes not being saved
+- fixed some deserialization issues
 
 4/21/2023: Luke & Karl
 - Created the requestVerificationCode and inputVerificationCode API endpoints and event listeners

@@ -24,7 +24,7 @@ export class Settings {
      * Also emits a getComments request if the url changed!
      */
     settingsUpdate(settingsChange: Partial<Settings>) {
-        console.log("settingsChangeRequest received", settingsChange)
+        console.log("Settings.ts: settingsChangeRequest received", settingsChange)
         if(settingsChange.viewHidden != undefined) {
             this.viewHidden = settingsChange.viewHidden
         }
@@ -38,6 +38,7 @@ export class Settings {
             this.onPseudoUrlPage = settingsChange.onPseudoUrlPage
         }
         if(settingsChange.url != undefined && settingsChange.url != "") {
+            console.log("Settings.ts: URL exists, sending a getComments event. ")
             if(settingsChange.url != this.url) {
                 let gc : Client.GetComments = {
                     Url: settingsChange.url,
@@ -51,6 +52,7 @@ export class Settings {
                 document.dispatchEvent(ev)
             } 
         } else {
+            console.log("Settings.ts: No URL exists, sending a clearURL event.")
             this.url = ""
             let event = new CustomEvent<Partial<State>>("ClearURL", {
                 detail: {

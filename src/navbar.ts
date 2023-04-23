@@ -174,6 +174,7 @@ export class CafeNavBar {
     
     
     setFromState(state: State) {
+        console.log("Navbar.ts: settings view from state to ", state.viewing)
         this.hideAll()
         
         if (state.ownProfile == undefined) {

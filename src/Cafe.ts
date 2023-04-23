@@ -40,15 +40,13 @@ export class Cafe {
         
         if(typeof browser == "undefined") {
             console.warn("You are not using comment anywhere as an extension. This is dangerous, and your credentials could be stolen!")
-        } else {
-            this.checkActiveUrl()
         }
     }
     /**
      * Called with values retrieved from browser storage if running as an extension, otherwise, called with values from localStorage. 
      */
     deserialize(val:SerializedData) {
-        console.log("attempting to deserialize", val)
+        console.log("Cafe.ts: attempting to deserialize", val)
         if(val) {
             if(val.state != undefined) {
                 let ev = new CustomEvent<State>("StateChangeRequest", {
@@ -57,23 +55,26 @@ export class Cafe {
                 document.dispatchEvent(ev)
             }
             if(val.token != undefined) {
-                console.log("Setting token in fetcher to", val.token)
+                console.log("Cafe.ts: Setting token in fetcher to", val.token)
                 this.fetcher.setToken(val.token)
             }
         } else {
-            console.error("No information to deserialize!")
+            console.error("Cafe.ts: No information to deserialize!")
         }
     }
     /**
      * Determines whether CA is running in an extension and calls the appropriate deserialize method. 
      */
-    async deserializePick() {
+    deserializePick() {
         let me = this
         if(typeof browser != "undefined") {
             browser.storage.local.get().then( (v)=>{
                 if(v) {
                     let parse = JSON.parse(v[browser_storage_key])
                     me.deserialize(parse as SerializedData)
+                    if(!me.state.settings.onPseudoUrlPage) {
+                        me.checkActiveUrl()
+                    }
                     /** Check if logged in when popup is opened */
                     me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
                 }
@@ -82,7 +83,7 @@ export class Cafe {
             let vals = localStorage.getItem(browser_storage_key)
             if(vals) {
                 let parsed = JSON.parse(vals)
-                console.log("PARSED DATA:",parsed)
+                console.log("Cafe.ts: PARSED DATA:",parsed)
                 me.deserialize(parsed)
                 /** Check if logged in when popup is opened */
                 me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
@@ -101,12 +102,13 @@ export class Cafe {
         if(typeof browser != "undefined") {
             browser.storage.local.set({
                 [browser_storage_key]: JSON.stringify(saved_data)
-            }).then( ()=> {
-                console.log("Browser saved this data:", saved_data)
+            }
+            ).then( ()=> {
+                console.log("Cafe.ts: Browser saved this data:", saved_data)
             })
         } else {
             localStorage.setItem(browser_storage_key, JSON.stringify(saved_data))
-            console.log("LocalStorage saved this data:", saved_data)
+            console.log("Cafe.ts: LocalStorage saved this data:", saved_data)
         }
     }
     
@@ -141,7 +143,7 @@ export class Cafe {
         
         document.addEventListener(APIendpoint, (event) => {
             let data = event.detail
-            console.log("CLIENT REQUESTED THE \"" + APIendpoint + "\" API ENDPOINT. SENDING DATA:", data)
+            console.log("Cafe.ts: Client Requested the \"" + APIendpoint + "\" endpoint. Sending data:", data)
             cafe.fetcher.fetch(APIendpoint, httpmethod, data, retrieveResponses)
         })
     }
@@ -193,13 +195,13 @@ export class Cafe {
         
         document.addEventListener("StateChanged", ()=> {
             
-            console.log("state change event received", my.state)
+            console.log("Cafe.ts: state change event received", my.state)
             my.navbar.setFromState(my.state)
             my.serialize()
         })
 
         document.addEventListener("ClearURL", ()=> {
-            console.log("clear url event received")
+            console.log("Cafe.ts: clear url event received")
             my.navbar.setFromState(my.state)
             my.serialize()
         })
@@ -225,7 +227,7 @@ export class Cafe {
             
             myport.onMessage.addListener( (m)=> {
                 if(m.type == "message") {
-                    console.log("port msg:", m.data)
+                    console.log("Cafe.ts: port msg:", m.data)
                 } else if(m.type == "href") {     
                     if(my.state.settings.onPseudoUrlPage != true) {
                         let partialState : Partial<State> = {
@@ -238,7 +240,7 @@ export class Cafe {
                         })
                         document.dispatchEvent(e)
                     }
-                    console.log("port href msg: ", m.data)
+                    console.log("Cafe.ts: port href msg: ", m.data)
                 }
             })
 
@@ -255,7 +257,7 @@ export class Cafe {
     // checkForResponses is called as a callback after every fetch. The server responses array is retrieved from the fetcher and passed to the dispatcher, along with a reference to cafe so the dispatcher can call the correct methods to realize the information retrieved from the server
     checkForResponses() {
         let responses = this.fetcher.getAndClearResponses()
-        console.log("🎅🤶🤶 All server responses:", responses)
+        console.log("Cafe.ts: 🎅🤶🤶 All server responses:", responses)
         this.dispatcher.dispatch(responses, this)
         this.serialize()
     }

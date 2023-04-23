@@ -78,7 +78,7 @@ export class PseudoUrlSection extends CafeSection {
     
     cancelButtonClicked() {
         if(this.on_purl) {
-            let event = new CustomEvent<Partial<State>>("StateChangeRequest", {
+            let event = new CustomEvent<Partial<State>>("ClearURL", {
                 detail: {
                     settings: {
                         url: "",

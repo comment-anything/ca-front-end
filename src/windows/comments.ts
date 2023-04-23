@@ -141,10 +141,8 @@ export class CafeCommentsWindow extends CafeWindow {
             this.displayedComments.set(comment.CommentId, newToAdd)
             
             if(comment.Parent != 0) { 
-                 console.log("Comment", comment.CommentId, "has parent ", comment.Parent)
                  this.displayedComments.get(comment.Parent)?.addChild(newToAdd)
             } else {
-                console.log("Comment", comment.CommentId, "does not have parent", comment.Parent)
                 /* this.childrenContainer.append(newToAdd.el) ?*/
                 this.commentContainer.appendChild(newToAdd.el)
             }
@@ -155,10 +153,9 @@ export class CafeCommentsWindow extends CafeWindow {
     
     /** Resorts data.Commnets on the parameter */
     resortComments(on:Client.SortOption, ascending:boolean) {
-        console.log("Getting sorter", on, "ascending", ascending)
+        console.log("comments.ts: Getting sorter", on, "ascending", ascending)
         let sorter = GetSorter(on, ascending)
         this.data.Comments.sort(sorter)
-        console.log("Sorted to: ", this.data.Comments)
     }
 }
 

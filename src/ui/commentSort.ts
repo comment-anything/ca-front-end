@@ -87,73 +87,11 @@ export class CafeCommentSortDisplay extends UIInput<Settings> {
             this.emitStateChangeRequest()
         })
         
-        /*
-        this.clickListen(this.input.sortAscending, ()=>{
-            this.sortAscending = !this.sortAscending
-            this.setActiveToggle(this.input.sortAscending, this.sortAscending)
-            this.emitStateChangeRequest()
-        }, true)
-        */
-        
         this.eventman.watchEventListener('click', this.input.viewHidden, ()=>{
             this.viewHidden = !this.viewHidden
             this.setActiveToggle(this.input.viewHidden, this.viewHidden)
             this.emitStateChangeRequest()
         })
-        
-        /*
-        this.clickListen(this.input.viewHidden, ()=>{
-            this.viewHidden = !this.viewHidden
-            this.setActiveToggle(this.input.viewHidden, this.viewHidden)
-            this.emitStateChangeRequest()
-        }, true)
-        */
-        
-        /* 
-        this.sortBy = Dom.el("select")
-        this.viewHidden = Dom.createInputElement("checkbox")
-        this.sortAscending = Dom.createInputElement("checkbox")
-        
-        this.sortBy_option1 = Dom.el('option')
-        this.sortBy_option2 = Dom.el('option')
-        this.sortBy_option3 = Dom.el('option')
-        this.sortBy_option4 = Dom.el('option')
-        
-        this.sortBy_option1.text = 'new'
-        this.sortBy_option2.text = 'funny'
-        this.sortBy_option3.text = 'factual'
-        this.sortBy_option4.text = 'agree'
-        
-        this.sortBy.add(this.sortBy_option1)
-        this.sortBy.add(this.sortBy_option2)
-        this.sortBy.add(this.sortBy_option3)
-        this.sortBy.add(this.sortBy_option4)
-        
-        let label_sortBy = Dom.textEl("label", "Sort by")
-        let label_viewHidden = Dom.textEl("label", "View hidden")
-        let label_sortAscending = Dom.textEl("label", "Sort by ascending")
-        
-        let container_sortBy = Dom.div(undefined, CSS.sortRow)
-        let container_viewHidden = Dom.div(undefined, CSS.sortRow)
-        let container_sortAscending = Dom.div(undefined, CSS.sortRow)
-        
-        container_sortBy.append(label_sortBy, this.sortBy)
-        container_viewHidden.append(label_viewHidden, this.viewHidden)
-        container_sortAscending.append(label_sortAscending, this.sortAscending)
-        
-        this.clickListen(this.sortBy_option1, this.emitStateChangeRequest, true)
-        this.clickListen(this.sortBy_option2, this.emitStateChangeRequest, true)
-        this.clickListen(this.sortBy_option3, this.emitStateChangeRequest, true)
-        this.clickListen(this.sortBy_option4, this.emitStateChangeRequest, true)
-        this.clickListen(this.sortAscending, this.emitStateChangeRequest, true)
-        this.clickListen(this.viewHidden, this.emitStateChangeRequest, true)
-        
-        this.el.append(
-            container_sortBy,
-            container_viewHidden,
-            container_sortAscending
-        )
-        */
     }
     
     /** Called by CommentWindow when settings changes */
