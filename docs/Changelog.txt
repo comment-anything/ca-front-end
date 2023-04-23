@@ -4,6 +4,7 @@
 - Created CafeDom.genericInputWithSubmit function
 - Fixed look of "Assign global mod"
 - Fixed look of "Assign Admin"
+- Fixed look of "Feedback Reports"
 
 4/23/2023: Karl
 - patched /amILoggedIn
