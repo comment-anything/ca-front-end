@@ -5,6 +5,7 @@
 - Fixed look of "Assign global mod"
 - Fixed look of "Assign Admin"
 - Fixed look of "Feedback Reports"
+- Fixed look of "Comment Reports"
 
 4/23/2023: Karl
 - patched /amILoggedIn

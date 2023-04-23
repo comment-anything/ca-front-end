@@ -23,7 +23,7 @@ export class AccessLogSection extends CafeSection {
     requestLogs: any;
     logsTable: HTMLTableElement;
     activeLogs: CafeAccessLog[]
-
+    
     constructor() {
         super(undefined)
         this.activeLogs = []
@@ -88,6 +88,7 @@ export class AccessLogSection extends CafeSection {
         data.ForUser = this.forUser.value
         data.ForIp = this.forIP.value
         data.ForEndpoint = this.forEndpoint.value
+        
         let ev = new CustomEvent<Client.ViewAccessLogs>("viewLogs", {
             detail: data as Client.ViewAccessLogs
         })
@@ -110,7 +111,7 @@ export class AccessLogSection extends CafeSection {
             this.logsTable.append(cal.el)
         }
     }
-
+    
     destroy() {
         super.destroy()
         for(let al of this.activeLogs) {
