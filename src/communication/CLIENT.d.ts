@@ -42,7 +42,9 @@ export type ClientMap = {
 export namespace Client {
 
     /** Sent to server when popup is open; checks if user is logged in with the token */
-    type AmILoggedIn = {}
+    type AmILoggedIn = {
+        Url: string
+    }
     
     /** Register is dispatched to the server when the client clicks “Submit” on the register form. */
     type Register = {

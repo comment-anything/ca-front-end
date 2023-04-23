@@ -1,3 +1,6 @@
+4/23/2023: Karl
+- patched /amILoggedIn
+
 4/22/2023: Karl
 - Finished "cancel" feature of pseudo-url 
 - added indicator for when you're on a pseudo url 

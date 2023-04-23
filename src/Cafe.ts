@@ -74,9 +74,10 @@ export class Cafe {
                     me.deserialize(parse as SerializedData)
                     if(!me.state.settings.onPseudoUrlPage) {
                         me.checkActiveUrl()
+                    } else {
+                        /** Check if logged in when popup is opened */
+                        me.fetcher.fetch("amILoggedIn", "POST", {Url: me.state.settings.url}, this.checkForResponses.bind(this))
                     }
-                    /** Check if logged in when popup is opened */
-                    me.fetcher.fetch("amILoggedIn", "POST", {}, this.checkForResponses.bind(this))
                 }
             })
         } else {
@@ -239,6 +240,7 @@ export class Cafe {
                             detail: partialState
                         })
                         document.dispatchEvent(e)
+                        my.fetcher.fetch("amILoggedIn", "POST", {Url: my.state.settings.url}, this.checkForResponses.bind(this))
                     }
                     console.log("Cafe.ts: port href msg: ", m.data)
                 }
