@@ -7,6 +7,9 @@
 - Fixed look of "Feedback Reports"
 - Fixed look of "Comment Reports"
 - Updated look of various buttons
+- Dispatcher now dispatches a ModRecords server response
+- Refactored the ModActionsReportSection
+- Created the full CafeModActionDisplay UIInput class
 
 4/23/2023: Karl
 - patched /amILoggedIn

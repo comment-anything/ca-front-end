@@ -13,6 +13,8 @@ export type ServerMap = {
     "CommentReport"         : Server.CommentReport
     "CommentReports"        : Server.CommentReports
     "AdminAccessLogs"       : Server.AdminAccessLogs
+    "ModRecord"             : Server.ModRecord
+    "ModRecords"            : Server.ModRecords
 }
 
 export type ServerResponse<T extends keyof ServerMap> = {
@@ -68,8 +70,7 @@ export namespace Server {
     type Token = {
         JWT : string
     }
-
-        
+    
     /** CommentVoteRecord contains data for the number of votes on a comment. */
     type CommentVoteDimension = {
         AlreadyVoted : number
@@ -158,5 +159,25 @@ export namespace Server {
     /** AdminAccessLogs are dispatched when an admin wants to see what IPs have been accessing the server, which users are associated with them, and what endpoints they are accessing. */
     type AdminAccessLogs = {
         Logs : AdminAccessLog[]
+    }
+    
+    type ModRecord = {
+        Comment            : Server.Comment
+        Domain             : string
+        ModeratorID        : number
+        ModeratorUsername  : string
+        Reason             : string
+        Time               : number
+        SetHiddenTo?       : boolean
+        SetRemovedTo?      : boolean
+        AssociatedReport?  : number
+        ReportingUserID?   : number
+        ReportingUsername? : string
+        ReportReason?      : string
+        ReportedAt         : number
+    }
+    
+    type ModRecords = {
+        Records: ModRecord[]
     }
 }
