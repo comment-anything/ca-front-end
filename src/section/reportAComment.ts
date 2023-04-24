@@ -62,6 +62,7 @@ export class ReportCommentSection extends CafeSection {
             this.submitReportButton.disabled = true
 
         }
+        this.toggleFold()
 
     }
 }

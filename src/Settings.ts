@@ -52,17 +52,19 @@ export class Settings {
                 document.dispatchEvent(ev)
             } 
         } else {
-            console.log("Settings.ts: No URL exists, sending a clearURL event.")
-            this.url = ""
-            let event = new CustomEvent<Partial<State>>("ClearURL", {
-                detail: {
-                    settings: {
-                        url: "",
-                        onPseudoUrlPage: false
-                    } as Settings
-                }
-            })
-            document.dispatchEvent(event)
+            if(settingsChange.url != undefined) {
+                console.log("Settings.ts: Empty string url, sending a clearURL event.")
+                this.url = ""
+                let event = new CustomEvent<Partial<State>>("ClearURL", {
+                    detail: {
+                        settings: {
+                            url: "",
+                            onPseudoUrlPage: false
+                        } as Settings
+                    }
+                })
+                document.dispatchEvent(event)
+            }
         }
 
     }
