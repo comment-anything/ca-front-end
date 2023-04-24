@@ -25,7 +25,7 @@ if(typeof browser != "undefined") {
         })
         popupPort.onMessage.addListener( (r) => {
             if(r.type == "send-href") {
-                browser.tabs.query({active:true}).then( (v)=> {
+                browser.tabs.query({active:true, currentWindow: true}).then( (v)=> {
                     if(v.length > 0) {
                         popupPort.postMessage({
                             type: "href",
