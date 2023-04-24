@@ -3,7 +3,7 @@ import { Client } from "../communication/CLIENT";
 import { Server } from "../communication/SERVER";
 import { CafeModActionDisplay } from "../ui/modActionDisplay";
 import { CafeDom } from "../util/cafeDom";
-import { DatetimeNowString, DatetimeOffsetString } from "../util/date";
+import { DatetimeNowString, DatetimeOffsetString, DatetimeTodayStartString } from "../util/date";
 import { Dom } from "../util/dom";
 import { CafeSection } from "./base";
 
@@ -60,6 +60,12 @@ export class ModActionsReportSection extends CafeSection {
             forDomain : Dom.createInputElement("text"),
             submit    : CafeDom.formSubmitButtonSmallCenteredBlock("Request Actions")
         }
+
+        this.input.from.value = DatetimeTodayStartString()
+
+        this.input.to.value = DatetimeNowString()
+
+
         
         this.container.append(
             this.actionContainer,
