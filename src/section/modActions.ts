@@ -1,5 +1,7 @@
 
 import { Client } from "../communication/CLIENT";
+import { Server } from "../communication/SERVER";
+import { CafeModActionDisplay } from "../ui/modActionDisplay";
 import { CafeDom } from "../util/cafeDom";
 import { DatetimeNowString, DatetimeOffsetString } from "../util/date";
 import { Dom } from "../util/dom";
@@ -17,7 +19,21 @@ const CSS = {
  * 
  * It uses the standard section drop-down paradigm.
  */
-export class ModActionsReportSection  extends CafeSection {
+export class ModActionsReportSection extends CafeSection {
+    
+    container        : HTMLDivElement
+    activeActions    : CafeModActionDisplay[]
+    actionContainer  : HTMLDivElement
+    
+    input: {
+        from      : HTMLInputElement
+        to        : HTMLInputElement
+        forUser   : HTMLInputElement
+        forDomain : HTMLInputElement
+        submit    : HTMLButtonElement
+    }
+    
+    /*
     dropDownContainer: HTMLDivElement;
     requestModRecordsButton : HTMLButtonElement;
     recsTable: HTMLTableElement;
@@ -25,13 +41,40 @@ export class ModActionsReportSection  extends CafeSection {
     to: HTMLInputElement;
     forUser: HTMLInputElement;
     forDomain: HTMLInputElement;
+    */
+    
     constructor() {
         super()
+        
         let sectionLabel = Dom.div("View Moderator Actions", CSS.sectionLabel)
         sectionLabel.title = "The moderator actions section, used to view records of moderation actions taken on comments."
+        this.container = Dom.div()
         
-        this.dropDownContainer = Dom.div()
-
+        this.activeActions = []
+        this.actionContainer = Dom.div()
+        
+        this.input = {
+            from      : Dom.createInputElement("datetime-local"),
+            to        : Dom.createInputElement("datetime-local"),
+            forUser   : Dom.createInputElement("text"),
+            forDomain : Dom.createInputElement("text"),
+            submit    : CafeDom.formSubmitButtonSmallCenteredBlock("Request Actions")
+        }
+        
+        this.container.append(
+            this.actionContainer,
+            Dom.createContainerWithLabel("From:", CSS.inputLabel, "div", this.input.from),
+            Dom.createContainerWithLabel("To:", CSS.inputLabel, "div", this.input.to),
+            Dom.createContainerWithLabel("User:", CSS.inputLabel, "div", this.input.forUser),
+            Dom.createContainerWithLabel("Domain:", CSS.inputLabel, "div", this.input.forDomain),
+            this.input.submit
+        )
+        
+        this.el.append(sectionLabel, this.container)
+        this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
+        this.eventman.watchEventListener('click', this.input.submit, this.requestActionsClicked, true)
+        
+        /*
         let requestContainer = Dom.div()
 
         this.from = Dom.createInputElement("datetime-local")
@@ -67,27 +110,48 @@ export class ModActionsReportSection  extends CafeSection {
         this.el.append(sectionLabel, this.dropDownContainer)
         this.eventman.watchEventListener('click', sectionLabel, this.toggleFold, true)
         this.eventman.watchEventListener('click', this.requestModRecordsButton, this.requestActionsClicked, true)
+        */
     }
-
+    
     toggleFold() {
-        if(this.dropDownContainer.style.display != "none") {
-            this.dropDownContainer.style.display = "none"
+        if(this.container.style.display != "none") {
+            this.container.style.display = "none"
         } else {
-            this.dropDownContainer.style.display = "block"
+            this.container.style.display = "block"
         }
     }
-
+    
     requestActionsClicked() {
-        let start = this.from.valueAsDate ? this.from.valueAsDate.valueOf() : null
-        let end = this.to.valueAsDate ? this.to.valueAsDate.valueOf() : null
+        let start = this.input.from.valueAsDate ? this.input.from.valueAsDate.valueOf() : null
+        let end = this.input.to.valueAsDate ? this.input.to.valueAsDate.valueOf() : null
+        
         let ev = new CustomEvent<Client.ViewModRecords>("viewModRecords", {
             detail: {
-                ForDomain : this.forDomain.value,
-                ByUser : this.forUser.value,
+                ForDomain : this.input.forDomain.value,
+                ByUser : this.input.forUser.value,
                 From : start,
                 To: end 
             }
         })
+        
         document.dispatchEvent(ev)
     }
+    
+    populateModActions(records: Server.ModRecord[]) {
+        
+        for (let a of this.activeActions) {
+            a.destroy()
+            a.el.remove()
+        }
+        
+        this.activeActions = []
+        
+        for (let r of records) {
+            let a = new CafeModActionDisplay(r)
+            this.activeActions.push(a)
+            this.actionContainer.append(a.el)
+        }
+        
+    }
+    
 }

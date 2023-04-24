@@ -68,9 +68,15 @@ export class Dispatcher {
                     let crs = datum.Data as Server.CommentReports
                     this.dispatchCommentReports(crs, cafe)
                     break
+                    
                 case "AdminAccessLogs":
                     let aal = datum.Data as Server.AdminAccessLogs
                     this.dispatchAdminAccessLogs(aal, cafe)
+                    break
+                
+                case "ModRecords":
+                    let mrs = datum.Data as Server.ModRecords
+                    this.dispatchModRecords(mrs, cafe)
                     break
             }
         }
@@ -108,7 +114,7 @@ export class Dispatcher {
     dispatchProfileUpdateResponse(userProfileResponse: Server.ProfileUpdateResponse, cafe: Cafe) {
         cafe.state.loadProfile(userProfileResponse, true)
     }
-
+    
     /** dispatchNewPassResponse sends the response to the newPassWindow so it can request a state change on success and also dispatches it to the message display so errors and success messages can be displayed. */
     dispatchNewPassResponse(newpassresponse:Server.NewPassResponse, cafe:Cafe) {
         cafe.navbar.window.setNewPassword.parseNewPassResponse(newpassresponse)
@@ -133,6 +139,11 @@ export class Dispatcher {
 
     dispatchAdminAccessLogs(accessLogs: Server.AdminAccessLogs, cafe: Cafe) {
         cafe.navbar.window.admin.accessLogs.update(accessLogs.Logs)
+    }
+    
+    dispatchModRecords(modRecords: Server.ModRecords, cafe: Cafe) {
+        console.warn("GOT MOD RECORDS", modRecords)
+        cafe.navbar.window.moderator.modActions.populateModActions(modRecords.Records)
     }
 }
 
