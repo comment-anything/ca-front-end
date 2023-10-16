@@ -19,9 +19,9 @@ describe('display comments', ()=>{
         
         let testComment: Server.Comment = {
             UserId: 600,
-            Username: "BigStinkAss",
+            Username: "BadUser",
             CommentId: 9999999999,
-            Content: "This cooel   WEBSITE FUCNK MINE IN THE [FRESH of MANGA SOGOI pillo w.] http://h__xx3.cum/HX2",
+            Content: "This is a very inappropriate comment.",
             Factual: votedim,
             Funny: votedim,
             Agree: votedim,
